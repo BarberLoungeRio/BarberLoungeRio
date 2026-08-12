@@ -24,13 +24,15 @@ Você não precisa instalar um programa de edição de código. Use o site do Ma
 
 ## Como adicionar um vídeo novo
 
-Abra **Drops TV → Adicionar Short**. No campo de URL, cole o endereço completo, por exemplo `https://www.youtube.com/shorts/SEU_ID`. Depois, preencha um título curto, escolha a etiqueta, ajuste a ordem se desejar, confirme que o item está publicado e selecione **Salvar Short**. O site converte o endereço em um card vertical e tenta iniciar o vídeo sem som; se o navegador ou o YouTube bloquear o autoplay, o visitante ainda poderá abrir o vídeo diretamente no YouTube.
+Abra **Drops TV → Adicionar Short** para um vídeo individual. Para publicar vários vídeos de uma vez, use o bloco **Entrada mensal rápida**, cole um link por linha ou separados por espaço e selecione **Adicionar lote mensal**. Os links válidos entram no final da galeria; depois, arraste os cartões ou use as setas para organizar. O site converte cada endereço em um card vertical e tenta iniciar o vídeo sem som; se o navegador ou o YouTube bloquear o autoplay, o visitante ainda poderá abrir o vídeo diretamente no YouTube.
 
 ## Como funciona o Instagram neste momento
 
-A seção **Barber Lounge em movimento** permanece ativa sem depender do Facebook/Meta. Cada imagem da grade é clicável e leva ao perfil oficial `@barberlounge.rio`; o botão **Seguir @barberlounge.rio** abre o perfil em uma nova aba. Essa é a alternativa estável enquanto a configuração da Graph API do Facebook está pausada.
+A seção **Barber Lounge em movimento** permanece ativa sem depender do Facebook/Meta. Ela apresenta um cartão do perfil oficial `@barberlounge.rio` com botão para abrir o Instagram em uma nova aba. Essa é a alternativa estável enquanto a configuração da Graph API do Facebook está pausada.
 
-A conexão de feed automático real exige autorização da Meta, uma conta profissional do Instagram e um token válido. Como essa etapa foi pulada por solicitação do responsável, o site não tenta autenticar nem fazer chamadas periódicas ao Facebook. Quando a Meta estiver disponível, será possível adicionar essa camada depois, preservando o layout atual e substituindo as imagens de fallback por posts recebidos da API oficial.
+A conexão de feed automático real exige autorização da Meta, uma conta profissional do Instagram e um token válido. Como essa etapa foi pulada por solicitação do responsável, o site não tenta autenticar nem fazer chamadas periódicas ao Facebook. Quando a Meta estiver disponível, será possível adicionar essa camada depois, preservando o layout atual.
+
+Todos os botões de agendamento do site, inclusive o botão flutuante, abrem o WhatsApp com a mensagem pré-preenchida: “Olá, Barber Lounge Rio! Gostaria de agendar um horário.”
 
 ## Domínio `barbearia.com.br`
 
@@ -49,6 +51,6 @@ O painel é acessado em `/admin`. O guia técnico de DNS está em `/admin/dns`. 
 
 A aba **Thrift Store** do painel agora reúne as fotos recebidas e permite editar, sem código, a URL da imagem, o título, a descrição, a ordem e o status de publicação. A descrição salva nessa aba aparece imediatamente abaixo da foto na vitrine pública. No computador, arraste os cartões; no celular, use a ordem numérica e salve.
 
-A seção de avaliações agora usa uma URL centralizada e editável chamada **Google Maps · link oficial de avaliações**, dentro do bloco **Contato**. Ela abre a busca oficial do Google Maps para a Barber Lounge Rio. A aplicação não exibe nota, contagem ou depoimentos locais sem uma fonte verificável. Para transformar isso em feed programático de avaliações, ainda será necessário informar o link direto do Perfil da Empresa ou um Place ID oficial e configurar as credenciais do Google Places API.
+A seção de avaliações agora usa uma URL centralizada e editável chamada **Google Maps · link oficial de avaliações**, dentro do bloco **Contato**. O destino configurado é o link oficial compartilhado pelo responsável: `https://share.google/TVi4GWtvKyHwk3PdY`. A aplicação não exibe nota, contagem ou depoimentos locais sem uma fonte verificável. Para transformar isso em feed programático de avaliações, ainda será necessário configurar credenciais do Google Places API.
 
-A logo atual permanece como imagem provisória até que a nova logo seja enviada. Assim que o arquivo for recebido, ele deverá ser publicado no armazenamento do projeto e substituído no cabeçalho, rodapé e demais pontos de identidade visual.
+A nova logo enviada foi publicada no armazenamento do projeto e aplicada no cabeçalho e no rodapé como identidade visual **BARBER LOUNGE RIO**.

@@ -74,3 +74,10 @@
 - [x] Remover as imagens externas antigas da grade do Instagram e manter somente o perfil oficial clicável enquanto a Graph API estiver pausada
 - [x] Atualizar no banco e na fonte padrão os textos antigos do Hero para BARBER LOUNGE RIO
 - [x] Revisar visualmente a galeria Thrift Store e o cartão do Instagram após as alterações
+
+## Melhorias solicitadas pelo usuário (WhatsApp, Domínio e Fluxo Mensal)
+
+- [ ] Implementar botão flutuante e chamadas de ação do WhatsApp com mensagem pré-preenchida para agendamento
+- [ ] Atualizar o painel e o guia de domínio para facilitar a configuração do barbearia.com.br
+- [ ] Aprimorar a experiência de adição e reordenação mensal de vídeos no Drops TV
+- [ ] Validar com testes, salvar checkpoint final e entregar os resultados completos

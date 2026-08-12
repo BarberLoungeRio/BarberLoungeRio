@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { useState, useEffect } from "react";
 
 const heroVideoUrl = "/manus-storage/ARTEPARASITE_6df86b1c.mp4";
+const whatsappBookingUrl = `https://wa.me/5521980089047?text=${encodeURIComponent("Olá, Barber Lounge Rio! Gostaria de agendar um horário.")}`;
 
 export default function Home() {
   const { data: publicData } = trpc.site.publicData.useQuery();
@@ -573,7 +574,7 @@ export default function Home() {
                 <li><Link href="/admin" style={{ color: 'var(--gold-light)' }}>Painel Admin</Link></li>
               )}
             </ul>
-            <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" className="btn btn-outline header-cta-desktop">Agendar Horário</a>
+            <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-outline header-cta-desktop">Agendar Horário</a>
           </nav>
           <button className="burger" id="burgerBtn" aria-label="Abrir menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>
             <span></span><span></span><span></span>
@@ -589,7 +590,7 @@ export default function Home() {
           {user?.role === 'admin' && (
             <Link href="/admin" onClick={() => setMobileOpen(false)} style={{ color: 'var(--gold-light)', fontFamily: 'Montserrat', fontWeight: 700, fontSize: '20px', padding: '16px 0', borderBottom: '1px solid var(--line)' }}>Painel Admin</Link>
           )}
-          <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" className="btn btn-outline">Agendar Horário</a>
+          <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-outline">Agendar Horário</a>
         </div>
       </header>
 
@@ -609,7 +610,7 @@ export default function Home() {
           <p className="sub">A união da curadoria de estilo com a precisão do corte. Autenticidade, luxo e atitude em um único lugar, no coração do Centro do Rio.</p>
 
           <div className="hero-ctas">
-            <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" className="btn btn-gold">Agendar Exclusividade</a>
+            <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-gold">Agendar Exclusividade</a>
             <a href="#thrift" className="btn btn-ghost">Explorar Luxury Thrift Store</a>
           </div>
 
@@ -739,7 +740,7 @@ export default function Home() {
             <span className="eyebrow">Reserve a sua exclusividade</span>
             <h2>Seu horário, sua peça, seu estilo.</h2>
             <p>Fale com a nossa equipe pelo WhatsApp, garanta seu horário e acompanhe as novas peças do brechó.</p>
-            <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" className="btn btn-gold">Agendar pelo WhatsApp</a>
+            <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-gold">Agendar pelo WhatsApp</a>
           </div>
         </div>
       </main>
@@ -756,7 +757,7 @@ export default function Home() {
               <p>Autenticidade, luxo e atitude em um único lugar. Barbearia de alto padrão e curadoria de moda circular no Centro do Rio de Janeiro.</p>
               <div className="footer-socials">
                 <a href="https://instagram.com/barberlounge.rio" target="_blank" rel="noreferrer" aria-label="Instagram">IG</a>
-                <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" aria-label="WhatsApp">WA</a>
+                <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" aria-label="WhatsApp">WA</a>
               </div>
             </div>
 
@@ -768,7 +769,7 @@ export default function Home() {
 
             <div className="footer-col">
               <h5>Contato Rápido</h5>
-              <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer">(21) 98008-9047 — WhatsApp</a>
+              <a href={whatsappBookingUrl} target="_blank" rel="noreferrer">(21) 98008-9047 — WhatsApp</a>
               <a href="https://instagram.com/barberlounge.rio" target="_blank" rel="noreferrer">@barberlounge.rio</a>
               <a href="#servicos">Ver Drops TV & Shorts</a>
               {user?.role === 'admin' && (
@@ -787,12 +788,12 @@ export default function Home() {
         <div className="wrap">
           <div className="footer-bottom">
             <span>© 2026 Barber Lounge Rio · Centro do Rio de Janeiro</span>
-            <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer">Falar no WhatsApp →</a>
+            <a href={whatsappBookingUrl} target="_blank" rel="noreferrer">Falar no WhatsApp →</a>
           </div>
         </div>
       </footer>
 
-      <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" className="wa-float" aria-label="Agendar pelo WhatsApp">
+      <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="wa-float" aria-label="Agendar pelo WhatsApp">
         <svg viewBox="0 0 32 32"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.699 4.607 1.902 6.472L4 29l7.72-1.867A11.94 11.94 0 0 0 16.001 27C22.629 27 28 21.627 28 15S22.629 3 16.001 3zm6.994 17.02c-.294.828-1.457 1.516-2.386 1.71-.634.13-1.462.234-4.25-.914-3.567-1.47-5.86-5.09-6.038-5.327-.177-.237-1.447-1.927-1.447-3.676 0-1.749.917-2.61 1.242-2.966.325-.355.71-.443.947-.443.237 0 .474.002.68.012.218.01.51-.083.799.61.294.71 1 2.454 1.088 2.633.089.178.148.386.03.622-.119.237-.178.385-.354.593-.178.207-.373.463-.533.622-.178.178-.363.37-.156.727.207.355.918 1.514 1.97 2.452 1.353 1.207 2.494 1.581 2.85 1.759.355.178.563.148.77-.09.207-.237.888-1.034 1.125-1.39.237-.355.474-.296.799-.178.325.119 2.062.973 2.416 1.15.355.178.593.267.68.415.089.148.089.858-.205 1.686z"/></svg>
       </a>
     </>

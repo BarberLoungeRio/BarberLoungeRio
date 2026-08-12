@@ -66,14 +66,104 @@ function ServiceForm({ form, set, submit, cancel, pending }: { form: ServiceForm
 
 function VideosEditor({ data }: { data: AdminData }) {
   const utils = trpc.useUtils();
-  const [form, setForm] = useState<VideoForm | null>(null); const [draggedId, setDraggedId] = useState<number | null>(null);
-  const create = trpc.admin.videos.create.useMutation({ onSuccess: () => { toast.success("Short adicionado."); setForm(null); void utils.admin.data.invalidate(); }, onError: (error) => toast.error(error.message) });
-  const remove = trpc.admin.videos.delete.useMutation({ onSuccess: () => { toast.success("Short removido."); void utils.admin.data.invalidate(); }, onError: (error) => toast.error(error.message) });
-  const update = trpc.admin.videos.update.useMutation({ onSuccess: () => { toast.success("Short atualizado."); setForm(null); void utils.admin.data.invalidate(); }, onError: (error) => toast.error(error.message) });
-  const reorder = trpc.admin.videos.reorder.useMutation({ onSuccess: () => { toast.success("Ordem atualizada."); void utils.admin.data.invalidate(); }, onError: (error) => toast.error(error.message) });
-  const move = (index: number, direction: -1 | 1) => { const ids = data.videos.map((video) => video.id); const target = index + direction; if (target < 0 || target >= ids.length) return; [ids[index], ids[target]] = [ids[target], ids[index]]; reorder.mutate({ ids }); }; const dropOn = (targetId: number) => { if (draggedId === null || draggedId === targetId) return; const ids = data.videos.map((video) => video.id); const from = ids.indexOf(draggedId); const to = ids.indexOf(targetId); if (from < 0 || to < 0) return; const [moved] = ids.splice(from, 1); if (moved === undefined) return; ids.splice(to, 0, moved); reorder.mutate({ ids }); setDraggedId(null); };
+  const [form, setForm] = useState<VideoForm | null>(null);
+  const [draggedId, setDraggedId] = useState<number | null>(null);
+  const [bulkUrls, setBulkUrls] = useState("");
+  const create = trpc.admin.videos.create.useMutation({
+    onSuccess: () => { toast.success("Short adicionado."); setForm(null); void utils.admin.data.invalidate(); },
+    onError: (error) => toast.error(error.message),
+  });
+  const remove = trpc.admin.videos.delete.useMutation({
+    onSuccess: () => { toast.success("Short removido."); void utils.admin.data.invalidate(); },
+    onError: (error) => toast.error(error.message),
+  });
+  const update = trpc.admin.videos.update.useMutation({
+    onSuccess: () => { toast.success("Short atualizado."); setForm(null); void utils.admin.data.invalidate(); },
+    onError: (error) => toast.error(error.message),
+  });
+  const reorder = trpc.admin.videos.reorder.useMutation({
+    onSuccess: () => { toast.success("Ordem atualizada."); void utils.admin.data.invalidate(); },
+    onError: (error) => toast.error(error.message),
+  });
+  const move = (index: number, direction: -1 | 1) => {
+    const ids = data.videos.map((video) => video.id);
+    const target = index + direction;
+    if (target < 0 || target >= ids.length) return;
+    [ids[index], ids[target]] = [ids[target], ids[index]];
+    reorder.mutate({ ids });
+  };
+  const dropOn = (targetId: number) => {
+    if (draggedId === null || draggedId === targetId) return;
+    const ids = data.videos.map((video) => video.id);
+    const from = ids.indexOf(draggedId);
+    const to = ids.indexOf(targetId);
+    if (from < 0 || to < 0) return;
+    const moved = ids.splice(from, 1)[0];
+    if (moved === undefined) return;
+    ids.splice(to, 0, moved);
+    reorder.mutate({ ids });
+    setDraggedId(null);
+  };
   const set = (key: keyof VideoForm, value: string | number | boolean) => setForm((current) => current ? { ...current, [key]: value } : current);
-  return <div className="space-y-6"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center"><div><h2 className="font-display text-xl font-bold uppercase text-white">Drops TV · YouTube Shorts</h2><p className="mt-2 max-w-xl text-sm leading-6 text-white/45">Os vídeos são exibidos em autoplay sem som. Cole um link do YouTube Shorts, salve e arraste qualquer cartão para mudar a ordem. As setas continuam disponíveis no celular.</p></div><Button onClick={() => setForm({ url: "https://www.youtube.com/shorts/", title: "", description: "Conteúdo Barber Lounge Rio.", tag: "Drops TV", sortOrder: data.videos.length + 1, active: true })} className="gap-2 bg-[#d5b05b] font-display text-[10px] font-bold uppercase tracking-[.12em] text-black hover:bg-[#f0d894]"><Plus className="h-4 w-4" /> Adicionar Short</Button></div>{form && <div className="border border-[#d5b05b]/35 bg-[#d5b05b]/[.04] p-5"><div className="mb-5 flex items-center justify-between"><div><span className="font-mono text-[9px] uppercase tracking-[.15em] text-[#d5b05b]">{form.id ? "Conteúdo existente" : "Novo conteúdo"}</span><h3 className="mt-2 font-display text-sm font-bold uppercase text-[#e8ca84]">{form.id ? "Editar vídeo" : "Adicionar vídeo"}</h3></div><button onClick={() => setForm(null)} className="text-white/45 hover:text-white"><X className="h-4 w-4" /></button></div><div className="grid gap-4 md:grid-cols-2"><Field label="URL do YouTube Short" hint="Exemplo: https://www.youtube.com/shorts/SEU_ID"><Input value={form.url} onChange={(e) => set("url", e.target.value)} className="border-white/10 bg-black/20 text-white md:col-span-2" /></Field><Field label="Título"><Input value={form.title} onChange={(e) => set("title", e.target.value)} className="border-white/10 bg-black/20 text-white" /></Field><Field label="Etiqueta"><Input value={form.tag} onChange={(e) => set("tag", e.target.value)} className="border-white/10 bg-black/20 text-white" /></Field><Field label="Ordem"><Input type="number" value={form.sortOrder} onChange={(e) => set("sortOrder", Number(e.target.value))} className="border-white/10 bg-black/20 text-white" /></Field><label className="flex items-center gap-3 pt-6 font-mono text-[9px] uppercase tracking-[.13em] text-white/50"><input type="checkbox" checked={form.active} onChange={(e) => set("active", e.target.checked)} className="h-4 w-4 accent-[#d5b05b]" /> Publicado na galeria</label><Field label="Descrição"><Textarea value={form.description} onChange={(e) => set("description", e.target.value)} className="min-h-20 border-white/10 bg-black/20 text-white md:col-span-2" /></Field></div><div className="mt-5 flex justify-end"><Button onClick={() => form.id ? update.mutate({ id: form.id, url: form.url, title: form.title, description: form.description, tag: form.tag, sortOrder: Number(form.sortOrder), active: form.active }) : create.mutate({ url: form.url, title: form.title, description: form.description, tag: form.tag, sortOrder: Number(form.sortOrder), active: form.active })} disabled={create.isPending || update.isPending} className="gap-2 bg-[#d5b05b] font-display text-[10px] font-bold uppercase tracking-[.12em] text-black hover:bg-[#f0d894]"><Save className="h-4 w-4" /> {create.isPending || update.isPending ? "Salvando…" : form.id ? "Atualizar Short" : "Salvar Short"}</Button></div></div>}<div className="space-y-3">{data.videos.map((video, index) => <div key={video.id} draggable onDragStart={() => setDraggedId(video.id)} onDragEnd={() => setDraggedId(null)} onDragOver={(event) => event.preventDefault()} onDrop={() => dropOn(video.id)} className={`flex cursor-grab flex-col gap-4 border bg-[#11110f] p-4 transition sm:flex-row sm:items-center ${draggedId === video.id ? "border-[#d5b05b] opacity-60" : "border-white/10 hover:border-[#d5b05b]/50"}`}><div className="flex h-28 w-20 shrink-0 items-center justify-center overflow-hidden bg-black"><iframe title={video.title} src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?autoplay=0&mute=1&controls=0&rel=0`} className="h-full w-full border-0" loading="lazy" /></div><div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-3"><span className="font-mono text-[10px] text-[#d5b05b]">{String(index + 1).padStart(2, "0")}</span><h3 className="truncate font-display text-sm font-bold uppercase text-white">{video.title}</h3><Badge className="border-white/10 bg-white/5 font-mono text-[9px] text-white/40">{video.youtubeId}</Badge></div><p className="mt-2 line-clamp-1 text-sm text-white/40">{video.description}</p><a href={video.url} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 font-mono text-[9px] uppercase tracking-[.1em] text-[#e8ca84]">Abrir no YouTube <Link2 className="h-3 w-3" /></a></div><div className="flex items-center gap-2"><span className="hidden text-white/25 sm:inline-flex" title="Arraste para reordenar" aria-label="Arraste para reordenar"><GripVertical className="h-4 w-4" /></span><Button variant="outline" onClick={() => setForm({ ...video })} className="border-white/10 font-mono text-[9px] uppercase tracking-[.08em] text-white/60 hover:border-[#d5b05b] hover:text-[#e8ca84]">Editar</Button><Button variant="outline" onClick={() => move(index, -1)} disabled={index === 0 || reorder.isPending} className="h-9 w-9 border-white/10 p-0 text-white/55 hover:border-[#d5b05b] hover:text-[#e8ca84]" aria-label="Mover para cima"><ArrowUp className="h-4 w-4" /></Button><Button variant="outline" onClick={() => move(index, 1)} disabled={index === data.videos.length - 1 || reorder.isPending} className="h-9 w-9 border-white/10 p-0 text-white/55 hover:border-[#d5b05b] hover:text-[#e8ca84]" aria-label="Mover para baixo"><ArrowDown className="h-4 w-4" /></Button><Button variant="outline" onClick={() => { if (window.confirm("Remover este Short da galeria?")) remove.mutate({ id: video.id }); }} className="h-9 w-9 border-red-300/20 p-0 text-red-300 hover:bg-red-300/10" aria-label="Remover"><Trash2 className="h-4 w-4" /></Button></div></div>)}</div><div className="flex items-start gap-3 border border-white/10 bg-white/[.03] p-4"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#d5b05b]" /><p className="text-xs leading-5 text-white/45">A reprodução automática depende das políticas do navegador e do YouTube. Como os embeds iniciam com <strong className="text-white/70">mute=1</strong>, eles podem iniciar sem interação na maioria dos navegadores; o visitante sempre terá os controles do YouTube como fallback.</p></div></div>;
+  const bulkLinks = bulkUrls.split(/\\s+/).map((value) => value.trim()).filter((value) => value.startsWith("https://www.youtube.com/shorts/") || value.startsWith("https://youtu.be/"));
+  const addBulk = () => {
+    if (bulkLinks.length === 0) { toast.error("Cole pelo menos um link válido do YouTube Shorts."); return; }
+    bulkLinks.forEach((url, index) => create.mutate({ url, title: "Drops TV · Novo " + (data.videos.length + index + 1), description: "Conteúdo Barber Lounge Rio.", tag: "Drops TV", sortOrder: data.videos.length + index + 1, active: true }));
+    setBulkUrls("");
+    toast.success(bulkLinks.length + " link(s) enviados para publicação.");
+  };
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+        <div>
+          <h2 className="font-display text-xl font-bold uppercase text-white">Drops TV · YouTube Shorts</h2>
+          <p className="mt-2 max-w-xl text-sm leading-6 text-white/45">Os vídeos são exibidos em autoplay sem som. Cole um link do YouTube Shorts, salve e arraste qualquer cartão para mudar a ordem. As setas continuam disponíveis no celular.</p>
+        </div>
+        <Button onClick={() => setForm({ url: "https://www.youtube.com/shorts/", title: "", description: "Conteúdo Barber Lounge Rio.", tag: "Drops TV", sortOrder: data.videos.length + 1, active: true })} className="gap-2 bg-[#d5b05b] font-display text-[10px] font-bold uppercase tracking-[.12em] text-black hover:bg-[#f0d894]"><Plus className="h-4 w-4" /> Adicionar Short</Button>
+      </div>
+      <div className="border border-white/10 bg-[#11110f] p-5">
+        <div className="flex items-start gap-3">
+          <Video className="mt-0.5 h-5 w-5 shrink-0 text-[#d5b05b]" />
+          <div className="min-w-0 flex-1">
+            <strong className="font-display text-sm uppercase tracking-[.08em] text-[#e8ca84]">Entrada mensal rápida</strong>
+            <p className="mt-2 text-sm leading-6 text-white/45">Cole vários links, um por linha ou separados por espaço. Eles serão adicionados no final da galeria e depois você pode arrastar os cartões para ajustar a ordem.</p>
+            <Textarea value={bulkUrls} onChange={(event) => setBulkUrls(event.target.value)} placeholder={'https://www.youtube.com/shorts/SEU_ID\\nhttps://www.youtube.com/shorts/OUTRO_ID'} className="mt-4 min-h-24 border-white/10 bg-black/20 text-sm text-white placeholder:text-white/25 focus-visible:ring-[#d5b05b]" />
+            <div className="mt-3 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+              <span className="font-mono text-[9px] uppercase tracking-[.12em] text-white/35">{bulkLinks.length} link(s) válido(s) detectado(s)</span>
+              <Button onClick={addBulk} disabled={create.isPending || bulkLinks.length === 0} className="gap-2 bg-[#d5b05b] font-display text-[10px] font-bold uppercase tracking-[.12em] text-black hover:bg-[#f0d894]"><Plus className="h-4 w-4" /> Adicionar lote mensal</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {form && (
+        <div className="border border-[#d5b05b]/35 bg-[#d5b05b]/[.04] p-5">
+          <div className="mb-5 flex items-center justify-between">
+            <div><span className="font-mono text-[9px] uppercase tracking-[.15em] text-[#d5b05b]">{form.id ? "Conteúdo existente" : "Novo conteúdo"}</span><h3 className="mt-2 font-display text-sm font-bold uppercase text-[#e8ca84]">{form.id ? "Editar vídeo" : "Adicionar vídeo"}</h3></div>
+            <button onClick={() => setForm(null)} className="text-white/45 hover:text-white" aria-label="Cancelar"><X className="h-4 w-4" /></button>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="URL do YouTube Short" hint="Exemplo: https://www.youtube.com/shorts/SEU_ID"><Input value={form.url} onChange={(e) => set("url", e.target.value)} className="border-white/10 bg-black/20 text-white md:col-span-2" /></Field>
+            <Field label="Título"><Input value={form.title} onChange={(e) => set("title", e.target.value)} className="border-white/10 bg-black/20 text-white" /></Field>
+            <Field label="Etiqueta"><Input value={form.tag} onChange={(e) => set("tag", e.target.value)} className="border-white/10 bg-black/20 text-white" /></Field>
+            <Field label="Ordem"><Input type="number" value={form.sortOrder} onChange={(e) => set("sortOrder", Number(e.target.value))} className="border-white/10 bg-black/20 text-white" /></Field>
+            <label className="flex items-center gap-3 pt-6 font-mono text-[9px] uppercase tracking-[.13em] text-white/50"><input type="checkbox" checked={form.active} onChange={(e) => set("active", e.target.checked)} className="h-4 w-4 accent-[#d5b05b]" /> Publicado na galeria</label>
+            <Field label="Descrição"><Textarea value={form.description} onChange={(e) => set("description", e.target.value)} className="min-h-20 border-white/10 bg-black/20 text-white md:col-span-2" /></Field>
+          </div>
+          <div className="mt-5 flex justify-end"><Button onClick={() => form.id ? update.mutate({ id: form.id, url: form.url, title: form.title, description: form.description, tag: form.tag, sortOrder: Number(form.sortOrder), active: form.active }) : create.mutate({ url: form.url, title: form.title, description: form.description, tag: form.tag, sortOrder: Number(form.sortOrder), active: form.active })} disabled={create.isPending || update.isPending} className="gap-2 bg-[#d5b05b] font-display text-[10px] font-bold uppercase tracking-[.12em] text-black hover:bg-[#f0d894]"><Save className="h-4 w-4" /> {create.isPending || update.isPending ? "Salvando…" : form.id ? "Atualizar Short" : "Salvar Short"}</Button></div>
+        </div>
+      )}
+      <div className="space-y-3">
+        {data.videos.map((video, index) => (
+          <div key={video.id} draggable onDragStart={() => setDraggedId(video.id)} onDragEnd={() => setDraggedId(null)} onDragOver={(event) => event.preventDefault()} onDrop={() => dropOn(video.id)} className={"flex cursor-grab flex-col gap-4 border bg-[#11110f] p-4 transition sm:flex-row sm:items-center " + (draggedId === video.id ? "border-[#d5b05b] opacity-60" : "border-white/10 hover:border-[#d5b05b]/50")}>
+            <div className="flex h-28 w-20 shrink-0 items-center justify-center overflow-hidden bg-black"><iframe title={video.title} src={"https://www.youtube-nocookie.com/embed/" + video.youtubeId + "?autoplay=0&mute=1&controls=0&rel=0"} className="h-full w-full border-0" loading="lazy" /></div>
+            <div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-3"><span className="font-mono text-[10px] text-[#d5b05b]">{String(index + 1).padStart(2, "0")}</span><h3 className="truncate font-display text-sm font-bold uppercase text-white">{video.title}</h3><Badge className="border-white/10 bg-white/5 font-mono text-[9px] text-white/40">{video.youtubeId}</Badge></div><p className="mt-2 line-clamp-1 text-sm text-white/40">{video.description}</p><a href={video.url} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 font-mono text-[9px] uppercase tracking-[.1em] text-[#e8ca84]">Abrir no YouTube <Link2 className="h-3 w-3" /></a></div>
+            <div className="flex items-center gap-2"><span className="hidden text-white/25 sm:inline-flex" title="Arraste para reordenar" aria-label="Arraste para reordenar"><GripVertical className="h-4 w-4" /></span><Button variant="outline" onClick={() => setForm({ ...video })} className="border-white/10 font-mono text-[9px] uppercase tracking-[.08em] text-white/60 hover:border-[#d5b05b] hover:text-[#e8ca84]">Editar</Button><Button variant="outline" onClick={() => move(index, -1)} disabled={index === 0 || reorder.isPending} className="h-9 w-9 border-white/10 p-0 text-white/55 hover:border-[#d5b05b] hover:text-[#e8ca84]" aria-label="Mover para cima"><ArrowUp className="h-4 w-4" /></Button><Button variant="outline" onClick={() => move(index, 1)} disabled={index === data.videos.length - 1 || reorder.isPending} className="h-9 w-9 border-white/10 p-0 text-white/55 hover:border-[#d5b05b] hover:text-[#e8ca84]" aria-label="Mover para baixo"><ArrowDown className="h-4 w-4" /></Button><Button variant="outline" onClick={() => { if (window.confirm("Remover este Short da galeria?")) remove.mutate({ id: video.id }); }} className="h-9 w-9 border-red-300/20 p-0 text-red-300 hover:bg-red-300/10" aria-label="Remover"><Trash2 className="h-4 w-4" /></Button></div>
+          </div>
+        ))}
+      </div>
+      <div className="flex items-start gap-3 border border-white/10 bg-white/[.03] p-4"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#d5b05b]" /><p className="text-xs leading-5 text-white/45">A reprodução automática depende das políticas do navegador e do YouTube. Como os embeds iniciam com <strong className="text-white/70">mute=1</strong>, eles podem iniciar sem interação na maioria dos navegadores; o visitante sempre terá os controles do YouTube como fallback.</p></div>
+    </div>
+  );
 }
 
 function ThriftStoreEditor({ data }: { data: AdminData }) {
