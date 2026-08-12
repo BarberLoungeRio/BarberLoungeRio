@@ -34,3 +34,11 @@
 - [x] Expor no formulário de edição dos Shorts os campos de ordem e ativo, conectados à mutation de atualização
 - [x] Tornar explícito o fallback de autoplay bloqueado com overlay reproduzir, link para o YouTube e controles acessíveis
 - [x] Criar testes Vitest para as mutations admin de conteúdo e Shorts (create, update, delete e reorder)
+
+## Adequação ao layout exato de barber-lounge-rio (4).html
+
+- [ ] Solicitar ou receber o conteúdo do arquivo HTML de referência fornecido pelo usuário
+- [ ] Adaptar a interface pública para incorporar exatamente o CSS, tipografia e estrutura HTML do arquivo de referência
+- [ ] Preservar o Hero com ARTEPARASITE.mp4, os 19 Shorts com autoplay muted, a seção de serviços editáveis e o painel administrativo protegido
+- [ ] Validar visualmente com captura de tela e salvar checkpoint final
+- [ ] Entregar o resultado atualizado ao usuário

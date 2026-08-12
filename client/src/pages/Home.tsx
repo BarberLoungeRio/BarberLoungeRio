@@ -1,112 +1,824 @@
+import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
-import { ArrowUpRight, ChevronDown, Instagram, MapPin, Menu, Phone, Play, Sparkles, X } from "lucide-react";
-import { CSSProperties, useEffect, useMemo, useState } from "react";
+import { Link } from "wouter";
+import { useState, useEffect } from "react";
 
 const heroVideoUrl = "/manus-storage/ARTEPARASITE_6df86b1c.mp4";
 
-function VideoOffIcon() { return <span aria-hidden="true" className="flex h-12 w-12 items-center justify-center rounded-full border border-[#d5b05b]/50 text-[#e8ca84]"><span className="h-4 w-4 border border-[#e8ca84]" /></span>; }
-
-function contentMap(items: Array<{ key: string; value: string }>) {
-  return items.reduce<Record<string, string>>((acc, item) => { acc[item.key] = item.value; return acc; }, {});
-}
-
-function YoutubeShort({ id, title, index }: { id: string; title: string; index: number }) {
-  const [embedFailed, setEmbedFailed] = useState(false);
-  return (
-    <article className="group relative min-w-[min(72vw,270px)] max-w-[270px] snap-start overflow-hidden rounded-[5px] border border-white/10 bg-[#11110f] shadow-2xl shadow-black/30 transition duration-500 hover:-translate-y-2 hover:border-[var(--brand-primary)]/60 sm:min-w-[285px] sm:max-w-[285px]">
-      <div className="relative aspect-[9/16] overflow-hidden bg-black">
-        {embedFailed ? <div className="flex h-full flex-col items-center justify-center gap-5 bg-[#11110f] px-6 text-center"><VideoOffIcon /><span className="font-display text-xs font-bold uppercase tracking-[.12em] text-white">Vídeo indisponível aqui</span><a href={`https://www.youtube.com/shorts/${id}`} target="_blank" rel="noreferrer" className="border border-[var(--brand-primary)] px-4 py-3 font-mono text-[9px] uppercase tracking-[.13em] text-[var(--brand-light)]">Abrir no YouTube</a></div> : <iframe
-          className="h-full w-full border-0"
-          src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=1&playsinline=1&rel=0&modestbranding=1`}
-          title={title}
-          allow="autoplay; encrypted-media; picture-in-picture"
-          loading={index < 4 ? "eager" : "lazy"}
-          referrerPolicy="strict-origin-when-cross-origin"
-          onError={() => setEmbedFailed(true)}
-        />}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/80 to-transparent" />
-        <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-2 rounded-full border border-[var(--brand-light)]/35 bg-black/55 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[.16em] text-[var(--brand-light)] backdrop-blur-md">
-          <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-primary)]" /> Drop {String(index + 1).padStart(2, "0")}
-        </div>
-        <div className="pointer-events-none absolute bottom-4 left-4 right-4 flex items-end justify-between gap-3">
-          <span className="font-display text-[11px] font-semibold uppercase tracking-[.12em] text-white">{title}</span>
-          <a href={`https://www.youtube.com/shorts/${id}`} target="_blank" rel="noreferrer" aria-label={`Abrir ${title} no YouTube`} className="flex h-8 min-w-8 shrink-0 items-center justify-center gap-2 rounded-full border border-white/35 px-2 text-[9px] uppercase tracking-[.08em] text-white/85 transition hover:border-[var(--brand-light)] hover:text-[var(--brand-light)]"><span className="hidden sm:inline">Reproduzir</span><Play className="h-3 w-3 fill-current" /></a>
-        </div>
-      </div>
-    </article>
-  );
-}
-
 export default function Home() {
-  const { data, isLoading, isError } = trpc.site.publicData.useQuery(undefined, { staleTime: 60_000 });
-  const [menuOpen, setMenuOpen] = useState(false);
+  const { data: publicData } = trpc.site.publicData.useQuery();
+  const { user } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const items = useMemo(() => contentMap(data?.content ?? []), [data?.content]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const whatsapp = items.contactWhatsapp || "5521999990000";
-  const whatsappUrl = `https://wa.me/${whatsapp}?text=${encodeURIComponent("Olá! Quero agendar um horário na Barber Lounge Rio.")}`;
-  const instagramUrl = items.instagramUrl || "https://www.instagram.com/barberlounge.rio/";
-  const services = data?.services ?? [];
-  const videos = data?.videos ?? [];
+  // Setup video hover play for Shorts
+  useEffect(() => {
+    const cards = document.querySelectorAll('.service-card');
+    cards.forEach(card => {
+      const videoId = card.getAttribute('data-video-id');
+      const mediaBox = card.querySelector('.service-media-video');
+      if (!videoId || !mediaBox) return;
+
+      const playVideo = () => {
+        if (mediaBox.classList.contains('is-playing')) return;
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&playsinline=1`;
+        iframe.title = 'Vídeo do serviço';
+        iframe.loading = 'lazy';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.setAttribute('allowfullscreen', '');
+        mediaBox.appendChild(iframe);
+        mediaBox.classList.add('is-playing');
+      };
+      const stopVideo = () => {
+        mediaBox.classList.remove('is-playing');
+        const iframe = mediaBox.querySelector('iframe');
+        if (iframe) iframe.remove();
+      };
+
+      card.addEventListener('mouseenter', playVideo);
+      card.addEventListener('mouseleave', stopVideo);
+      card.addEventListener('focusin', playVideo);
+      card.addEventListener('focusout', stopVideo);
+      card.addEventListener('touchstart', () => {
+        mediaBox.classList.contains('is-playing') ? stopVideo() : playVideo();
+      }, { passive: true });
+    });
+  }, [publicData]);
+
+  const videos = publicData?.videos && publicData.videos.length > 0 ? publicData.videos : [
+    { youtubeId: "1TGsTfbgsbU", title: "Drop 01", description: "Alta barbearia e estilo" },
+    { youtubeId: "c6-U-FAEt3E", title: "Drop 02", description: "Curadoria de alfaiataria" },
+    { youtubeId: "fiXUh-b76Lk", title: "Drop 03", description: "Detalhes e acabamento" },
+    { youtubeId: "JipFZMgKgHQ", title: "Drop 04", description: "Estilo e atitude" },
+    { youtubeId: "nOITaX2u79o", title: "Drop 05", description: "Ambiente exclusivo" },
+    { youtubeId: "gcFVNQKX8Gk", title: "Drop 06", description: "Barboterapia e ritual" },
+    { youtubeId: "LQUYKXlnsLI", title: "Drop 07", description: "Moda circular e luxo" },
+    { youtubeId: "hnAhD8P8IxI", title: "Drop 08", description: "Corte clássico" },
+    { youtubeId: "XjfYioTB7HA", title: "Drop 09", description: "Estética masculina" },
+    { youtubeId: "NgzDIHcA-oE", title: "Drop 10", description: "Atendimento premium" },
+    { youtubeId: "KAiZ7Ll6NmU", title: "Drop 11", description: "Curadoria de marca" },
+    { youtubeId: "mWhpD4Z7uqE", title: "Drop 12", description: "Tradição e inovação" },
+    { youtubeId: "_tCt_8YqYmg", title: "Drop 13", description: "Detalhes que marcam" },
+    { youtubeId: "ntDdpmPZQS0", title: "Drop 14", description: "Estilo no Centro do Rio" },
+    { youtubeId: "-d4z5irKhTM", title: "Drop 15", description: "Experiência completa" },
+    { youtubeId: "4OGPcp3Qg18", title: "Drop 16", description: "Cuidado e bem-estar" },
+    { youtubeId: "dGZa7-7-hzk", title: "Drop 17", description: "Excelência autoral" },
+    { youtubeId: "LH6LdE2kO_8", title: "Drop 18", description: "Tradição moderna" },
+    { youtubeId: "NrSqWZ3Mtbk", title: "Drop 19", description: "Exclusividade Barber Lounge" },
+  ];
 
   return (
-    <div style={{ "--brand-primary": items.brandPrimary || "#d5b05b", "--brand-light": items.brandLight || "#e8ca84" } as CSSProperties} className="min-h-screen overflow-hidden bg-[#070707] text-[#f7f4ed]">
-      <header className={`fixed inset-x-0 top-0 z-50 border-b transition duration-500 ${scrolled ? "border-white/10 bg-[#070707]/90 shadow-2xl shadow-black/30 backdrop-blur-xl" : "border-transparent bg-transparent"}`}>
-        <div className="mx-auto flex h-[76px] max-w-[1400px] items-center justify-between px-6 lg:px-12">
-          <a href="#top" className="group flex items-center gap-3" aria-label="Barber Lounge Rio, início">
-            <span className="flex h-9 w-9 items-center justify-center border border-[var(--brand-primary)]/70 text-[var(--brand-light)] transition group-hover:bg-[var(--brand-primary)] group-hover:text-black"><Sparkles className="h-4 w-4" /></span>
-            <span className="flex flex-col"><strong className="font-display text-[12px] font-extrabold uppercase tracking-[.16em]">Barber Lounge</strong><span className="font-mono text-[8px] uppercase tracking-[.22em] text-[var(--brand-primary)]">Rio · Alta Barbearia</span></span>
+    <>
+      <style>{`
+        :root{
+          --bg:#000000;
+          --panel:#0d0d0d;
+          --panel-2:#141414;
+          --line:#262626;
+          --gold:#d4af37;
+          --gold-light:#f3e5ab;
+          --ivory:#ffffff;
+          --muted:#a1a1aa;
+          --muted-2:#6b6b70;
+          --wa:#25d366;
+          --maxw:1280px;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        html{scroll-behavior:smooth;}
+        body{
+          background:var(--bg);
+          color:var(--ivory);
+          font-family:'Inter',sans-serif;
+          font-weight:400;
+          line-height:1.6;
+          -webkit-font-smoothing:antialiased;
+          overflow-x:hidden;
+        }
+        a{color:inherit;text-decoration:none;}
+        img{display:block;max-width:100%;}
+        ul{list-style:none;}
+        button{font:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+        :focus-visible{outline:2px solid var(--gold-light);outline-offset:3px;}
+
+        .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+
+        h1,h2,h3,h4,.display{
+          font-family:'Montserrat',sans-serif;
+          font-weight:800;
+          letter-spacing:0.01em;
+          color:var(--ivory);
+        }
+        .eyebrow{
+          font-family:'Montserrat',sans-serif;
+          font-weight:700;
+          font-size:12px;
+          letter-spacing:0.28em;
+          text-transform:uppercase;
+          color:var(--gold-light);
+          display:flex;
+          align-items:center;
+          gap:12px;
+          justify-content:center;
+        }
+        .eyebrow::before{
+          content:"";
+          width:26px;height:1px;
+          background:var(--gold);
+          display:inline-block;
+        }
+
+        header{
+          position:fixed;top:0;left:0;right:0;
+          z-index:100;
+          background:rgba(0,0,0,0.6);
+          backdrop-filter:blur(14px) saturate(140%);
+          -webkit-backdrop-filter:blur(14px) saturate(140%);
+          border-bottom:1px solid rgba(212,175,55,0.2);
+          transition:background .3s ease;
+        }
+        header .wrap{
+          display:flex;align-items:center;justify-content:space-between;
+          height:80px;
+        }
+        .logo{display:flex;align-items:center;gap:12px;}
+        .logo img{height:40px;width:auto;}
+        .logo .logo-type{
+          display:flex;flex-direction:column;line-height:1.15;
+        }
+        .logo .logo-type strong{
+          font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;
+          letter-spacing:0.08em;text-transform:uppercase;color:var(--ivory);
+        }
+        .logo .logo-type span{
+          font-family:'Inter',sans-serif;font-size:9px;letter-spacing:0.24em;
+          text-transform:uppercase;color:var(--gold-light);
+        }
+
+        nav.main-nav{display:flex;align-items:center;gap:32px;}
+        nav.main-nav ul{display:flex;gap:24px;}
+        nav.main-nav a{
+          font-size:12.5px;font-weight:500;letter-spacing:0.04em;
+          color:var(--muted);position:relative;padding:6px 0;
+          transition:color .25s ease;
+        }
+        nav.main-nav a:hover{color:var(--ivory);}
+        nav.main-nav a::after{
+          content:"";position:absolute;left:0;bottom:0;
+          width:0;height:1px;background:var(--gold-light);
+          transition:width .25s ease;
+        }
+        nav.main-nav a:hover::after{width:100%;}
+
+        .btn{
+          display:inline-flex;align-items:center;justify-content:center;gap:8px;
+          font-family:'Montserrat',sans-serif;font-weight:700;font-size:12.5px;
+          letter-spacing:0.08em;text-transform:uppercase;
+          padding:14px 26px;border-radius:4px;white-space:nowrap;
+          transition:transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease, border-color .25s ease;
+        }
+        .btn-gold{background-color:var(--gold);color:var(--bg);border:2px solid var(--gold);}
+        .btn-gold:hover{background-color:var(--gold-light);border-color:var(--gold-light);transform:scale(1.05);}
+        .btn-outline{background-color:transparent;color:var(--gold);border:1.5px solid var(--gold);}
+        .btn-outline:hover{background-color:var(--gold);color:var(--bg);transform:translateY(-2px);}
+        .btn-ghost{border:1px solid rgba(255,255,255,0.28);color:var(--ivory);background:transparent;}
+        .btn-ghost:hover{border-color:var(--gold-light);color:var(--gold-light);}
+        .btn-sm{padding:10px 18px;font-size:10.5px;}
+
+        .burger{display:none;width:32px;height:22px;position:relative;flex-direction:column;justify-content:space-between;}
+        .burger span{display:block;height:1px;width:100%;background:var(--ivory);}
+
+        .mobile-nav{
+          position:fixed;inset:0;top:80px;
+          background:rgba(0,0,0,0.98);backdrop-filter:blur(10px);
+          z-index:99;transform:translateX(100%);transition:transform .35s ease;
+          padding:40px 28px;display:flex;flex-direction:column;gap:6px;
+        }
+        .mobile-nav.open{transform:translateX(0);}
+        .mobile-nav a{
+          font-family:'Montserrat',sans-serif;font-weight:700;font-size:20px;
+          padding:16px 0;border-bottom:1px solid var(--line);color:var(--ivory);
+        }
+        .mobile-nav .btn{margin-top:26px;}
+
+        .hero{
+          position:relative;
+          min-height:100vh;
+          background:#000000;
+          display:flex;flex-direction:column;align-items:center;justify-content:center;
+          text-align:center;
+          padding:150px 24px 90px;
+          overflow:hidden;
+        }
+        .hero-bg-video{
+          position:absolute;inset:0;
+          z-index:0;
+          overflow:hidden;
+        }
+        .hero-bg-video video{
+          position:absolute;top:50%;left:50%;
+          width:100%;height:100%;
+          object-fit:cover;
+          object-position:center;
+          transform:translate(-50%,-50%);
+          display:block;
+        }
+        .hero-bg-overlay{
+          position:absolute;inset:0;
+          background:linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.8) 85%, rgba(0,0,0,0.95) 100%);
+        }
+        .hero::before{
+          content:"";position:absolute;inset:0;
+          background-image:radial-gradient(rgba(212,175,55,0.35) 1px, transparent 1px);
+          background-size:34px 34px;
+          opacity:0.1;
+          pointer-events:none;
+          z-index:1;
+        }
+        .hero-tag{
+          position:relative;z-index:2;
+          display:inline-flex;align-items:center;gap:10px;
+          font-family:'Montserrat',sans-serif;font-weight:600;font-size:11px;
+          letter-spacing:0.18em;text-transform:uppercase;color:var(--gold-light);
+          border:1px solid rgba(212,175,55,0.4);
+          padding:8px 16px;border-radius:100px;
+          margin-bottom:28px;
+        }
+        .hero-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--wa);box-shadow:0 0 0 3px rgba(37,211,102,0.2);}
+        .hero h1{
+          position:relative;z-index:2;
+          font-size:clamp(30px, 5vw, 52px);
+          line-height:1.15;
+          max-width:760px;
+          margin:36px auto 18px;
+          color:var(--gold);
+          text-transform:uppercase;
+          letter-spacing:1.5px;
+        }
+        .hero h1 span{color:var(--gold-light);}
+        .hero p.sub{
+          position:relative;z-index:2;
+          font-size:clamp(15px,1.6vw,18px);
+          color:var(--muted);
+          max-width:520px;
+          margin:0 auto 38px;
+        }
+        .hero-ctas{position:relative;z-index:2;display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:56px;}
+        .hero-meta{
+          position:relative;z-index:2;
+          display:flex;flex-wrap:wrap;justify-content:center;gap:36px;
+          border-top:1px solid rgba(255,255,255,0.12);
+          padding-top:26px;max-width:760px;
+        }
+        .hero-meta div{display:flex;flex-direction:column;align-items:center;gap:4px;}
+        .hero-meta .num{font-family:'Montserrat',sans-serif;font-weight:800;font-size:19px;color:var(--gold-light);}
+        .hero-meta .label{font-size:11px;letter-spacing:0.06em;color:var(--muted-2);text-transform:uppercase;}
+        .scroll-cue{
+          position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+          display:flex;flex-direction:column;align-items:center;gap:8px;
+          color:var(--muted-2);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+          z-index:2;
+        }
+        .scroll-cue .line{width:1px;height:34px;background:linear-gradient(var(--gold),transparent);animation:scrollcue 1.8s ease-in-out infinite;}
+        @keyframes scrollcue{0%{opacity:0;transform:scaleY(0.4);}50%{opacity:1;transform:scaleY(1);}100%{opacity:0;transform:scaleY(0.4);}}
+
+        section{position:relative;}
+        .section-pad{padding:110px 0;}
+        .section-head{max-width:660px;margin:0 auto 56px;text-align:center;}
+        .section-head h2{
+          font-size:clamp(28px,3.6vw,42px);margin-top:16px;line-height:1.18;
+          color:var(--gold);text-transform:uppercase;letter-spacing:1px;
+        }
+        .section-head p{color:var(--muted);margin:16px auto 0;font-size:15.5px;max-width:540px;}
+        .section-cta{display:flex;justify-content:center;margin-top:48px;}
+
+        .values{background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+        .values .wrap{padding:70px 28px;}
+        .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;text-align:center;}
+        .value-item .num{
+          font-family:'Montserrat',sans-serif;font-weight:900;font-size:13px;
+          color:var(--gold);letter-spacing:0.2em;margin-bottom:14px;display:block;
+        }
+        .value-item h3{font-size:19px;margin-bottom:10px;}
+        .value-item p{color:var(--muted);font-size:14px;max-width:280px;margin:0 auto;}
+
+        .services{background:var(--panel);}
+        .services-grid{
+          display:grid;
+          grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+          gap:22px;
+        }
+        .service-card{
+          background:var(--panel-2);border:1px solid var(--line);border-radius:10px;
+          overflow:hidden;display:flex;flex-direction:column;
+          transition:transform .3s ease, border-color .3s ease;
+        }
+        .service-card:hover{transform:translateY(-6px);border-color:rgba(212,175,55,0.55);}
+
+        .service-media-video{
+          position:relative;
+          aspect-ratio:9/16;
+          overflow:hidden;
+          background:#000;
+          cursor:pointer;
+        }
+        .service-thumb{
+          width:100%;height:100%;
+          object-fit:cover;display:block;
+          transition:transform .4s ease, opacity .3s ease;
+        }
+        .service-card:hover .service-thumb{transform:scale(1.05);}
+        .service-media-video iframe{
+          position:absolute;top:0;left:0;
+          width:100%;height:100%;
+          border:0;display:block;
+          opacity:0;pointer-events:none;
+          transition:opacity .3s ease;
+        }
+        .service-media-video.is-playing iframe{opacity:1;}
+        .service-media-video.is-playing .service-thumb{opacity:0;}
+        .service-play-hint{
+          position:absolute;bottom:12px;left:12px;right:12px;
+          display:flex;align-items:center;gap:6px;
+          font-family:'Montserrat',sans-serif;font-weight:700;font-size:9.5px;
+          letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);
+          opacity:0;transition:opacity .25s ease;
+          pointer-events:none;
+        }
+        .service-card:hover .service-play-hint{opacity:0.85;}
+        .service-media-video.is-playing .service-play-hint{opacity:0;}
+
+        .thrift{background:var(--bg);}
+        .thrift-marquee{
+          overflow:hidden;
+          -webkit-mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+          mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+        }
+        .thrift-track{
+          display:flex;
+          gap:20px;
+          width:max-content;
+          animation:thriftScroll 38s linear infinite;
+        }
+        .thrift-track:hover{animation-play-state:paused;}
+        @keyframes thriftScroll{
+          0%{transform:translateX(0);}
+          100%{transform:translateX(-50%);}
+        }
+        .thrift-item{
+          position:relative;
+          flex:0 0 auto;
+          width:240px;
+          aspect-ratio:4/5;
+          border-radius:10px;
+          overflow:hidden;
+          background:#000;
+          border:1px solid var(--line);
+        }
+        .thrift-item img{
+          width:100%;height:100%;
+          object-fit:cover;display:block;
+        }
+
+        .instagram{background:var(--panel);}
+        .insta-grid{
+          display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+          gap:6px;
+        }
+        .insta-item{
+          position:relative;aspect-ratio:1/1;overflow:hidden;background:#000;
+        }
+        .insta-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
+        .insta-item:hover img{transform:scale(1.1);}
+        .insta-overlay{
+          position:absolute;inset:0;background:rgba(0,0,0,0.55);
+          display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;
+          opacity:0;transition:opacity .3s ease;
+        }
+        .insta-item:hover .insta-overlay{opacity:1;}
+        .insta-overlay svg{width:26px;height:26px;fill:var(--gold-light);}
+        .insta-overlay span{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ivory);}
+
+        .reviews{background:var(--bg);}
+        .reviews-top{display:flex;flex-direction:column;align-items:center;text-align:center;gap:30px;margin-bottom:56px;}
+        .rating-card{
+          display:flex;align-items:center;gap:22px;
+          background:var(--panel);border:1px solid var(--line);
+          padding:22px 28px;border-radius:4px;flex-shrink:0;margin:0 auto;
+        }
+        .rating-card .score{font-family:'Montserrat',sans-serif;font-weight:900;font-size:40px;color:var(--gold-light);line-height:1;}
+        .rating-card .details{display:flex;flex-direction:column;gap:6px;}
+        .stars{color:var(--gold-light);font-size:16px;letter-spacing:2px;}
+        .rating-card .count{font-size:12.5px;color:var(--muted);}
+        .google-badge{display:flex;align-items:center;gap:8px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.05em;color:var(--muted);}
+        .google-badge svg{width:16px;height:16px;}
+        .reviews-track{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+        .review-card{
+          background:var(--panel);border:1px solid var(--line);padding:28px 26px;border-radius:4px;
+          display:flex;flex-direction:column;gap:16px;transition:border-color .25s ease,transform .25s ease;
+        }
+        .review-card:hover{border-color:rgba(212,175,55,0.5);transform:translateY(-3px);}
+        .review-head{display:flex;align-items:center;gap:12px;}
+        .review-avatar{
+          width:42px;height:42px;border-radius:50%;
+          background:linear-gradient(135deg,var(--gold-light),var(--gold));
+          display:flex;align-items:center;justify-content:center;
+          font-family:'Montserrat',sans-serif;font-weight:800;font-size:14px;color:#171410;flex-shrink:0;
+        }
+        .review-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:var(--ivory);}
+        .review-date{font-size:11.5px;color:var(--muted-2);}
+        .review-card .stars{font-size:14px;}
+        .review-text{font-size:13.8px;color:var(--muted);line-height:1.65;}
+        .review-source{font-size:11px;color:var(--muted-2);display:flex;align-items:center;gap:6px;margin-top:auto;}
+        .reviews-note{margin-top:26px;font-size:12px;color:var(--muted-2);border-top:1px solid var(--line);padding-top:18px;text-align:center;}
+        .reviews-cta{margin-top:36px;display:flex;justify-content:center;}
+
+        .cta-band{
+          background:linear-gradient(120deg, #17140f, #0a0a0a 60%);
+          border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+          padding:80px 0;text-align:center;
+        }
+        .cta-band h2{font-size:clamp(26px,3.4vw,40px);margin-bottom:18px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;}
+        .cta-band p{color:var(--muted);max-width:520px;margin:0 auto 36px;}
+
+        footer{background:var(--bg);padding:100px 0 0;}
+        .footer-top{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:60px;padding-bottom:70px;border-bottom:1px solid var(--line);}
+        .footer-brand .logo{margin-bottom:20px;}
+        .footer-brand p{color:var(--muted);font-size:14px;max-width:300px;margin-bottom:26px;}
+        .footer-socials{display:flex;gap:12px;}
+        .footer-socials a{
+          width:42px;height:42px;border:1px solid var(--line);border-radius:50%;
+          display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--ivory);
+          transition:border-color .25s ease,color .25s ease,transform .25s ease;
+        }
+        .footer-socials a:hover{border-color:var(--gold-light);color:var(--gold-light);transform:translateY(-3px);}
+        .footer-col h5{
+          font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.14em;
+          text-transform:uppercase;color:var(--gold-light);margin-bottom:22px;
+        }
+        .footer-col p, .footer-col a{display:block;color:var(--muted);font-size:14.5px;margin-bottom:12px;}
+        .footer-col a:hover{color:var(--ivory);}
+        .footer-col strong{color:var(--ivory);font-weight:600;}
+        .map-block{
+          margin-top:0;height:340px;border-top:1px solid var(--line);position:relative;
+          filter:grayscale(1) contrast(1.15) brightness(0.7);transition:filter .4s ease;
+        }
+        .map-block:hover{filter:grayscale(0.2) contrast(1.05) brightness(0.85);}
+        .map-block iframe{width:100%;height:100%;border:0;display:block;}
+        .footer-bottom{
+          display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+          padding:26px 0;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted-2);
+        }
+        .footer-bottom a{color:var(--muted-2);}
+        .footer-bottom a:hover{color:var(--gold-light);}
+
+        .wa-float{
+          position:fixed;bottom:30px;right:30px;z-index:1000;
+          width:60px;height:60px;border-radius:50%;
+          background-color:var(--wa);display:flex;align-items:center;justify-content:center;
+          box-shadow:0 4px 15px rgba(0,0,0,0.5);transition:transform 0.3s ease;
+        }
+        .wa-float:hover{transform:scale(1.1);}
+        .wa-float svg{width:28px;height:28px;fill:#fff;}
+
+        @media (max-width:980px){
+          nav.main-nav ul{gap:20px;}
+          .values-grid{grid-template-columns:1fr;gap:36px;}
+          .footer-top{grid-template-columns:1fr;gap:44px;}
+          .reviews-track{grid-template-columns:1fr 1fr;}
+        }
+        @media (max-width:840px){
+          nav.main-nav ul{display:none;}
+          .burger{display:flex;}
+          .header-cta-desktop{display:none;}
+        }
+        @media (max-width:600px){
+          .wrap{padding:0 20px;}
+          .section-pad{padding:80px 0;}
+          .hero{padding:130px 20px 70px;}
+          .hero-ctas{flex-direction:column;align-items:stretch;width:100%;}
+          .hero-ctas .btn{width:100%;}
+          .reviews-track{grid-template-columns:1fr;}
+          .thrift-item{width:190px;}
+          .services-grid{grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));gap:14px;}
+        }
+      `}</style>
+
+      <header id="site-header" style={{ background: scrolled ? 'rgba(0,0,0,0.9)' : 'rgba(0,0,0,0.6)' }}>
+        <div className="wrap">
+          <a href="#top" className="logo">
+            <img src="https://barberloungerio.lovable.app/__l5e/assets-v1/b7947c7d-fabf-4480-ab24-10be1a227fb7/barber-lounge-logo.png" alt="Barber Lounge Rio" />
+            <span className="logo-type"><strong>Barber Lounge</strong><span>Rio · Centro</span></span>
           </a>
-          <nav className="hidden items-center gap-8 lg:flex">
-            {[['Serviços','#servicos'], ['Drops TV','#drops'], ['Instagram','#instagram'], ['Contato','#contato']].map(([label, href]) => <a key={href} href={href} className="font-mono text-[10px] uppercase tracking-[.15em] text-white/60 transition hover:text-[var(--brand-light)]">{label}</a>)}
-            <a href={whatsappUrl} target="_blank" rel="noreferrer" className="rounded-sm bg-[var(--brand-primary)] px-5 py-3 font-display text-[10px] font-bold uppercase tracking-[.12em] text-black transition hover:bg-[#f0d894]">Agendar horário</a>
+          <nav className="main-nav">
+            <ul>
+              <li><a href="#top">Início</a></li>
+              <li><a href="#servicos">Drops TV</a></li>
+              <li><a href="#thrift">Thrift Store</a></li>
+              <li><a href="#instagram">Instagram</a></li>
+              <li><a href="#avaliacoes">Avaliações</a></li>
+              <li><a href="#contato">Contato</a></li>
+              {user?.role === 'admin' && (
+                <li><Link href="/admin" style={{ color: 'var(--gold-light)' }}>Painel Admin</Link></li>
+              )}
+            </ul>
+            <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" className="btn btn-outline header-cta-desktop">Agendar Horário</a>
           </nav>
-          <button onClick={() => setMenuOpen(!menuOpen)} className="flex h-10 w-10 items-center justify-center border border-white/15 lg:hidden" aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}>{menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}</button>
+          <button className="burger" id="burgerBtn" aria-label="Abrir menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>
+            <span></span><span></span><span></span>
+          </button>
         </div>
-        {menuOpen && <div className="border-t border-white/10 bg-[#070707]/95 px-6 py-5 backdrop-blur-xl lg:hidden">{[['Serviços','#servicos'], ['Drops TV','#drops'], ['Instagram','#instagram'], ['Contato','#contato']].map(([label, href]) => <a onClick={() => setMenuOpen(false)} key={href} href={href} className="block border-b border-white/10 py-3 font-mono text-[11px] uppercase tracking-[.15em] text-white/75">{label}</a>)}<a href={whatsappUrl} target="_blank" rel="noreferrer" className="mt-5 block bg-[var(--brand-primary)] px-5 py-3 text-center font-display text-[10px] font-bold uppercase tracking-[.12em] text-black">Agendar horário</a></div>}
+        <div className={`mobile-nav ${mobileOpen ? 'open' : ''}`} id="mobileNav">
+          <a href="#top" onClick={() => setMobileOpen(false)}>Início</a>
+          <a href="#servicos" onClick={() => setMobileOpen(false)}>Drops TV</a>
+          <a href="#thrift" onClick={() => setMobileOpen(false)}>Thrift Store</a>
+          <a href="#instagram" onClick={() => setMobileOpen(false)}>Instagram</a>
+          <a href="#avaliacoes" onClick={() => setMobileOpen(false)}>Avaliações</a>
+          <a href="#contato" onClick={() => setMobileOpen(false)}>Contato</a>
+          {user?.role === 'admin' && (
+            <Link href="/admin" onClick={() => setMobileOpen(false)} style={{ color: 'var(--gold-light)', fontFamily: 'Montserrat', fontWeight: 700, fontSize: '20px', padding: '16px 0', borderBottom: '1px solid var(--line)' }}>Painel Admin</Link>
+          )}
+          <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" className="btn btn-outline">Agendar Horário</a>
+        </div>
       </header>
 
       <main id="top">
-        <section className="noise relative flex min-h-[880px] items-center justify-center overflow-hidden px-6 pb-24 pt-32 sm:min-h-screen">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center_top,#20201d_0%,#070707_55%,#070707_100%)]" />
-          <div className="absolute left-1/2 top-[12%] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-[var(--brand-primary)]/[.06] blur-[110px]" />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_49.9%,rgba(213,176,91,.08)_50%,transparent_50.1%)] opacity-40" />
-          <div className="relative z-10 mx-auto grid w-full max-w-[1200px] items-center gap-14 lg:grid-cols-[1fr_390px_1fr] lg:gap-10">
-            <div className="order-2 text-center lg:order-1 lg:text-left">
-              <span className="section-eyebrow">{items.heroEyebrow || "Barber Lounge Rio · Alta Barbearia"}</span>
-              <h1 className="mt-6 max-w-xl font-display text-4xl font-extrabold uppercase leading-[.98] tracking-[-.04em] text-white sm:text-6xl lg:text-[62px]">{items.heroTitle || "Mais que um corte,"}<br /><span className="gold-gradient">{items.heroTitleAccent || "um conceito."}</span></h1>
-              <p className="mx-auto mt-7 max-w-md text-sm leading-7 text-white/55 lg:mx-0">{items.heroDescription || "Alta barbearia, cultura e curadoria de estilo no coração do Rio de Janeiro."}</p>
-              <div className="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start"><a href={whatsappUrl} target="_blank" rel="noreferrer" className="group flex items-center gap-3 bg-[var(--brand-primary)] px-6 py-4 font-display text-[10px] font-bold uppercase tracking-[.13em] text-black transition hover:bg-[#f0d894]">{items.heroCta || "Agendar horário"}<ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-1 group-hover:-translate-y-1" /></a><a href="#servicos" className="border border-white/20 px-6 py-4 font-display text-[10px] font-bold uppercase tracking-[.13em] text-white/80 transition hover:border-[var(--brand-primary)] hover:text-[var(--brand-light)]">{items.heroSecondaryCta || "Conhecer a experiência"}</a></div>
-            </div>
-            <div className="order-1 mx-auto w-full max-w-[340px] lg:order-2">
-              <div className="relative aspect-[9/16] overflow-hidden rounded-[3px] border border-[var(--brand-primary)]/60 bg-black shadow-[0_0_0_8px_rgba(213,176,91,.05),0_30px_90px_rgba(0,0,0,.8),0_0_90px_rgba(213,176,91,.13)]">
-                <video className="h-full w-full object-cover" autoPlay muted loop playsInline preload="metadata" poster="/manus-storage/arteposter_e7b7faed.jpg"><source src={heroVideoUrl} type="video/mp4" /></video>
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/10" /><div className="absolute bottom-5 left-5 right-5 flex items-end justify-between"><span className="font-mono text-[9px] uppercase tracking-[.17em] text-[var(--brand-light)]">The art of the cut</span><span className="h-2 w-2 animate-pulse rounded-full bg-[var(--brand-primary)]" /></div>
-              </div>
-            </div>
-            <div className="order-3 hidden justify-end lg:flex"><div className="space-y-8 border-l border-white/15 pl-8">{[[items.heroMetaOneNumber || "01", items.heroMetaOneLabel || "Experiência autoral"], [items.heroMetaTwoNumber || "03", items.heroMetaTwoLabel || "Frentes de estilo"], [items.heroMetaThreeNumber || "RJ", items.heroMetaThreeLabel || "Centro do Rio"]].map(([number,label]) => <div key={label}><strong className="font-display text-2xl text-[var(--brand-light)]">{number}</strong><span className="mt-1 block font-mono text-[9px] uppercase tracking-[.12em] text-white/40">{label}</span></div>)}</div></div>
+        {/* HERO */}
+        <section className="hero">
+          <div className="hero-bg-video">
+            <video autoPlay muted loop playsInline preload="auto" aria-hidden="true">
+              <source src={heroVideoUrl} type="video/mp4" />
+            </video>
+            <div className="hero-bg-overlay"></div>
           </div>
-          <a href="#manifesto" className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3 font-mono text-[8px] uppercase tracking-[.22em] text-white/35"><span>Explore</span><ChevronDown className="h-4 w-4 animate-bounce text-[var(--brand-primary)]" /></a>
+
+          <span className="hero-tag"><span className="dot"></span> Centro do Rio · Seg a Sex, 06:30 às 15:00</span>
+
+          <h1>Mais que um corte, <span>um conceito.</span></h1>
+          <p className="sub">A união da curadoria de estilo com a precisão da alta barbearia. Autenticidade, luxo e atitude em um único lugar, no coração do Centro do Rio.</p>
+
+          <div className="hero-ctas">
+            <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" className="btn btn-gold">Agendar Exclusividade</a>
+            <a href="#thrift" className="btn btn-ghost">Explorar Luxury Thrift Store</a>
+          </div>
+
+          <div className="hero-meta">
+            <div><span className="num">4,9 ★</span><span className="label">Avaliação no Google</span></div>
+            <div><span className="num">Centro</span><span className="label">Av. Churchill, RJ</span></div>
+          </div>
+
+          <div className="scroll-cue"><span>Role</span><span className="line"></span></div>
         </section>
 
-        <section id="manifesto" className="border-y border-white/10 bg-[#0d0d0c] px-6 py-20 lg:py-24"><div className="mx-auto grid max-w-[1120px] gap-12 md:grid-cols-3">{[['01','Precisão','Cada detalhe tem intenção.'],['02','Presença','Você entra para cortar. Sai para viver.'],['03','Cultura','Uma casa feita de referências.']].map(([number,title,copy]) => <div key={number} className="text-center md:text-left"><span className="font-mono text-[10px] tracking-[.2em] text-[var(--brand-primary)]">{number}</span><h2 className="mt-4 font-display text-xl font-bold uppercase tracking-tight text-white">{title}</h2><p className="mt-3 text-sm leading-6 text-white/45">{copy}</p></div>)}</div></section>
+        {/* VALORES */}
+        <section className="values">
+          <div className="wrap">
+            <div className="section-head" style={{ marginBottom: '44px' }}>
+              <span className="eyebrow">O Conceito</span>
+              <h2>Bem-vindo à experiência Barber Lounge Rio</h2>
+              <p>Cada detalhe foi desenhado para proporcionar relaxamento e estilo — do corte impecável ao cuidado com a barba, tudo com o padrão de excelência que define a alta barbearia.</p>
+            </div>
+            <div className="values-grid">
+              <div className="value-item">
+                <span className="num">01</span>
+                <h3>Precisão</h3>
+                <p>Barbeiros especialistas em cortes clássicos e contemporâneos, adaptados ao seu estilo pessoal.</p>
+              </div>
+              <div className="value-item">
+                <span className="num">02</span>
+                <h3>Luxo</h3>
+                <p>Um ambiente sofisticado no coração do Centro do Rio, pensado para o homem exigente.</p>
+              </div>
+              <div className="value-item">
+                <span className="num">03</span>
+                <h3>Atitude</h3>
+                <p>Curadoria de estilo, cuidado e bem-estar reunidos em uma experiência única de alta barbearia.</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <section id="servicos" className="relative bg-[#11110f] px-6 py-24 lg:py-32"><div className="mx-auto max-w-[1200px]"><div className="mx-auto max-w-2xl text-center"><span className="section-eyebrow">{items.servicesEyebrow || "Ritual de cuidado"}</span><h2 className="mt-5 font-display text-3xl font-extrabold uppercase tracking-[-.03em] text-white sm:text-5xl">{items.servicesTitle || "Seu estilo, elevado."}</h2><p className="mt-5 text-sm leading-7 text-white/45">{items.servicesDescription || "Técnica precisa, atendimento próximo e uma experiência criada nos mínimos detalhes."}</p></div><div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">{isLoading ? [1,2,3].map((item) => <div key={item} className="h-[430px] animate-pulse bg-white/5" />) : services.map((service) => <article key={service.id} className="group overflow-hidden border border-white/10 bg-[#171715] transition duration-500 hover:-translate-y-2 hover:border-[var(--brand-primary)]/60"><div className="relative aspect-[4/3] overflow-hidden"><img src={service.imageUrl} alt={service.title} className="h-full w-full object-cover opacity-75 transition duration-700 group-hover:scale-105 group-hover:opacity-100" /><div className="absolute inset-0 bg-gradient-to-t from-[#171715] via-transparent to-transparent" /><span className="absolute left-4 top-4 border border-[var(--brand-light)]/40 bg-black/50 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[.15em] text-[var(--brand-light)] backdrop-blur">{service.tag}</span></div><div className="p-6"><h3 className="font-display text-lg font-bold uppercase tracking-tight text-white">{service.title}</h3><p className="mt-3 min-h-[48px] text-sm leading-6 text-white/45">{service.description}</p><div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4"><span className="font-mono text-[11px] uppercase tracking-[.1em] text-[var(--brand-light)]">{service.price}</span><a href={whatsappUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1 font-mono text-[9px] uppercase tracking-[.13em] text-white/60 transition hover:text-[var(--brand-light)]">Reservar <ArrowUpRight className="h-3.5 w-3.5" /></a></div></div></article>)}</div><p className="mx-auto mt-10 max-w-md text-center font-mono text-[10px] uppercase tracking-[.12em] text-white/30">{items.servicesNote || "Valores sob consulta. Fale com a equipe para montar seu ritual."}</p></div></section>
+        {/* SERVIÇOS — DROPS TV (19 VÍDEOS VERTICAIS) */}
+        <section className="services section-pad" id="servicos">
+          <div className="wrap">
+            <div className="section-head">
+              <span className="eyebrow">Nossos Serviços · Drops TV</span>
+              <h2>Alta barbearia em cada detalhe</h2>
+              <p>Passe o cursor sobre um vídeo para assistir — cada card traz um clipe vertical no estilo Shorts/Reels.</p>
+            </div>
 
-        <section id="drops" className="bg-[#070707] px-6 py-24 lg:py-32"><div className="mx-auto max-w-[1200px]"><div className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><div className="max-w-xl"><span className="section-eyebrow">{items.shortsEyebrow || "Drops TV"}</span><h2 className="mt-5 font-display text-3xl font-extrabold uppercase tracking-[-.03em] text-white sm:text-5xl">{items.shortsTitle || "A cultura em movimento."}</h2><p className="mt-5 text-sm leading-7 text-white/45">{items.shortsDescription || "Cortes, conversas e referências que traduzem o espírito Barber Lounge Rio."}</p></div><div className="flex items-center gap-3 font-mono text-[9px] uppercase tracking-[.16em] text-white/35"><span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-primary)]" /> Autoplay · muted</div></div><div className="mt-12 flex snap-x gap-5 overflow-x-auto pb-6 [scrollbar-color:var(--brand-primary)_#181816]">{videos.length > 0 ? videos.map((video, index) => <YoutubeShort key={video.id} id={video.youtubeId} title={video.title} index={index} />) : <div className="w-full border border-dashed border-white/15 p-12 text-center text-sm text-white/45">Os Drops TV serão carregados em instantes.</div>}</div></div></section>
+            <div className="services-grid">
+              {videos.map((vid: any, idx: number) => (
+                <div key={vid.id || vid.youtubeId || idx} className="service-card" data-video-id={vid.youtubeId}>
+                  <div className="service-media-video" tabIndex={0}>
+                    <img className="service-thumb" src={`https://i.ytimg.com/vi/${vid.youtubeId}/hqdefault.jpg`} alt={vid.title || `Vídeo ${idx + 1}`} loading="lazy" />
+                    <span className="service-play-hint">▶ Passe o mouse</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-        <section id="instagram" className="border-y border-white/10 bg-[#11110f] px-6 py-24 lg:py-32"><div className="mx-auto grid max-w-[1120px] items-center gap-12 lg:grid-cols-[.9fr_1.1fr]"><div><span className="section-eyebrow">{items.instagramEyebrow || "Do nosso feed"}</span><h2 className="mt-5 font-display text-3xl font-extrabold uppercase tracking-[-.03em] text-white sm:text-5xl">{items.instagramTitle || "Acompanhe o movimento."}</h2><p className="mt-5 max-w-md text-sm leading-7 text-white/45">{items.instagramDescription || "Bastidores, cortes e drops direto da nossa cadeira para a sua tela."}</p><a href={instagramUrl} target="_blank" rel="noreferrer" className="mt-8 inline-flex items-center gap-3 border border-[var(--brand-primary)] px-6 py-4 font-display text-[10px] font-bold uppercase tracking-[.13em] text-[var(--brand-light)] transition hover:bg-[var(--brand-primary)] hover:text-black"><Instagram className="h-4 w-4" /> {items.instagramUsername || "@barberlounge.rio"}<ArrowUpRight className="h-4 w-4" /></a></div><div className="relative min-h-[420px] overflow-hidden border border-white/10 bg-black shadow-2xl"><div className="absolute left-0 right-0 top-0 z-10 flex items-center justify-between border-b border-white/10 bg-black/70 px-5 py-4 backdrop-blur"><span className="font-mono text-[9px] uppercase tracking-[.15em] text-[var(--brand-light)]">Instagram · atualizado automaticamente</span><Instagram className="h-4 w-4 text-[var(--brand-primary)]" /></div><iframe title="Perfil Instagram Barber Lounge Rio" src="https://www.instagram.com/barberlounge.rio/embed/" className="h-[520px] w-full border-0 pt-14" loading="lazy" referrerPolicy="strict-origin-when-cross-origin" /><div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black to-transparent py-10" /></div></div></section>
+        {/* THRIFT STORE */}
+        <section className="thrift section-pad" id="thrift">
+          <div className="wrap">
+            <div className="section-head">
+              <span className="eyebrow">Luxury Thrift Store</span>
+              <h2>Curadoria consciente</h2>
+              <p>Alfaiataria de alta qualidade e camisaria refinada, selecionadas peça a peça. Corte, tecido e origem em primeiro lugar — moda circular sem abrir mão da exclusividade.</p>
+            </div>
+          </div>
 
-        <section id="contato" className="relative overflow-hidden bg-[#070707] px-6 py-24 lg:py-32"><div className="absolute right-[-10%] top-[-30%] h-[500px] w-[500px] rounded-full bg-[var(--brand-primary)]/[.05] blur-[110px]" /><div className="relative mx-auto max-w-[1120px] text-center"><span className="section-eyebrow">{items.contactEyebrow || "Visite a casa"}</span><h2 className="mx-auto mt-5 max-w-3xl font-display text-3xl font-extrabold uppercase leading-[1.05] tracking-[-.04em] text-white sm:text-6xl">{items.contactTitle || "Seu próximo corte começa aqui."}</h2><div className="mt-12 grid gap-4 text-left sm:grid-cols-3"><a href={whatsappUrl} target="_blank" rel="noreferrer" className="group border border-white/10 bg-[#11110f] p-6 transition hover:border-[var(--brand-primary)]/60"><Phone className="h-5 w-5 text-[var(--brand-primary)]" /><span className="mt-8 block font-mono text-[9px] uppercase tracking-[.15em] text-white/35">WhatsApp</span><strong className="mt-2 block font-display text-sm text-white group-hover:text-[var(--brand-light)]">{items.contactPhone || "+55 21 99999-0000"}</strong></a><div className="border border-white/10 bg-[#11110f] p-6"><MapPin className="h-5 w-5 text-[var(--brand-primary)]" /><span className="mt-8 block font-mono text-[9px] uppercase tracking-[.15em] text-white/35">Endereço</span><strong className="mt-2 block font-display text-sm text-white">{items.contactAddress || "Centro · Rio de Janeiro, RJ"}</strong></div><div className="border border-white/10 bg-[#11110f] p-6"><span className="font-display text-2xl text-[var(--brand-primary)]">10—20</span><span className="mt-6 block font-mono text-[9px] uppercase tracking-[.15em] text-white/35">Horários</span><strong className="mt-2 block font-display text-sm text-white">{items.contactHours || "Seg a sáb · 10h às 20h"}</strong></div></div></div></section>
+          <div className="thrift-marquee">
+            <div className="thrift-track" id="thriftTrack">
+              <div className="thrift-item"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Curadoria de moda" style={{ objectPosition: 'center 15%' }} loading="lazy" /></div>
+              <div className="thrift-item"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Curadoria de moda" style={{ objectPosition: 'center 40%' }} loading="lazy" /></div>
+              <div className="thrift-item"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Curadoria de moda" style={{ objectPosition: 'center 65%' }} loading="lazy" /></div>
+              <div className="thrift-item"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Curadoria de moda" style={{ objectPosition: 'center 90%' }} loading="lazy" /></div>
+              <div className="thrift-item"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Curadoria de moda" style={{ objectPosition: 'left center' }} loading="lazy" /></div>
+              <div className="thrift-item"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Curadoria de moda" style={{ objectPosition: 'right center' }} loading="lazy" /></div>
+              {/* Duplicata para loop contínuo */}
+              <div className="thrift-item" aria-hidden="true"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="" style={{ objectPosition: 'center 15%' }} loading="lazy" /></div>
+              <div className="thrift-item" aria-hidden="true"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="" style={{ objectPosition: 'center 40%' }} loading="lazy" /></div>
+              <div className="thrift-item" aria-hidden="true"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="" style={{ objectPosition: 'center 65%' }} loading="lazy" /></div>
+              <div className="thrift-item" aria-hidden="true"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="" style={{ objectPosition: 'center 90%' }} loading="lazy" /></div>
+              <div className="thrift-item" aria-hidden="true"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="" style={{ objectPosition: 'left center' }} loading="lazy" /></div>
+              <div className="thrift-item" aria-hidden="true"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="" style={{ objectPosition: 'right center' }} loading="lazy" /></div>
+            </div>
+          </div>
+        </section>
+
+        {/* INSTAGRAM FEED */}
+        <section className="instagram section-pad" id="instagram">
+          <div className="wrap">
+            <div className="section-head">
+              <span className="eyebrow">Barber Lounge no seu Feed</span>
+              <h2>Barber Lounge em movimento</h2>
+              <p>Acompanhe nossa curadoria diária de estilos, cortes e conteúdo. Siga-nos para conferir os resultados em primeira mão.</p>
+            </div>
+
+            <div className="insta-grid">
+              <a className="insta-item" href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener">
+                <img src="https://barberloungerio.lovable.app/assets/hero-barbershop-DYPPFSAR.jpg" alt="Barber Lounge Rio — publicação 1" />
+                <div className="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 4.96 4.96.06 1.3.07 1.6.07 4.77s-.01 3.47-.07 4.77c-.15 3.25-1.65 4.8-4.96 4.96-1.3.06-1.6.07-4.9.07s-3.6-.01-4.9-.07c-3.32-.15-4.8-1.71-4.96-4.96C2.07 15.4 2.06 15.1 2.06 12s.01-3.47.07-4.77C2.28 3.97 3.77 2.42 7.1 2.27 8.4 2.21 8.8 2.2 12 2.2zM12 0C8.7 0 8.3.01 7 .07 2.6.27.27 2.6.07 7 .01 8.3 0 8.7 0 12s.01 3.7.07 5c.2 4.4 2.53 6.73 6.93 6.93 1.3.06 1.7.07 5 .07s3.7-.01 5-.07c4.4-.2 6.73-2.53 6.93-6.93.06-1.3.07-1.7.07-5s-.01-3.7-.07-5C23.73 2.6 21.4.27 17 .07 15.7.01 15.3 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg><span>Ver post</span></div>
+              </a>
+              <a className="insta-item" href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener">
+                <img src="https://barberloungerio.lovable.app/assets/service-corte-XqhyKym8.jpg" alt="Barber Lounge Rio — publicação 2" />
+                <div className="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 4.96 4.96.06 1.3.07 1.6.07 4.77s-.01 3.47-.07 4.77c-.15 3.25-1.65 4.8-4.96 4.96-1.3.06-1.6.07-4.9.07s-3.6-.01-4.9-.07c-3.32-.15-4.8-1.71-4.96-4.96C2.07 15.4 2.06 15.1 2.06 12s.01-3.47.07-4.77C2.28 3.97 3.77 2.42 7.1 2.27 8.4 2.21 8.8 2.2 12 2.2zM12 0C8.7 0 8.3.01 7 .07 2.6.27.27 2.6.07 7 .01 8.3 0 8.7 0 12s.01 3.7.07 5c.2 4.4 2.53 6.73 6.93 6.93 1.3.06 1.7.07 5 .07s3.7-.01 5-.07c4.4-.2 6.73-2.53 6.93-6.93.06-1.3.07-1.7.07-5s-.01-3.7-.07-5C23.73 2.6 21.4.27 17 .07 15.7.01 15.3 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg><span>Ver post</span></div>
+              </a>
+              <a className="insta-item" href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener">
+                <img src="https://barberloungerio.lovable.app/assets/service-ozonio-DDW6C4S0.jpg" alt="Barber Lounge Rio — publicação 3" />
+                <div className="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 4.96 4.96.06 1.3.07 1.6.07 4.77s-.01 3.47-.07 4.77c-.15 3.25-1.65 4.8-4.96 4.96-1.3.06-1.6.07-4.9.07s-3.6-.01-4.9-.07c-3.32-.15-4.8-1.71-4.96-4.96C2.07 15.4 2.06 15.1 2.06 12s.01-3.47.07-4.77C2.28 3.97 3.77 2.42 7.1 2.27 8.4 2.21 8.8 2.2 12 2.2zM12 0C8.7 0 8.3.01 7 .07 2.6.27.27 2.6.07 7 .01 8.3 0 8.7 0 12s.01 3.7.07 5c.2 4.4 2.53 6.73 6.93 6.93 1.3.06 1.7.07 5 .07s3.7-.01 5-.07c4.4-.2 6.73-2.53 6.93-6.93.06-1.3.07-1.7.07-5s-.01-3.7-.07-5C23.73 2.6 21.4.27 17 .07 15.7.01 15.3 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg><span>Ver post</span></div>
+              </a>
+              <a className="insta-item" href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener">
+                <img src="https://barberloungerio.lovable.app/assets/service-lavagem-CtPVlwFO.jpg" alt="Barber Lounge Rio — publicação 4" />
+                <div className="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 4.96 4.96.06 1.3.07 1.6.07 4.77s-.01 3.47-.07 4.77c-.15 3.25-1.65 4.8-4.96 4.96-1.3.06-1.6.07-4.9.07s-3.6-.01-4.9-.07c-3.32-.15-4.8-1.71-4.96-4.96C2.07 15.4 2.06 15.1 2.06 12s.01-3.47.07-4.77C2.28 3.97 3.77 2.42 7.1 2.27 8.4 2.21 8.8 2.2 12 2.2zM12 0C8.7 0 8.3.01 7 .07 2.6.27.27 2.6.07 7 .01 8.3 0 8.7 0 12s.01 3.7.07 5c.2 4.4 2.53 6.73 6.93 6.93 1.3.06 1.7.07 5 .07s3.7-.01 5-.07c4.4-.2 6.73-2.53 6.93-6.93.06-1.3.07-1.7.07-5s-.01-3.7-.07-5C23.73 2.6 21.4.27 17 .07 15.7.01 15.3 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg><span>Ver post</span></div>
+              </a>
+              <a className="insta-item" href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener">
+                <img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Barber Lounge Rio — publicação 5" />
+                <div className="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 4.96 4.96.06 1.3.07 1.6.07 4.77s-.01 3.47-.07 4.77c-.15 3.25-1.65 4.8-4.96 4.96-1.3.06-1.6.07-4.9.07s-3.6-.01-4.9-.07c-3.32-.15-4.8-1.71-4.96-4.96C2.07 15.4 2.06 15.1 2.06 12s.01-3.47.07-4.77C2.28 3.97 3.77 2.42 7.1 2.27 8.4 2.21 8.8 2.2 12 2.2zM12 0C8.7 0 8.3.01 7 .07 2.6.27.27 2.6.07 7 .01 8.3 0 8.7 0 12s.01 3.7.07 5c.2 4.4 2.53 6.73 6.93 6.93 1.3.06 1.7.07 5 .07s3.7-.01 5-.07c4.4-.2 6.73-2.53 6.93-6.93.06-1.3.07-1.7.07-5s-.01-3.7-.07-5C23.73 2.6 21.4.27 17 .07 15.7.01 15.3 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg><span>Ver post</span></div>
+              </a>
+              <a className="insta-item" href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener">
+                <img src="https://barberloungerio.lovable.app/assets/spa-CR6YyMKq.jpg" alt="Barber Lounge Rio — publicação 6" />
+                <div className="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 4.96 4.96.06 1.3.07 1.6.07 4.77s-.01 3.47-.07 4.77c-.15 3.25-1.65 4.8-4.96 4.96-1.3.06-1.6.07-4.9.07s-3.6-.01-4.9-.07c-3.32-.15-4.8-1.71-4.96-4.96C2.07 15.4 2.06 15.1 2.06 12s.01-3.47.07-4.77C2.28 3.97 3.77 2.42 7.1 2.27 8.4 2.21 8.8 2.2 12 2.2zM12 0C8.7 0 8.3.01 7 .07 2.6.27.27 2.6.07 7 .01 8.3 0 8.7 0 12s.01 3.7.07 5c.2 4.4 2.53 6.73 6.93 6.93 1.3.06 1.7.07 5 .07s3.7-.01 5-.07c4.4-.2 6.73-2.53 6.93-6.93.06-1.3.07-1.7.07-5s-.01-3.7-.07-5C23.73 2.6 21.4.27 17 .07 15.7.01 15.3 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg><span>Ver post</span></div>
+              </a>
+            </div>
+
+            <div className="section-cta">
+              <a href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener" className="btn btn-outline">Seguir @barberlounge.rio</a>
+            </div>
+          </div>
+        </section>
+
+        {/* AVALIAÇÕES GOOGLE MAPS */}
+        <section className="reviews section-pad" id="avaliacoes">
+          <div className="wrap">
+            <div className="reviews-top">
+              <div className="section-head" style={{ marginBottom: 0 }}>
+                <span className="eyebrow">Avaliações</span>
+                <h2>O que dizem no Google</h2>
+                <p>Comentários de clientes reais, direto do nosso perfil no Google Maps.</p>
+              </div>
+              <div className="rating-card">
+                <span className="score">4,9</span>
+                <div className="details">
+                  <span className="stars">★★★★★</span>
+                  <span className="count">Baseado em avaliações no Google</span>
+                  <span className="google-badge">
+                    <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.5 5.4 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.4-.1-2.5-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.5 18.9 12 24 12c3.1 0 5.8 1.1 8 3l6-6C34.5 5.4 29.6 3 24 3 16.3 3 9.6 7.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.5 0 10.5-2.1 14.3-5.6l-6.6-5.6C29.6 35.6 26.9 36.5 24 36.5c-5.3 0-9.7-3.4-11.3-8.1l-6.5 5C9.4 40.5 16.1 45 24 45z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.5l6.6 5.6C39.8 37.4 43 31.6 43 24c0-1.4-.1-2.5-.4-3.5z"/></svg>
+                    Google
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="reviews-track">
+              <div className="review-card">
+                <div className="review-head">
+                  <span className="review-avatar">RM</span>
+                  <div><div className="review-name">Rafael M.</div><div className="review-date">há 2 semanas</div></div>
+                </div>
+                <span className="stars">★★★★★</span>
+                <p className="review-text">Ambiente impecável e atendimento no detalhe. A barboterapia com ozônio surpreende — saí de lá renovado.</p>
+                <span className="review-source">Avaliado no Google</span>
+              </div>
+              <div className="review-card">
+                <div className="review-head">
+                  <span className="review-avatar">TC</span>
+                  <div><div className="review-name">Thiago C.</div><div className="review-date">há 1 mês</div></div>
+                </div>
+                <span className="stars">★★★★★</span>
+                <p className="review-text">Achei uma jaqueta incrível no brechó depois do corte. A ideia de unir moda e barbearia funciona muito bem.</p>
+                <span className="review-source">Avaliado no Google</span>
+              </div>
+              <div className="review-card">
+                <div className="review-head">
+                  <span className="review-avatar">GA</span>
+                  <div><div className="review-name">Gustavo A.</div><div className="review-date">há 1 mês</div></div>
+                </div>
+                <span className="stars">★★★★★</span>
+                <p className="review-text">Localização ótima no Centro, equipe atenciosa e corte preciso. Virou parada fixa antes do trabalho.</p>
+                <span className="review-source">Avaliado no Google</span>
+              </div>
+            </div>
+
+            <div className="reviews-cta">
+              <a href="https://www.google.com/maps?q=Barber+Lounge+Rio,+Avenida+Churchill,+Centro,+Rio+de+Janeiro,+RJ,+20020-050" target="_blank" rel="noopener" className="btn btn-outline">Ver todas as avaliações no Google →</a>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA BAND */}
+        <div className="cta-band">
+          <div className="wrap">
+            <span className="eyebrow">Reserve a sua exclusividade</span>
+            <h2>Seu horário, sua peça, seu estilo.</h2>
+            <p>Fale com a nossa equipe pelo WhatsApp e garanta atendimento na barbearia, no Up Spa ou acesso antecipado às novas peças do brechó.</p>
+            <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" className="btn btn-gold">Agendar pelo WhatsApp</a>
+          </div>
+        </div>
       </main>
-      <footer className="border-t border-white/10 bg-[#0d0d0c] px-6 py-8"><div className="mx-auto flex max-w-[1200px] flex-col justify-between gap-4 sm:flex-row sm:items-center"><div className="flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center border border-[var(--brand-primary)]/60 text-[var(--brand-primary)]"><Sparkles className="h-3.5 w-3.5" /></span><span className="font-mono text-[9px] uppercase tracking-[.15em] text-white/40">{items.footerTagline || "Barbearia, cultura e estilo em um só lugar."}</span></div><span className="font-mono text-[9px] uppercase tracking-[.12em] text-white/25">© {new Date().getFullYear()} Barber Lounge Rio</span></div></footer>
-      {isError && <div className="fixed bottom-4 left-1/2 z-[60] -translate-x-1/2 border border-amber-400/40 bg-[#171715] px-4 py-3 font-mono text-[10px] uppercase tracking-[.12em] text-amber-200">Modo de contingência ativo. O conteúdo será sincronizado em seguida.</div>}
-    </div>
+
+      {/* FOOTER / CONTATO */}
+      <footer id="contato">
+        <div className="wrap">
+          <div className="footer-top">
+            <div className="footer-brand">
+              <a href="#top" className="logo">
+                <img src="https://barberloungerio.lovable.app/__l5e/assets-v1/b7947c7d-fabf-4480-ab24-10be1a227fb7/barber-lounge-logo.png" alt="Barber Lounge Rio" />
+                <span className="logo-type"><strong>Barber Lounge</strong><span>Rio · Centro</span></span>
+              </a>
+              <p>Autenticidade, luxo e atitude em um único lugar. Barbearia de alto padrão, The Up Spa e curadoria de moda circular no Centro do Rio de Janeiro.</p>
+              <div className="footer-socials">
+                <a href="https://instagram.com/barberlounge.rio" target="_blank" rel="noreferrer" aria-label="Instagram">IG</a>
+                <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" aria-label="WhatsApp">WA</a>
+              </div>
+            </div>
+
+            <div className="footer-col">
+              <h5>Endereço & Horário</h5>
+              <p><strong>Av. Churchill, loja 10 C</strong><br />Centro — Rio de Janeiro, RJ</p>
+              <p>Segunda a Sexta · 06:30 às 15:00<br />Sábado e Domingo · Fechado</p>
+            </div>
+
+            <div className="footer-col">
+              <h5>Contato Rápido</h5>
+              <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer">(21) 98008-9047 — WhatsApp</a>
+              <a href="https://instagram.com/barberlounge.rio" target="_blank" rel="noreferrer">@barberlounge.rio</a>
+              <a href="#servicos">Ver Drops TV & Shorts</a>
+              {user?.role === 'admin' && (
+                <Link href="/admin" style={{ color: 'var(--gold-light)', fontWeight: 700, marginTop: '8px', display: 'inline-block' }}>⚙️ Painel Administrativo</Link>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="map-block">
+          <iframe
+            src="https://www.google.com/maps?q=Avenida%20Churchill%2C%20Centro%2C%20Rio%20de%20Janeiro%2C%20RJ%2C%2020020-050&output=embed"
+            loading="lazy" title="Localização Barber Lounge Rio"></iframe>
+        </div>
+
+        <div className="wrap">
+          <div className="footer-bottom">
+            <span>© 2026 Barber Lounge Rio · Centro do Rio de Janeiro</span>
+            <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer">Falar no WhatsApp →</a>
+          </div>
+        </div>
+      </footer>
+
+      <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" className="wa-float" aria-label="Agendar pelo WhatsApp">
+        <svg viewBox="0 0 32 32"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.699 4.607 1.902 6.472L4 29l7.72-1.867A11.94 11.94 0 0 0 16.001 27C22.629 27 28 21.627 28 15S22.629 3 16.001 3zm6.994 17.02c-.294.828-1.457 1.516-2.386 1.71-.634.13-1.462.234-4.25-.914-3.567-1.47-5.86-5.09-6.038-5.327-.177-.237-1.447-1.927-1.447-3.676 0-1.749.917-2.61 1.242-2.966.325-.355.71-.443.947-.443.237 0 .474.002.68.012.218.01.51-.083.799.61.294.71 1 2.454 1.088 2.633.089.178.148.386.03.622-.119.237-.178.385-.354.593-.178.207-.373.463-.533.622-.178.178-.363.37-.156.727.207.355.918 1.514 1.97 2.452 1.353 1.207 2.494 1.581 2.85 1.759.355.178.563.148.77-.09.207-.237.888-1.034 1.125-1.39.237-.355.474-.296.799-.178.325.119 2.062.973 2.416 1.15.355.178.593.267.68.415.089.148.089.858-.205 1.686z"/></svg>
+      </a>
+    </>
   );
 }
