@@ -1,28 +1,94 @@
+import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
+import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
+import {
+  createService,
+  createYoutubeVideo,
+  deleteService,
+  deleteYoutubeVideo,
+  getAdminSiteData,
+  getPublicSiteData,
+  reorderYoutubeVideos,
+  updateContent,
+  updateService,
+  updateYoutubeVideo,
+} from "./db";
+
+const serviceInput = z.object({
+  title: z.string().min(2).max(160),
+  description: z.string().min(2).max(2000),
+  price: z.string().min(1).max(64),
+  imageUrl: z.string().url(),
+  tag: z.string().min(1).max(64),
+  sortOrder: z.number().int().min(0).default(0),
+  active: z.boolean().default(true),
+});
+
+const videoInput = z.object({
+  url: z.string().url(),
+  title: z.string().min(2).max(160),
+  description: z.string().max(2000).default("Conteúdo Barber Lounge Rio."),
+  tag: z.string().min(1).max(64).default("Drops TV"),
+  sortOrder: z.number().int().min(0).default(0),
+  active: z.boolean().default(true),
+});
+
+function extractYoutubeId(url: string) {
+  const value = url.trim();
+  const match = value.match(/(?:shorts\/|youtu\.be\/|watch\?v=|embed\/)([A-Za-z0-9_-]{5,32})/);
+  if (match?.[1]) return match[1];
+  if (/^[A-Za-z0-9_-]{5,32}$/.test(value)) return value;
+  throw new TRPCError({ code: "BAD_REQUEST", message: "Informe uma URL válida de YouTube Shorts." });
+}
+
+const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
+  if (ctx.user.role !== "admin") {
+    throw new TRPCError({ code: "FORBIDDEN", message: "Acesso restrito ao administrador." });
+  }
+  return next();
+});
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
-    me: publicProcedure.query(opts => opts.ctx.user),
+    me: publicProcedure.query((opts) => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
-      return {
-        success: true,
-      } as const;
+      return { success: true } as const;
     }),
   }),
-
-  // TODO: add feature routers here, e.g.
-  // todo: router({
-  //   list: protectedProcedure.query(({ ctx }) =>
-  //     db.getUserTodos(ctx.user.id)
-  //   ),
-  // }),
+  site: router({
+    publicData: publicProcedure.query(() => getPublicSiteData()),
+  }),
+  admin: router({
+    data: adminProcedure.query(() => getAdminSiteData()),
+    content: adminProcedure.input(z.object({ items: z.array(z.object({ key: z.string().min(1).max(96), value: z.string().max(10000) })).min(1) })).mutation(({ ctx, input }) => updateContent(input.items, ctx.user.id)),
+    services: router({
+      create: adminProcedure.input(serviceInput).mutation(({ input }) => createService(input)),
+      update: adminProcedure.input(serviceInput.extend({ id: z.number().int().positive() })).mutation(({ input }) => {
+        const { id, ...payload } = input;
+        return updateService(id, payload);
+      }),
+      delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ input }) => deleteService(input.id)),
+    }),
+    videos: router({
+      create: adminProcedure.input(videoInput).mutation(({ input }) => {
+        const youtubeId = extractYoutubeId(input.url);
+        return createYoutubeVideo({ ...input, youtubeId, url: `https://www.youtube.com/shorts/${youtubeId}` });
+      }),
+      update: adminProcedure.input(videoInput.extend({ id: z.number().int().positive() })).mutation(({ input }) => {
+        const { id, ...payload } = input;
+        const youtubeId = extractYoutubeId(payload.url);
+        return updateYoutubeVideo(id, { ...payload, youtubeId, url: `https://www.youtube.com/shorts/${youtubeId}` });
+      }),
+      delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ input }) => deleteYoutubeVideo(input.id)),
+      reorder: adminProcedure.input(z.object({ ids: z.array(z.number().int().positive()).min(1) })).mutation(({ input }) => reorderYoutubeVideos(input.ids)),
+    }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

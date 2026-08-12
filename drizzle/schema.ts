@@ -1,17 +1,7 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, boolean, index } from "drizzle-orm/mysql-core";
 
-/**
- * Core user table backing auth flow.
- * Extend this file with additional tables as your product grows.
- * Columns use camelCase to match both database fields and generated types.
- */
 export const users = mysqlTable("users", {
-  /**
-   * Surrogate primary key. Auto-incremented numeric value managed by the database.
-   * Use this for relations between tables.
-   */
   id: int("id").autoincrement().primaryKey(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
   openId: varchar("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
   email: varchar("email", { length: 320 }),
@@ -25,4 +15,63 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+export const siteContent = mysqlTable("site_content", {
+  key: varchar("key", { length: 96 }).primaryKey(),
+  label: varchar("label", { length: 160 }).notNull(),
+  section: varchar("section", { length: 64 }).notNull(),
+  value: text("value").notNull(),
+  fieldType: mysqlEnum("fieldType", ["text", "textarea", "url", "color"]).default("text").notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  updatedBy: int("updatedBy"),
+}, (table) => ({
+  sectionIdx: index("site_content_section_idx").on(table.section),
+}));
+
+export type SiteContent = typeof siteContent.$inferSelect;
+export type InsertSiteContent = typeof siteContent.$inferInsert;
+
+export const services = mysqlTable("services", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 160 }).notNull(),
+  description: text("description").notNull(),
+  price: varchar("price", { length: 64 }).notNull(),
+  imageUrl: text("imageUrl").notNull(),
+  tag: varchar("tag", { length: 64 }).notNull(),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  active: boolean("active").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  orderIdx: index("services_order_idx").on(table.sortOrder),
+}));
+
+export type Service = typeof services.$inferSelect;
+export type InsertService = typeof services.$inferInsert;
+
+export const youtubeVideos = mysqlTable("youtube_videos", {
+  id: int("id").autoincrement().primaryKey(),
+  youtubeId: varchar("youtubeId", { length: 32 }).notNull().unique(),
+  url: text("url").notNull(),
+  title: varchar("title", { length: 160 }).notNull(),
+  description: text("description").notNull(),
+  tag: varchar("tag", { length: 64 }).default("Drops TV").notNull(),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  active: boolean("active").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  orderIdx: index("youtube_videos_order_idx").on(table.sortOrder),
+}));
+
+export type YoutubeVideo = typeof youtubeVideos.$inferSelect;
+export type InsertYoutubeVideo = typeof youtubeVideos.$inferInsert;
+
+export const siteSettings = mysqlTable("site_settings", {
+  key: varchar("key", { length: 96 }).primaryKey(),
+  value: text("value").notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  updatedBy: int("updatedBy"),
+});
+
+export type SiteSetting = typeof siteSettings.$inferSelect;
+export type InsertSiteSetting = typeof siteSettings.$inferInsert;
