@@ -97,7 +97,7 @@ const defaultContent: InsertSiteContent[] = [
   { key: "contactWhatsapp", label: "Contato · WhatsApp", section: "contact", value: "5521999990000", fieldType: "text" },
   { key: "contactAddress", label: "Contato · endereço", section: "contact", value: "Centro · Rio de Janeiro, RJ", fieldType: "text" },
   { key: "contactHours", label: "Contato · horário", section: "contact", value: "Seg a sáb · 10h às 20h", fieldType: "text" },
-  { key: "googleMapsUrl", label: "Google Maps · link oficial de avaliações", section: "contact", value: "https://www.google.com/maps/search/?api=1&query=Barber+Lounge+Rio%2C+Avenida+Churchill%2C+Centro%2C+Rio+de+Janeiro%2C+RJ%2C+20020-050", fieldType: "url" },
+  { key: "googleMapsUrl", label: "Google Maps · link oficial de avaliações", section: "contact", value: "https://share.google/TVi4GWtvKyHwk3PdY", fieldType: "url" },
   { key: "footerTagline", label: "Rodapé · assinatura", section: "footer", value: "Barbearia, cultura e estilo em um só lugar.", fieldType: "text" },
   { key: "brandPrimary", label: "Identidade · cor principal", section: "theme", value: "#d5b05b", fieldType: "color" },
   { key: "brandLight", label: "Identidade · cor de destaque", section: "theme", value: "#e8ca84", fieldType: "color" },

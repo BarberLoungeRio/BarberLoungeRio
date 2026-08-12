@@ -66,8 +66,10 @@
 - [x] Conectar o painel do Google Maps na seção de avaliações com link direto e transparente
 - [x] Processar e publicar as fotos enviadas para a seção Thrift Store
 - [x] Adicionar suporte a descrições editáveis para cada foto da Thrift Store no painel administrativo
-- [ ] Substituir a logo antiga pela nova logo assim que o arquivo for enviado
-- [ ] Salvar checkpoint atualizado e entregar o resultado ao usuário
+- [x] Publicar a nova logo enviada pelo usuário e substituir a identidade antiga no cabeçalho e rodapé
+- [x] Eliminar a seção de Serviços e suas fotos da vitrine pública, mantendo apenas Drops TV, Thrift Store, Instagram e Avaliações
+- [x] Conectar o link oficial do Google Maps compartilhado pelo usuário na seção de avaliações
+- [x] Salvar checkpoint atualizado e entregar o resultado ao usuário
 
 - [x] Remover as imagens externas antigas da grade do Instagram e manter somente o perfil oficial clicável enquanto a Graph API estiver pausada
 - [x] Atualizar no banco e na fonte padrão os textos antigos do Hero para BARBER LOUNGE RIO

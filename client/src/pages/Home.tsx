@@ -558,7 +558,7 @@ export default function Home() {
       <header id="site-header" style={{ background: scrolled ? 'rgba(0,0,0,0.9)' : 'rgba(0,0,0,0.6)' }}>
         <div className="wrap">
           <a href="#top" className="logo">
-            <img src="https://barberloungerio.lovable.app/__l5e/assets-v1/b7947c7d-fabf-4480-ab24-10be1a227fb7/barber-lounge-logo.png" alt="Barber Lounge Rio" />
+            <img src="/manus-storage/WhatsAppImage2026-07-28at21.07.17_94e3c791.jpeg" alt="Barber Lounge Rio" style={{ borderRadius: '50%', objectFit: 'cover' }} />
             <span className="logo-type"><strong>BARBER LOUNGE RIO</strong><span>Centro · Rio de Janeiro</span></span>
           </a>
           <nav className="main-nav">
@@ -649,29 +649,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SERVIÇOS — DROPS TV (19 VÍDEOS VERTICAIS) */}
+        {/* DROPS TV (VÍDEOS VERTICAIS) */}
         <section className="services section-pad" id="servicos">
           <div className="wrap">
-            <div className="section-head">
-              <span className="eyebrow">Nossos Serviços · Drops TV</span>
-              <h2>Serviços e experiências</h2>
-              <p>Conheça os serviços que podem ser atualizados pelo painel administrativo sem editar código.</p>
-            </div>
-
-            <div className="catalog-grid">
-              {services.map((service: any) => (
-                <article key={service.id || service.title} className="catalog-card">
-                  <img src={service.imageUrl} alt={service.title} loading="lazy" />
-                  <div className="catalog-card-body">
-                    <span className="catalog-card-tag">{service.tag}</span>
-                    <h3>{service.title}</h3>
-                    <p>{service.description}</p>
-                    <span className="catalog-card-price">{service.price}</span>
-                  </div>
-                </article>
-              ))}
-            </div>
-
             <div className="section-head" style={{ marginBottom: '34px' }}>
               <span className="eyebrow">Drops TV</span>
               <h2>Clipes em movimento</h2>
@@ -770,7 +750,7 @@ export default function Home() {
           <div className="footer-top">
             <div className="footer-brand">
               <a href="#top" className="logo">
-                <img src="https://barberloungerio.lovable.app/__l5e/assets-v1/b7947c7d-fabf-4480-ab24-10be1a227fb7/barber-lounge-logo.png" alt="Barber Lounge Rio" />
+                <img src="/manus-storage/WhatsAppImage2026-07-28at21.07.17_94e3c791.jpeg" alt="Barber Lounge Rio" style={{ borderRadius: '50%', objectFit: 'cover' }} />
                 <span className="logo-type"><strong>BARBER LOUNGE RIO</strong><span>Centro · Rio de Janeiro</span></span>
               </a>
               <p>Autenticidade, luxo e atitude em um único lugar. Barbearia de alto padrão e curadoria de moda circular no Centro do Rio de Janeiro.</p>
