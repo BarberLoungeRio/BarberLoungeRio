@@ -76,6 +76,12 @@ export default function Home() {
     { youtubeId: "NrSqWZ3Mtbk", title: "Drop 19", description: "Exclusividade Barber Lounge" },
   ];
 
+  const services = publicData?.services && publicData.services.length > 0 ? publicData.services : [
+    { id: "service-1", title: "Corte Signature", description: "Consultoria de imagem, tesoura e máquina com acabamento autoral.", price: "A partir de R$ 90", imageUrl: "https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=900&q=85", tag: "Mais pedido" },
+    { id: "service-2", title: "Barba & Ritual", description: "Toalha quente, desenho preciso e finalização para desacelerar.", price: "A partir de R$ 70", imageUrl: "https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=900&q=85", tag: "Clássico" },
+    { id: "service-3", title: "Experiência Completa", description: "Corte, barba e styling em uma sessão criada para você.", price: "A partir de R$ 150", imageUrl: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=900&q=85", tag: "Signature" },
+  ];
+
   return (
     <>
       <style>{`
@@ -316,6 +322,29 @@ export default function Home() {
           grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
           gap:22px;
         }
+        .catalog-grid{
+          display:grid;
+          grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+          gap:20px;
+          margin-bottom:72px;
+        }
+        .catalog-card{
+          display:flex;
+          flex-direction:column;
+          min-height:100%;
+          background:var(--bg);
+          border:1px solid var(--line);
+          border-radius:10px;
+          overflow:hidden;
+          transition:transform .3s ease,border-color .3s ease;
+        }
+        .catalog-card:hover{transform:translateY(-5px);border-color:rgba(212,175,55,0.55);}
+        .catalog-card img{width:100%;aspect-ratio:16/10;object-fit:cover;}
+        .catalog-card-body{display:flex;flex:1;flex-direction:column;padding:22px;}
+        .catalog-card-tag{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light);}
+        .catalog-card h3{margin-top:10px;font-size:20px;}
+        .catalog-card p{margin-top:9px;color:var(--muted);font-size:14px;line-height:1.6;}
+        .catalog-card-price{margin-top:auto;padding-top:18px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);}
         .service-card{
           background:var(--panel-2);border:1px solid var(--line);border-radius:10px;
           overflow:hidden;display:flex;flex-direction:column;
@@ -612,6 +641,26 @@ export default function Home() {
             <div className="section-head">
               <span className="eyebrow">Nossos Serviços · Drops TV</span>
               <h2>Alta barbearia em cada detalhe</h2>
+              <p>Conheça os serviços que podem ser atualizados pelo painel administrativo sem editar código.</p>
+            </div>
+
+            <div className="catalog-grid">
+              {services.map((service: any) => (
+                <article key={service.id || service.title} className="catalog-card">
+                  <img src={service.imageUrl} alt={service.title} loading="lazy" />
+                  <div className="catalog-card-body">
+                    <span className="catalog-card-tag">{service.tag}</span>
+                    <h3>{service.title}</h3>
+                    <p>{service.description}</p>
+                    <span className="catalog-card-price">{service.price}</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="section-head" style={{ marginBottom: '34px' }}>
+              <span className="eyebrow">Drops TV</span>
+              <h2>Clipes em movimento</h2>
               <p>Passe o cursor sobre um vídeo para assistir — cada card traz um clipe vertical no estilo Shorts/Reels.</p>
             </div>
 
@@ -702,57 +751,18 @@ export default function Home() {
         {/* AVALIAÇÕES GOOGLE MAPS */}
         <section className="reviews section-pad" id="avaliacoes">
           <div className="wrap">
-            <div className="reviews-top">
-              <div className="section-head" style={{ marginBottom: 0 }}>
-                <span className="eyebrow">Avaliações</span>
-                <h2>O que dizem no Google</h2>
-                <p>Comentários de clientes reais, direto do nosso perfil no Google Maps.</p>
-              </div>
-              <div className="rating-card">
-                <span className="score">4,9</span>
-                <div className="details">
-                  <span className="stars">★★★★★</span>
-                  <span className="count">Baseado em avaliações no Google</span>
-                  <span className="google-badge">
-                    <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.5 5.4 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.4-.1-2.5-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.5 18.9 12 24 12c3.1 0 5.8 1.1 8 3l6-6C34.5 5.4 29.6 3 24 3 16.3 3 9.6 7.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.5 0 10.5-2.1 14.3-5.6l-6.6-5.6C29.6 35.6 26.9 36.5 24 36.5c-5.3 0-9.7-3.4-11.3-8.1l-6.5 5C9.4 40.5 16.1 45 24 45z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.5l6.6 5.6C39.8 37.4 43 31.6 43 24c0-1.4-.1-2.5-.4-3.5z"/></svg>
-                    Google
-                  </span>
-                </div>
-              </div>
+            <div className="section-head">
+              <span className="eyebrow">Avaliações verificáveis</span>
+              <h2>Veja as opiniões reais dos clientes</h2>
+              <p>Para manter esta vitrine transparente, as avaliações são exibidas diretamente no perfil oficial do Google Maps, sem depoimentos demonstrativos aqui.</p>
             </div>
-
-            <div className="reviews-track">
-              <div className="review-card">
-                <div className="review-head">
-                  <span className="review-avatar">RM</span>
-                  <div><div className="review-name">Rafael M.</div><div className="review-date">há 2 semanas</div></div>
-                </div>
-                <span className="stars">★★★★★</span>
-                <p className="review-text">Ambiente impecável e atendimento no detalhe. A barboterapia com ozônio surpreende — saí de lá renovado.</p>
-                <span className="review-source">Avaliado no Google</span>
+            <div className="review-card" style={{ maxWidth: '720px', margin: '0 auto', textAlign: 'center' }}>
+              <div className="review-avatar" style={{ margin: '0 auto 12px' }}>G</div>
+              <h3 className="font-display text-xl font-bold uppercase text-white">Perfil oficial no Google Maps</h3>
+              <p className="review-text" style={{ marginTop: '12px' }}>Consulte a nota, os comentários e as fotos diretamente na fonte oficial da Barber Lounge Rio.</p>
+              <div className="reviews-cta">
+                <a href="https://www.google.com/maps?q=Barber+Lounge+Rio,+Avenida+Churchill,+Centro,+Rio+de+Janeiro,+RJ,+20020-050" target="_blank" rel="noopener" className="btn btn-outline">Abrir avaliações no Google →</a>
               </div>
-              <div className="review-card">
-                <div className="review-head">
-                  <span className="review-avatar">TC</span>
-                  <div><div className="review-name">Thiago C.</div><div className="review-date">há 1 mês</div></div>
-                </div>
-                <span className="stars">★★★★★</span>
-                <p className="review-text">Achei uma jaqueta incrível no brechó depois do corte. A ideia de unir moda e barbearia funciona muito bem.</p>
-                <span className="review-source">Avaliado no Google</span>
-              </div>
-              <div className="review-card">
-                <div className="review-head">
-                  <span className="review-avatar">GA</span>
-                  <div><div className="review-name">Gustavo A.</div><div className="review-date">há 1 mês</div></div>
-                </div>
-                <span className="stars">★★★★★</span>
-                <p className="review-text">Localização ótima no Centro, equipe atenciosa e corte preciso. Virou parada fixa antes do trabalho.</p>
-                <span className="review-source">Avaliado no Google</span>
-              </div>
-            </div>
-
-            <div className="reviews-cta">
-              <a href="https://www.google.com/maps?q=Barber+Lounge+Rio,+Avenida+Churchill,+Centro,+Rio+de+Janeiro,+RJ,+20020-050" target="_blank" rel="noopener" className="btn btn-outline">Ver todas as avaliações no Google →</a>
             </div>
           </div>
         </section>

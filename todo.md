@@ -27,7 +27,7 @@
 - [x] Implementar fallback público acessível para Shorts quando o embed/autoplay falhar, com link visível para o YouTube
 - [x] Documentar no projeto os limites da integração Instagram na aplicação web e os requisitos de credenciais/token para uma integração programática
 - [x] Criar testes Vitest para leitura/atualização de conteúdo e criação/atualização/remoção/reordenação de vídeos
-- [ ] Entregar ao usuário o guia consolidado de administração, hospedagem e domínio antes de marcar o item de entrega como concluído
+- [x] Entregar ao usuário o guia consolidado de administração, hospedagem e domínio antes de marcar o item de entrega como concluído
 
 ## Última rodada de validação
 
@@ -37,8 +37,23 @@
 
 ## Adequação ao layout exato de barber-lounge-rio (4).html
 
-- [ ] Solicitar ou receber o conteúdo do arquivo HTML de referência fornecido pelo usuário
-- [ ] Adaptar a interface pública para incorporar exatamente o CSS, tipografia e estrutura HTML do arquivo de referência
-- [ ] Preservar o Hero com ARTEPARASITE.mp4, os 19 Shorts com autoplay muted, a seção de serviços editáveis e o painel administrativo protegido
-- [ ] Validar visualmente com captura de tela e salvar checkpoint final
-- [ ] Entregar o resultado atualizado ao usuário
+- [x] Solicitar ou receber o conteúdo do arquivo HTML de referência fornecido pelo usuário
+- [x] Adaptar a interface pública para incorporar exatamente o CSS, tipografia e estrutura HTML do arquivo de referência
+- [x] Preservar o Hero com ARTEPARASITE.mp4, os 19 Shorts com autoplay muted, a seção de serviços editáveis e o painel administrativo protegido
+- [x] Validar visualmente com captura de tela e salvar checkpoint final
+- [x] Entregar o resultado atualizado ao usuário
+
+## Ajustes solicitados pelo usuário (Instagram e Edição Visual Simplificada)
+
+- [x] Implementar integração direta com o perfil e posts recentes do Instagram na seção "Barber Lounge em movimento" com links clicáveis reais
+- [x] Atualizar o painel administrativo para um modo de edição visual direto por clique ("click-to-edit") e colagem rápida de links de vídeos
+- [x] Criar guia claro detalhando onde o site será hospedado de forma gratuita, como usar o painel sem código no dia a dia e como conectar o domínio do Registro.br
+
+## Continuidade sem dependência da API do Facebook
+
+- [x] Ignorar a dependência da Graph API da Meta conforme solicitado pelo usuário
+- [x] Refinar a seção do Instagram para garantir que o feed exiba posts clicáveis direcionados ao perfil real da barbearia
+- [x] Atualizar o painel administrativo para edição direta e simples de textos, imagens e vídeos
+- [x] Elaborar o guia claro de hospedagem gratuita e operação diária (sem código)
+
+- [x] Remover da vitrine qualquer avaliação, nota ou depoimento demonstrativo não conectado a uma fonte real e manter somente o link para avaliações verificáveis
