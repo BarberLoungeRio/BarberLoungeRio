@@ -102,5 +102,5 @@
 - [x] Acessar e baixar o arquivo correto do novo link do Google Fotos (`https://photos.app.goo.gl/QrAKYt9JW6Aua4AE8`)
 - [x] Converter o novo vídeo para H.264 de alta qualidade sem som e publicá-lo no armazenamento
 - [x] Atualizar o Hero no Home.tsx para usar o novo arquivo correto
-- [ ] Testar, salvar checkpoint final e entregar o resultado ao usuário
+- [x] Testar, salvar checkpoint final e entregar o resultado ao usuário
 - [x] Criar e aplicar um poster do novo vídeo do Hero para evitar primeiro frame preto durante o carregamento
