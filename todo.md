@@ -86,6 +86,13 @@
 
 - [x] Inspecionar e incorporar o vídeo fornecido pelo Google Fotos como fundo silencioso e em loop na seção Conceito
 - [x] Validar a legibilidade dos textos e o comportamento responsivo do vídeo de fundo
-- [ ] Testar, salvar checkpoint e entregar o resultado ao usuário
+- [x] Testar, salvar checkpoint e entregar o resultado ao usuário
 - [x] Validar a seção Conceito com o vídeo de fundo em viewport móvel e desktop, confirmando enquadramento e legibilidade
 - [x] Registrar a validação textual objetiva do vídeo da seção Conceito em desktop e mobile antes do checkpoint
+
+## Substituição do vídeo do Hero pela melhor qualidade
+
+- [x] Converter o arquivo de alta qualidade obtido do Google Fotos para otimizar o carregamento no Hero
+- [x] Publicar a nova versão de alta qualidade no armazenamento do projeto
+- [x] Atualizar o Hero no Home.tsx para usar o novo arquivo de vídeo
+- [ ] Testar, salvar checkpoint e entregar o resultado ao usuário

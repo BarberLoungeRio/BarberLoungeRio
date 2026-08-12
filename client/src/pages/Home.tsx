@@ -3,7 +3,7 @@ import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
 
-const heroVideoUrl = "/manus-storage/ARTEPARASITE_6df86b1c.mp4";
+const heroVideoUrl = "/manus-storage/hero-google-photos-hq_a25b27cf.mp4";
 const conceptVideoUrl = "/manus-storage/conceito-fundo_e5a6b4fa.mp4";
 const whatsappBookingUrl = `https://wa.me/5521980089047?text=${encodeURIComponent("Olá, Barber Lounge Rio! Gostaria de agendar um horário.")}`;
 
