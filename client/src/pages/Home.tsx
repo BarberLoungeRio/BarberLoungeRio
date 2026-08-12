@@ -3,7 +3,8 @@ import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
 
-const heroVideoUrl = "/manus-storage/hero-google-photos-hq_a25b27cf.mp4";
+const heroVideoUrl = "/manus-storage/hero-google-photos-correct_4a3b4bc1.mp4";
+const heroPosterUrl = "/manus-storage/hero-correct-poster_b3437a5c.jpg";
 const conceptVideoUrl = "/manus-storage/conceito-fundo_e5a6b4fa.mp4";
 const whatsappBookingUrl = `https://wa.me/5521980089047?text=${encodeURIComponent("Olá, Barber Lounge Rio! Gostaria de agendar um horário.")}`;
 
@@ -611,7 +612,7 @@ export default function Home() {
         {/* HERO */}
         <section className="hero">
           <div className="hero-bg-video">
-            <video autoPlay muted loop playsInline preload="auto" aria-hidden="true">
+            <video autoPlay muted loop playsInline preload="auto" poster={heroPosterUrl} aria-hidden="true">
               <source src={heroVideoUrl} type="video/mp4" />
             </video>
             <div className="hero-bg-overlay"></div>
