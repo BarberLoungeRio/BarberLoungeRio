@@ -13,7 +13,7 @@
 - [x] Implementar página técnica com instruções de DNS específicas para Registro.br e barbearia.com.br
 - [x] Criar testes Vitest para autenticação, autorização admin, conteúdo e vídeos
 - [x] Executar typecheck, testes e validação visual responsiva
-- [ ] Criar checkpoint final antes da entrega
+- [x] Criar checkpoint final antes da entrega
 - [x] Entregar guia de administração, hospedagem e domínio ao usuário
 
 ## Histórico de solicitações
