@@ -57,3 +57,18 @@
 - [x] Elaborar o guia claro de hospedagem gratuita e operação diária (sem código)
 
 - [x] Remover da vitrine qualquer avaliação, nota ou depoimento demonstrativo não conectado a uma fonte real e manter somente o link para avaliações verificáveis
+
+## Solicitações recentes do usuário
+
+- [x] Remover a frase "Alta barbearia em cada detalhe" e as fotos associadas
+- [x] Retirar todas as referências ao "Up Spa" no site e textos institucionais
+- [x] Atualizar o nome da marca para "BARBER LOUNGE RIO" (incluindo "RIO" no cabeçalho e rodapé)
+- [x] Conectar o painel do Google Maps na seção de avaliações com link direto e transparente
+- [x] Processar e publicar as fotos enviadas para a seção Thrift Store
+- [x] Adicionar suporte a descrições editáveis para cada foto da Thrift Store no painel administrativo
+- [ ] Substituir a logo antiga pela nova logo assim que o arquivo for enviado
+- [ ] Salvar checkpoint atualizado e entregar o resultado ao usuário
+
+- [x] Remover as imagens externas antigas da grade do Instagram e manter somente o perfil oficial clicável enquanto a Graph API estiver pausada
+- [x] Atualizar no banco e na fonte padrão os textos antigos do Hero para BARBER LOUNGE RIO
+- [x] Revisar visualmente a galeria Thrift Store e o cartão do Instagram após as alterações

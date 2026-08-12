@@ -15,6 +15,13 @@
       "when": 1786493965835,
       "tag": "0001_whole_viper",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1786570520753,
+      "tag": "0002_new_gambit",
+      "breakpoints": true
     }
   ]
 }

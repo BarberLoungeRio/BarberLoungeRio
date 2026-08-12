@@ -1,0 +1,11 @@
+Referências externas consultadas em 12/08/2026
+
+1. Site encontrado para a marca Barber Lounge Rio: https://barberloungerio.com.br/
+   Observação: a página pública informa o endereço Av. Churchill, loja 10 C, Centro, Rio de Janeiro, RJ, e o contato do WhatsApp; a busca do navegador não expôs um perfil específico de avaliações do Google Maps.
+
+2. Busca Google Maps usada como fallback transparente na aplicação:
+   https://www.google.com/maps/search/?api=1&query=Barber+Lounge+Rio%2C+Avenida+Churchill%2C+Centro%2C+Rio+de+Janeiro%2C+RJ%2C+20020-050
+
+3. Documentação oficial do Google sobre IDs de lugar do Places API:
+   https://developers.google.com/maps/documentation/places/web-service/place-id?hl=pt-br
+   Observação: uma conexão programática de avaliações exige um Place ID oficial e credenciais da API do Google. Como não foi encontrado um perfil verificável nesta busca e o usuário pediu transparência, a aplicação mantém o link de busca do Google Maps em vez de fabricar nota, contagem ou depoimentos.

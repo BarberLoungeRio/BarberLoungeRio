@@ -8,6 +8,8 @@ const heroVideoUrl = "/manus-storage/ARTEPARASITE_6df86b1c.mp4";
 export default function Home() {
   const { data: publicData } = trpc.site.publicData.useQuery();
   const { user } = useAuth();
+  const contentByKey = Object.fromEntries((publicData?.content ?? []).map((item) => [item.key, item.value]));
+  const googleMapsUrl = contentByKey.googleMapsUrl || "https://www.google.com/maps/search/?api=1&query=Barber+Lounge+Rio%2C+Avenida+Churchill%2C+Centro%2C+Rio+de+Janeiro%2C+RJ%2C+20020-050";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -55,7 +57,7 @@ export default function Home() {
   }, [publicData]);
 
   const videos = publicData?.videos && publicData.videos.length > 0 ? publicData.videos : [
-    { youtubeId: "1TGsTfbgsbU", title: "Drop 01", description: "Alta barbearia e estilo" },
+    { youtubeId: "1TGsTfbgsbU", title: "Drop 01", description: "Estilo e precisão Barber Lounge Rio" },
     { youtubeId: "c6-U-FAEt3E", title: "Drop 02", description: "Curadoria de alfaiataria" },
     { youtubeId: "fiXUh-b76Lk", title: "Drop 03", description: "Detalhes e acabamento" },
     { youtubeId: "JipFZMgKgHQ", title: "Drop 04", description: "Estilo e atitude" },
@@ -81,6 +83,8 @@ export default function Home() {
     { id: "service-2", title: "Barba & Ritual", description: "Toalha quente, desenho preciso e finalização para desacelerar.", price: "A partir de R$ 70", imageUrl: "https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=900&q=85", tag: "Clássico" },
     { id: "service-3", title: "Experiência Completa", description: "Corte, barba e styling em uma sessão criada para você.", price: "A partir de R$ 150", imageUrl: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=900&q=85", tag: "Signature" },
   ];
+
+  const thriftStore = publicData?.thriftStore ?? [];
 
   return (
     <>
@@ -404,24 +408,34 @@ export default function Home() {
         }
         .thrift-item{
           position:relative;
+          display:flex;
           flex:0 0 auto;
+          flex-direction:column;
           width:240px;
-          aspect-ratio:4/5;
           border-radius:10px;
           overflow:hidden;
           background:#000;
           border:1px solid var(--line);
         }
         .thrift-item img{
-          width:100%;height:100%;
+          width:100%;height:300px;
           object-fit:cover;display:block;
         }
+        .thrift-caption{display:flex;min-height:92px;flex-direction:column;gap:7px;padding:15px 16px 17px;background:var(--panel-2);}
+        .thrift-caption strong{font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-light);}
+        .thrift-caption span{font-size:12px;line-height:1.5;color:var(--muted);}
+
 
         .instagram{background:var(--panel);}
         .insta-grid{
           display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
           gap:6px;
         }
+        .insta-profile-card{display:flex;align-items:center;gap:28px;min-height:230px;padding:38px;background:linear-gradient(120deg,#161612,#0b0b0a);border:1px solid var(--line);}
+        .insta-profile-mark{display:flex;width:92px;height:92px;flex-shrink:0;align-items:center;justify-content:center;border:1px solid var(--gold);border-radius:50%;font-family:'Montserrat',sans-serif;font-weight:900;font-size:22px;letter-spacing:.06em;color:var(--gold-light);}
+        .insta-profile-card h3{margin:10px 0 12px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:22px;letter-spacing:.04em;text-transform:uppercase;color:var(--ivory);}
+        .insta-profile-card p{max-width:660px;margin-bottom:20px;font-size:14px;line-height:1.7;color:var(--muted);}
+
         .insta-item{
           position:relative;aspect-ratio:1/1;overflow:hidden;background:#000;
         }
@@ -545,7 +559,7 @@ export default function Home() {
         <div className="wrap">
           <a href="#top" className="logo">
             <img src="https://barberloungerio.lovable.app/__l5e/assets-v1/b7947c7d-fabf-4480-ab24-10be1a227fb7/barber-lounge-logo.png" alt="Barber Lounge Rio" />
-            <span className="logo-type"><strong>Barber Lounge</strong><span>Rio · Centro</span></span>
+            <span className="logo-type"><strong>BARBER LOUNGE RIO</strong><span>Centro · Rio de Janeiro</span></span>
           </a>
           <nav className="main-nav">
             <ul>
@@ -592,7 +606,7 @@ export default function Home() {
           <span className="hero-tag"><span className="dot"></span> Centro do Rio · Seg a Sex, 06:30 às 15:00</span>
 
           <h1>Mais que um corte, <span>um conceito.</span></h1>
-          <p className="sub">A união da curadoria de estilo com a precisão da alta barbearia. Autenticidade, luxo e atitude em um único lugar, no coração do Centro do Rio.</p>
+          <p className="sub">A união da curadoria de estilo com a precisão do corte. Autenticidade, luxo e atitude em um único lugar, no coração do Centro do Rio.</p>
 
           <div className="hero-ctas">
             <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" className="btn btn-gold">Agendar Exclusividade</a>
@@ -613,7 +627,7 @@ export default function Home() {
             <div className="section-head" style={{ marginBottom: '44px' }}>
               <span className="eyebrow">O Conceito</span>
               <h2>Bem-vindo à experiência Barber Lounge Rio</h2>
-              <p>Cada detalhe foi desenhado para proporcionar relaxamento e estilo — do corte impecável ao cuidado com a barba, tudo com o padrão de excelência que define a alta barbearia.</p>
+              <p>Cada detalhe foi desenhado para proporcionar relaxamento e estilo — do corte impecável ao cuidado com a barba, tudo com o padrão de excelência que define a casa.</p>
             </div>
             <div className="values-grid">
               <div className="value-item">
@@ -629,7 +643,7 @@ export default function Home() {
               <div className="value-item">
                 <span className="num">03</span>
                 <h3>Atitude</h3>
-                <p>Curadoria de estilo, cuidado e bem-estar reunidos em uma experiência única de alta barbearia.</p>
+                <p>Curadoria de estilo, cuidado e bem-estar reunidos em uma experiência única.</p>
               </div>
             </div>
           </div>
@@ -640,7 +654,7 @@ export default function Home() {
           <div className="wrap">
             <div className="section-head">
               <span className="eyebrow">Nossos Serviços · Drops TV</span>
-              <h2>Alta barbearia em cada detalhe</h2>
+              <h2>Serviços e experiências</h2>
               <p>Conheça os serviços que podem ser atualizados pelo painel administrativo sem editar código.</p>
             </div>
 
@@ -681,27 +695,16 @@ export default function Home() {
         <section className="thrift section-pad" id="thrift">
           <div className="wrap">
             <div className="section-head">
-              <span className="eyebrow">Luxury Thrift Store</span>
+              <span className="eyebrow">Thrift Store</span>
               <h2>Curadoria consciente</h2>
-              <p>Alfaiataria de alta qualidade e camisaria refinada, selecionadas peça a peça. Corte, tecido e origem em primeiro lugar — moda circular sem abrir mão da exclusividade.</p>
+              <p>Fotos, peças e detalhes da curadoria Barber Lounge Rio. Cada descrição pode ser editada no painel administrativo.</p>
             </div>
           </div>
 
           <div className="thrift-marquee">
             <div className="thrift-track" id="thriftTrack">
-              <div className="thrift-item"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Curadoria de moda" style={{ objectPosition: 'center 15%' }} loading="lazy" /></div>
-              <div className="thrift-item"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Curadoria de moda" style={{ objectPosition: 'center 40%' }} loading="lazy" /></div>
-              <div className="thrift-item"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Curadoria de moda" style={{ objectPosition: 'center 65%' }} loading="lazy" /></div>
-              <div className="thrift-item"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Curadoria de moda" style={{ objectPosition: 'center 90%' }} loading="lazy" /></div>
-              <div className="thrift-item"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Curadoria de moda" style={{ objectPosition: 'left center' }} loading="lazy" /></div>
-              <div className="thrift-item"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Curadoria de moda" style={{ objectPosition: 'right center' }} loading="lazy" /></div>
-              {/* Duplicata para loop contínuo */}
-              <div className="thrift-item" aria-hidden="true"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="" style={{ objectPosition: 'center 15%' }} loading="lazy" /></div>
-              <div className="thrift-item" aria-hidden="true"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="" style={{ objectPosition: 'center 40%' }} loading="lazy" /></div>
-              <div className="thrift-item" aria-hidden="true"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="" style={{ objectPosition: 'center 65%' }} loading="lazy" /></div>
-              <div className="thrift-item" aria-hidden="true"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="" style={{ objectPosition: 'center 90%' }} loading="lazy" /></div>
-              <div className="thrift-item" aria-hidden="true"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="" style={{ objectPosition: 'left center' }} loading="lazy" /></div>
-              <div className="thrift-item" aria-hidden="true"><img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="" style={{ objectPosition: 'right center' }} loading="lazy" /></div>
+              {thriftStore.map((item: any) => <article className="thrift-item" key={item.id}><img src={item.imageUrl} alt={item.title} loading="lazy" /><div className="thrift-caption"><strong>{item.title}</strong><span>{item.description}</span></div></article>)}
+              {thriftStore.map((item: any) => <article className="thrift-item" aria-hidden="true" key={`duplicate-${item.id}`}><img src={item.imageUrl} alt="" loading="lazy" /><div className="thrift-caption"><strong>{item.title}</strong><span>{item.description}</span></div></article>)}
             </div>
           </div>
         </section>
@@ -715,31 +718,14 @@ export default function Home() {
               <p>Acompanhe nossa curadoria diária de estilos, cortes e conteúdo. Siga-nos para conferir os resultados em primeira mão.</p>
             </div>
 
-            <div className="insta-grid">
-              <a className="insta-item" href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener">
-                <img src="https://barberloungerio.lovable.app/assets/hero-barbershop-DYPPFSAR.jpg" alt="Barber Lounge Rio — publicação 1" />
-                <div className="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 4.96 4.96.06 1.3.07 1.6.07 4.77s-.01 3.47-.07 4.77c-.15 3.25-1.65 4.8-4.96 4.96-1.3.06-1.6.07-4.9.07s-3.6-.01-4.9-.07c-3.32-.15-4.8-1.71-4.96-4.96C2.07 15.4 2.06 15.1 2.06 12s.01-3.47.07-4.77C2.28 3.97 3.77 2.42 7.1 2.27 8.4 2.21 8.8 2.2 12 2.2zM12 0C8.7 0 8.3.01 7 .07 2.6.27.27 2.6.07 7 .01 8.3 0 8.7 0 12s.01 3.7.07 5c.2 4.4 2.53 6.73 6.93 6.93 1.3.06 1.7.07 5 .07s3.7-.01 5-.07c4.4-.2 6.73-2.53 6.93-6.93.06-1.3.07-1.7.07-5s-.01-3.7-.07-5C23.73 2.6 21.4.27 17 .07 15.7.01 15.3 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg><span>Ver post</span></div>
-              </a>
-              <a className="insta-item" href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener">
-                <img src="https://barberloungerio.lovable.app/assets/service-corte-XqhyKym8.jpg" alt="Barber Lounge Rio — publicação 2" />
-                <div className="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 4.96 4.96.06 1.3.07 1.6.07 4.77s-.01 3.47-.07 4.77c-.15 3.25-1.65 4.8-4.96 4.96-1.3.06-1.6.07-4.9.07s-3.6-.01-4.9-.07c-3.32-.15-4.8-1.71-4.96-4.96C2.07 15.4 2.06 15.1 2.06 12s.01-3.47.07-4.77C2.28 3.97 3.77 2.42 7.1 2.27 8.4 2.21 8.8 2.2 12 2.2zM12 0C8.7 0 8.3.01 7 .07 2.6.27.27 2.6.07 7 .01 8.3 0 8.7 0 12s.01 3.7.07 5c.2 4.4 2.53 6.73 6.93 6.93 1.3.06 1.7.07 5 .07s3.7-.01 5-.07c4.4-.2 6.73-2.53 6.93-6.93.06-1.3.07-1.7.07-5s-.01-3.7-.07-5C23.73 2.6 21.4.27 17 .07 15.7.01 15.3 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg><span>Ver post</span></div>
-              </a>
-              <a className="insta-item" href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener">
-                <img src="https://barberloungerio.lovable.app/assets/service-ozonio-DDW6C4S0.jpg" alt="Barber Lounge Rio — publicação 3" />
-                <div className="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 4.96 4.96.06 1.3.07 1.6.07 4.77s-.01 3.47-.07 4.77c-.15 3.25-1.65 4.8-4.96 4.96-1.3.06-1.6.07-4.9.07s-3.6-.01-4.9-.07c-3.32-.15-4.8-1.71-4.96-4.96C2.07 15.4 2.06 15.1 2.06 12s.01-3.47.07-4.77C2.28 3.97 3.77 2.42 7.1 2.27 8.4 2.21 8.8 2.2 12 2.2zM12 0C8.7 0 8.3.01 7 .07 2.6.27.27 2.6.07 7 .01 8.3 0 8.7 0 12s.01 3.7.07 5c.2 4.4 2.53 6.73 6.93 6.93 1.3.06 1.7.07 5 .07s3.7-.01 5-.07c4.4-.2 6.73-2.53 6.93-6.93.06-1.3.07-1.7.07-5s-.01-3.7-.07-5C23.73 2.6 21.4.27 17 .07 15.7.01 15.3 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg><span>Ver post</span></div>
-              </a>
-              <a className="insta-item" href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener">
-                <img src="https://barberloungerio.lovable.app/assets/service-lavagem-CtPVlwFO.jpg" alt="Barber Lounge Rio — publicação 4" />
-                <div className="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 4.96 4.96.06 1.3.07 1.6.07 4.77s-.01 3.47-.07 4.77c-.15 3.25-1.65 4.8-4.96 4.96-1.3.06-1.6.07-4.9.07s-3.6-.01-4.9-.07c-3.32-.15-4.8-1.71-4.96-4.96C2.07 15.4 2.06 15.1 2.06 12s.01-3.47.07-4.77C2.28 3.97 3.77 2.42 7.1 2.27 8.4 2.21 8.8 2.2 12 2.2zM12 0C8.7 0 8.3.01 7 .07 2.6.27.27 2.6.07 7 .01 8.3 0 8.7 0 12s.01 3.7.07 5c.2 4.4 2.53 6.73 6.93 6.93 1.3.06 1.7.07 5 .07s3.7-.01 5-.07c4.4-.2 6.73-2.53 6.93-6.93.06-1.3.07-1.7.07-5s-.01-3.7-.07-5C23.73 2.6 21.4.27 17 .07 15.7.01 15.3 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg><span>Ver post</span></div>
-              </a>
-              <a className="insta-item" href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener">
-                <img src="https://barberloungerio.lovable.app/assets/thrift-store-DLyeqId0.jpg" alt="Barber Lounge Rio — publicação 5" />
-                <div className="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 4.96 4.96.06 1.3.07 1.6.07 4.77s-.01 3.47-.07 4.77c-.15 3.25-1.65 4.8-4.96 4.96-1.3.06-1.6.07-4.9.07s-3.6-.01-4.9-.07c-3.32-.15-4.8-1.71-4.96-4.96C2.07 15.4 2.06 15.1 2.06 12s.01-3.47.07-4.77C2.28 3.97 3.77 2.42 7.1 2.27 8.4 2.21 8.8 2.2 12 2.2zM12 0C8.7 0 8.3.01 7 .07 2.6.27.27 2.6.07 7 .01 8.3 0 8.7 0 12s.01 3.7.07 5c.2 4.4 2.53 6.73 6.93 6.93 1.3.06 1.7.07 5 .07s3.7-.01 5-.07c4.4-.2 6.73-2.53 6.93-6.93.06-1.3.07-1.7.07-5s-.01-3.7-.07-5C23.73 2.6 21.4.27 17 .07 15.7.01 15.3 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg><span>Ver post</span></div>
-              </a>
-              <a className="insta-item" href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener">
-                <img src="https://barberloungerio.lovable.app/assets/spa-CR6YyMKq.jpg" alt="Barber Lounge Rio — publicação 6" />
-                <div className="insta-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 4.96 4.96.06 1.3.07 1.6.07 4.77s-.01 3.47-.07 4.77c-.15 3.25-1.65 4.8-4.96 4.96-1.3.06-1.6.07-4.9.07s-3.6-.01-4.9-.07c-3.32-.15-4.8-1.71-4.96-4.96C2.07 15.4 2.06 15.1 2.06 12s.01-3.47.07-4.77C2.28 3.97 3.77 2.42 7.1 2.27 8.4 2.21 8.8 2.2 12 2.2zM12 0C8.7 0 8.3.01 7 .07 2.6.27.27 2.6.07 7 .01 8.3 0 8.7 0 12s.01 3.7.07 5c.2 4.4 2.53 6.73 6.93 6.93 1.3.06 1.7.07 5 .07s3.7-.01 5-.07c4.4-.2 6.73-2.53 6.93-6.93.06-1.3.07-1.7.07-5s-.01-3.7-.07-5C23.73 2.6 21.4.27 17 .07 15.7.01 15.3 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg><span>Ver post</span></div>
-              </a>
+            <div className="insta-grid insta-profile-card">
+              <div className="insta-profile-mark">IG</div>
+              <div>
+                <span className="eyebrow">Perfil oficial</span>
+                <h3>@barberlounge.rio</h3>
+                <p>O feed oficial é atualizado diretamente no Instagram. Abra o perfil para ver as publicações mais recentes, sem imagens demonstrativas ou conteúdo de outra fonte.</p>
+                <a href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener" className="btn btn-outline">Abrir perfil no Instagram →</a>
+              </div>
             </div>
 
             <div className="section-cta">
@@ -761,7 +747,7 @@ export default function Home() {
               <h3 className="font-display text-xl font-bold uppercase text-white">Perfil oficial no Google Maps</h3>
               <p className="review-text" style={{ marginTop: '12px' }}>Consulte a nota, os comentários e as fotos diretamente na fonte oficial da Barber Lounge Rio.</p>
               <div className="reviews-cta">
-                <a href="https://www.google.com/maps?q=Barber+Lounge+Rio,+Avenida+Churchill,+Centro,+Rio+de+Janeiro,+RJ,+20020-050" target="_blank" rel="noopener" className="btn btn-outline">Abrir avaliações no Google →</a>
+                <a href={googleMapsUrl} target="_blank" rel="noopener" className="btn btn-outline">Abrir avaliações no Google →</a>
               </div>
             </div>
           </div>
@@ -772,7 +758,7 @@ export default function Home() {
           <div className="wrap">
             <span className="eyebrow">Reserve a sua exclusividade</span>
             <h2>Seu horário, sua peça, seu estilo.</h2>
-            <p>Fale com a nossa equipe pelo WhatsApp e garanta atendimento na barbearia, no Up Spa ou acesso antecipado às novas peças do brechó.</p>
+            <p>Fale com a nossa equipe pelo WhatsApp, garanta seu horário e acompanhe as novas peças do brechó.</p>
             <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" className="btn btn-gold">Agendar pelo WhatsApp</a>
           </div>
         </div>
@@ -785,9 +771,9 @@ export default function Home() {
             <div className="footer-brand">
               <a href="#top" className="logo">
                 <img src="https://barberloungerio.lovable.app/__l5e/assets-v1/b7947c7d-fabf-4480-ab24-10be1a227fb7/barber-lounge-logo.png" alt="Barber Lounge Rio" />
-                <span className="logo-type"><strong>Barber Lounge</strong><span>Rio · Centro</span></span>
+                <span className="logo-type"><strong>BARBER LOUNGE RIO</strong><span>Centro · Rio de Janeiro</span></span>
               </a>
-              <p>Autenticidade, luxo e atitude em um único lugar. Barbearia de alto padrão, The Up Spa e curadoria de moda circular no Centro do Rio de Janeiro.</p>
+              <p>Autenticidade, luxo e atitude em um único lugar. Barbearia de alto padrão e curadoria de moda circular no Centro do Rio de Janeiro.</p>
               <div className="footer-socials">
                 <a href="https://instagram.com/barberlounge.rio" target="_blank" rel="noreferrer" aria-label="Instagram">IG</a>
                 <a href="https://wa.me/5521980089047" target="_blank" rel="noreferrer" aria-label="WhatsApp">WA</a>

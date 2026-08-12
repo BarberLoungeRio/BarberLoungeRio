@@ -15,6 +15,10 @@ import {
   updateContent,
   updateService,
   updateYoutubeVideo,
+  createThriftStoreItem,
+  deleteThriftStoreItem,
+  reorderThriftStoreItems,
+  updateThriftStoreItem,
 } from "./db";
 
 const serviceInput = z.object({
@@ -32,6 +36,14 @@ const videoInput = z.object({
   title: z.string().min(2).max(160),
   description: z.string().max(2000).default("Conteúdo Barber Lounge Rio."),
   tag: z.string().min(1).max(64).default("Drops TV"),
+  sortOrder: z.number().int().min(0).default(0),
+  active: z.boolean().default(true),
+});
+
+const thriftStoreInput = z.object({
+  imageUrl: z.string().min(1).refine((value) => value.startsWith("/manus-storage/") || /^https?:\/\//.test(value), "Informe uma URL pública ou um caminho /manus-storage válido."),
+  title: z.string().min(1).max(160),
+  description: z.string().max(2000).default(""),
   sortOrder: z.number().int().min(0).default(0),
   active: z.boolean().default(true),
 });
@@ -87,6 +99,15 @@ export const appRouter = router({
       }),
       delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ input }) => deleteYoutubeVideo(input.id)),
       reorder: adminProcedure.input(z.object({ ids: z.array(z.number().int().positive()).min(1) })).mutation(({ input }) => reorderYoutubeVideos(input.ids)),
+    }),
+    thriftStore: router({
+      create: adminProcedure.input(thriftStoreInput).mutation(({ input }) => createThriftStoreItem(input)),
+      update: adminProcedure.input(thriftStoreInput.extend({ id: z.number().int().positive() })).mutation(({ input }) => {
+        const { id, ...payload } = input;
+        return updateThriftStoreItem(id, payload);
+      }),
+      delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ input }) => deleteThriftStoreItem(input.id)),
+      reorder: adminProcedure.input(z.object({ ids: z.array(z.number().int().positive()).min(1) })).mutation(({ input }) => reorderThriftStoreItems(input.ids)),
     }),
   }),
 });

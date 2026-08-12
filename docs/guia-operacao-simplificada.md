@@ -43,3 +43,12 @@ Uma vez por mês, abra o painel, adicione os novos Shorts, arraste-os para a pos
 ## Referência do projeto
 
 O painel é acessado em `/admin`. O guia técnico de DNS está em `/admin/dns`. A vitrine pública continua em `/`. O acesso administrativo é protegido por login e as operações de criação, edição, reordenação e remoção são autorizadas no servidor para contas com função de administrador.
+
+
+## Atualizações recentes
+
+A aba **Thrift Store** do painel agora reúne as fotos recebidas e permite editar, sem código, a URL da imagem, o título, a descrição, a ordem e o status de publicação. A descrição salva nessa aba aparece imediatamente abaixo da foto na vitrine pública. No computador, arraste os cartões; no celular, use a ordem numérica e salve.
+
+A seção de avaliações agora usa uma URL centralizada e editável chamada **Google Maps · link oficial de avaliações**, dentro do bloco **Contato**. Ela abre a busca oficial do Google Maps para a Barber Lounge Rio. A aplicação não exibe nota, contagem ou depoimentos locais sem uma fonte verificável. Para transformar isso em feed programático de avaliações, ainda será necessário informar o link direto do Perfil da Empresa ou um Place ID oficial e configurar as credenciais do Google Places API.
+
+A logo atual permanece como imagem provisória até que a nova logo seja enviada. Assim que o arquivo for recebido, ele deverá ser publicado no armazenamento do projeto e substituído no cabeçalho, rodapé e demais pontos de identidade visual.

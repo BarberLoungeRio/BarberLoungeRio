@@ -66,6 +66,22 @@ export const youtubeVideos = mysqlTable("youtube_videos", {
 export type YoutubeVideo = typeof youtubeVideos.$inferSelect;
 export type InsertYoutubeVideo = typeof youtubeVideos.$inferInsert;
 
+export const thriftStoreItems = mysqlTable("thrift_store_items", {
+  id: int("id").autoincrement().primaryKey(),
+  imageUrl: text("imageUrl").notNull(),
+  title: varchar("title", { length: 160 }).notNull(),
+  description: text("description").notNull(),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  active: boolean("active").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  orderIdx: index("thrift_store_items_order_idx").on(table.sortOrder),
+}));
+
+export type ThriftStoreItem = typeof thriftStoreItems.$inferSelect;
+export type InsertThriftStoreItem = typeof thriftStoreItems.$inferInsert;
+
 export const siteSettings = mysqlTable("site_settings", {
   key: varchar("key", { length: 96 }).primaryKey(),
   value: text("value").notNull(),
