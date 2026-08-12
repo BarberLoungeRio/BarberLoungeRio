@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { useState, useEffect } from "react";
 
 const heroVideoUrl = "/manus-storage/ARTEPARASITE_6df86b1c.mp4";
+const conceptVideoUrl = "/manus-storage/conceito-fundo_e5a6b4fa.mp4";
 const whatsappBookingUrl = `https://wa.me/5521980089047?text=${encodeURIComponent("Olá, Barber Lounge Rio! Gostaria de agendar um horário.")}`;
 
 export default function Home() {
@@ -312,6 +313,13 @@ export default function Home() {
         .section-cta{display:flex;justify-content:center;margin-top:48px;}
 
         .values{background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+        .values.concept-values{overflow:hidden;isolation:isolate;}
+        .concept-bg-video{position:absolute;inset:0;z-index:-2;overflow:hidden;background:#080808;}
+        .concept-bg-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:saturate(.8) contrast(1.08);}
+        .concept-video-overlay{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.8) 0%,rgba(0,0,0,.56) 42%,rgba(0,0,0,.88) 100%);pointer-events:none;}
+        .values.concept-values .wrap{position:relative;z-index:1;}
+        .values.concept-values .section-head p,.values.concept-values .value-item p{color:rgba(255,255,255,.76);}
+        .values.concept-values .value-item h3{color:var(--ivory);}
         .values .wrap{padding:70px 28px;}
         .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;text-align:center;}
         .value-item .num{
@@ -544,6 +552,11 @@ export default function Home() {
           .burger{display:flex;}
           .header-cta-desktop{display:none;}
         }
+        @media (prefers-reduced-motion: reduce){
+          .concept-bg-video video{display:none;}
+          .concept-values{background:linear-gradient(145deg,#14120d,#070707 70%);}
+        }
+
         @media (max-width:600px){
           .wrap{padding:0 20px;}
           .section-pad{padding:80px 0;}
@@ -622,8 +635,12 @@ export default function Home() {
           <div className="scroll-cue"><span>Role</span><span className="line"></span></div>
         </section>
 
-        {/* VALORES */}
-        <section className="values">
+        {/* CONCEITO COM VÍDEO DE FUNDO */}
+        <section className="values concept-values">
+          <div className="concept-bg-video" aria-hidden="true">
+            <video src={conceptVideoUrl} autoPlay loop muted playsInline preload="metadata" />
+          </div>
+          <div className="concept-video-overlay" aria-hidden="true" />
           <div className="wrap">
             <div className="section-head" style={{ marginBottom: '44px' }}>
               <span className="eyebrow">O Conceito</span>

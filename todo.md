@@ -77,7 +77,15 @@
 
 ## Melhorias solicitadas pelo usuário (WhatsApp, Domínio e Fluxo Mensal)
 
-- [ ] Implementar botão flutuante e chamadas de ação do WhatsApp com mensagem pré-preenchida para agendamento
-- [ ] Atualizar o painel e o guia de domínio para facilitar a configuração do barbearia.com.br
-- [ ] Aprimorar a experiência de adição e reordenação mensal de vídeos no Drops TV
-- [ ] Validar com testes, salvar checkpoint final e entregar os resultados completos
+- [x] Implementar botão flutuante e chamadas de ação do WhatsApp com mensagem pré-preenchida para agendamento
+- [x] Atualizar o painel e o guia de domínio para facilitar a configuração do barbearia.com.br
+- [x] Aprimorar a experiência de adição e reordenação mensal de vídeos no Drops TV
+- [x] Validar com testes, salvar checkpoint final e entregar os resultados completos
+
+## Vídeo de fundo na seção Conceito
+
+- [x] Inspecionar e incorporar o vídeo fornecido pelo Google Fotos como fundo silencioso e em loop na seção Conceito
+- [x] Validar a legibilidade dos textos e o comportamento responsivo do vídeo de fundo
+- [ ] Testar, salvar checkpoint e entregar o resultado ao usuário
+- [x] Validar a seção Conceito com o vídeo de fundo em viewport móvel e desktop, confirmando enquadramento e legibilidade
+- [x] Registrar a validação textual objetiva do vídeo da seção Conceito em desktop e mobile antes do checkpoint
