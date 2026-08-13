@@ -203,3 +203,10 @@
 - [x] Validar que nenhum endereço antigo permaneça em Home, Admin, DnsGuide e documentação
 - [x] Executar testes, build e salvar checkpoint da correção
 
+
+## Identificação pública e acesso ao modo de edição
+- [ ] Atualizar o título público para Barber Lounge Rio — barberloungerio.com.br
+- [ ] Diferenciar o nome técnico interno barbearia-app do nome público e do domínio oficial
+- [ ] Criar um caminho documentado para acessar `/admin`, editar conteúdo e abrir os guias GitHub/Render
+- [ ] Validar título, painel, documentação, testes e build e salvar checkpoint
+
