@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 
 const heroVideoUrl = "/manus-storage/hero-google-photos-correct_4a3b4bc1.mp4";
 const heroPosterUrl = "/manus-storage/hero-correct-poster_b3437a5c.jpg";
-const conceptVideoUrl = "/manus-storage/conceito-fundo_e5a6b4fa.mp4";
 const whatsappBookingUrl = `https://wa.me/5521980089047?text=${encodeURIComponent("Olá, Barber Lounge Rio! Gostaria de agendar um horário.")}`;
 
 export default function Home() {
@@ -235,17 +234,34 @@ export default function Home() {
           position:absolute;inset:0;
           z-index:0;
           overflow:hidden;
+          background-color:#000;
+          background-position:center;
+          background-size:cover;
+          background-repeat:no-repeat;
+        }
+        .hero-bg-video::before{
+          content:"";
+          position:absolute;inset:-7%;
+          background:inherit;
+          background-position:center;
+          background-size:cover;
+          filter:blur(22px) brightness(.42);
+          transform:scale(1.08);
+          z-index:0;
         }
         .hero-bg-video video{
           position:absolute;top:50%;left:50%;
           width:100%;height:100%;
-          object-fit:cover;
+          object-fit:contain;
           object-position:center;
           transform:translate(-50%,-50%);
           display:block;
+          z-index:1;
+          background:#000;
         }
         .hero-bg-overlay{
           position:absolute;inset:0;
+          z-index:2;
           background:linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.8) 85%, rgba(0,0,0,0.95) 100%);
         }
         .hero::before{
@@ -314,13 +330,6 @@ export default function Home() {
         .section-cta{display:flex;justify-content:center;margin-top:48px;}
 
         .values{background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-        .values.concept-values{overflow:hidden;isolation:isolate;}
-        .concept-bg-video{position:absolute;inset:0;z-index:-2;overflow:hidden;background:#080808;}
-        .concept-bg-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:saturate(.8) contrast(1.08);}
-        .concept-video-overlay{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.8) 0%,rgba(0,0,0,.56) 42%,rgba(0,0,0,.88) 100%);pointer-events:none;}
-        .values.concept-values .wrap{position:relative;z-index:1;}
-        .values.concept-values .section-head p,.values.concept-values .value-item p{color:rgba(255,255,255,.76);}
-        .values.concept-values .value-item h3{color:var(--ivory);}
         .values .wrap{padding:70px 28px;}
         .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;text-align:center;}
         .value-item .num{
@@ -554,8 +563,6 @@ export default function Home() {
           .header-cta-desktop{display:none;}
         }
         @media (prefers-reduced-motion: reduce){
-          .concept-bg-video video{display:none;}
-          .concept-values{background:linear-gradient(145deg,#14120d,#070707 70%);}
         }
 
         @media (max-width:600px){
@@ -611,7 +618,7 @@ export default function Home() {
       <main id="top">
         {/* HERO */}
         <section className="hero">
-          <div className="hero-bg-video">
+          <div className="hero-bg-video" style={{ backgroundImage: `url(${heroPosterUrl})` }}>
             <video autoPlay muted loop playsInline preload="auto" poster={heroPosterUrl} aria-hidden="true">
               <source src={heroVideoUrl} type="video/mp4" />
             </video>
@@ -636,12 +643,8 @@ export default function Home() {
           <div className="scroll-cue"><span>Role</span><span className="line"></span></div>
         </section>
 
-        {/* CONCEITO COM VÍDEO DE FUNDO */}
-        <section className="values concept-values">
-          <div className="concept-bg-video" aria-hidden="true">
-            <video src={conceptVideoUrl} autoPlay loop muted playsInline preload="metadata" />
-          </div>
-          <div className="concept-video-overlay" aria-hidden="true" />
+        {/* CONCEITO */}
+        <section className="values">
           <div className="wrap">
             <div className="section-head" style={{ marginBottom: '44px' }}>
               <span className="eyebrow">O Conceito</span>
@@ -789,7 +792,7 @@ export default function Home() {
               <h5>Contato Rápido</h5>
               <a href={whatsappBookingUrl} target="_blank" rel="noreferrer">(21) 98008-9047 — WhatsApp</a>
               <a href="https://instagram.com/barberlounge.rio" target="_blank" rel="noreferrer">@barberlounge.rio</a>
-              <a href="#servicos">Ver Drops TV & Shorts</a>
+              <a href="#servicos">Serviços</a>
               {user?.role === 'admin' && (
                 <Link href="/admin" style={{ color: 'var(--gold-light)', fontWeight: 700, marginTop: '8px', display: 'inline-block' }}>⚙️ Painel Administrativo</Link>
               )}

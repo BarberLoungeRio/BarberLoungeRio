@@ -104,3 +104,34 @@
 - [x] Atualizar o Hero no Home.tsx para usar o novo arquivo correto
 - [x] Testar, salvar checkpoint final e entregar o resultado ao usuário
 - [x] Criar e aplicar um poster do novo vídeo do Hero para evitar primeiro frame preto durante o carregamento
+
+## Guia de Publicação, Domínio e Configuração
+- [x] Elaborar passo a passo para publicação do site no Manus
+- [x] Explicar o processo de configuração do domínio `.com.br` no Registro.br
+- [x] Detalhar o acesso à página de configuração e painel administrativo do site
+
+## Avaliação de hospedagem gratuita externa
+- [x] Comparar hospedagens gratuitas atuais compatíveis com Node.js, banco MySQL e painel administrativo
+- [x] Comparar formalmente Render, Railway e Vercel com critérios de Node.js, MySQL, domínio próprio e painel `/admin`
+- [x] Recomendar arquitetura gratuita Render Free + Aiven MySQL Free e explicar a continuidade do painel visual
+- [x] Documentar limitações críticas: sleep, expiração, armazenamento efêmero, créditos e ausência de MySQL gerenciado
+- [ ] Definir a arquitetura externa final após o usuário escolher o provedor
+- [ ] Preparar migração do projeto, banco, variáveis de ambiente e armazenamento se o usuário escolher um provedor
+
+## Guia GitHub e Render
+- [x] Mapear scripts de build, start, banco e integrações do projeto para deploy externo
+- [x] Pesquisar instruções oficiais de envio ao GitHub e conexão de um Web Service Node.js ao Render
+- [x] Elaborar guia seguro com variáveis de ambiente, teste pré-DNS e integração do domínio
+- [ ] Executar a migração real após o usuário criar ou informar o repositório GitHub e escolher a hospedagem
+
+## Ajustes solicitados na vitrine
+- [x] Ampliar visualmente o primeiro vídeo nas laterais sem distorcer a imagem
+- [x] Remover o segundo vídeo da vitrine e manter a área limpa
+- [x] Substituir o item Drops TV do rodapé pela seção Serviços
+- [x] Validar desktop, mobile, testes e build após as alterações
+
+
+## Refinamento e validação adicional
+- [x] Implementar um enquadramento verificável que preserve o vídeo 1 completo e preencha as laterais sem distorção
+- [x] Capturar e validar a página em viewport móvel, incluindo Hero, Conceito e rodapé
+
