@@ -16,6 +16,7 @@ function Router() {
       <Route path="/admin" component={Admin} />
       <Route path="/admin/dns" component={DnsGuide} />
       <Route path="/admin/guide" component={AdminGuide} />
+      <Route path="/docs/manual-github-aplicativo-e-prompts.md" component={AdminGuide} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

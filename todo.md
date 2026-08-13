@@ -210,3 +210,10 @@
 - [x] Criar um caminho documentado para acessar `/admin`, editar conteúdo e abrir os guias GitHub/Render
 - [x] Validar título, painel, documentação, testes e build e salvar checkpoint
 
+
+## Correção do Guia de Prompts
+- [ ] Reproduzir o 404 do botão Guia GitHub e Prompts
+- [ ] Corrigir a rota ou criar um fallback público funcional para o manual
+- [ ] Validar o acesso pelo painel e pelo link direto
+- [ ] Executar testes/build e salvar checkpoint da correção
+
