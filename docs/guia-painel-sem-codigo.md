@@ -9,7 +9,7 @@ O uso diário do site pode ser feito pelo painel administrativo, sem abrir o Git
 Abra:
 
 ```text
-https://barbearia.com.br/admin
+https://barberloungerio.com.br/admin
 ```
 
 Durante a configuração, use a URL pública atual do projeto e acrescente `/admin`. Faça login com a conta autorizada como administradora.
@@ -26,7 +26,7 @@ O painel aceita imagens com até 10 MB. Também é possível colar uma URL públ
 
 ## Adicionar um vídeo
 
-Na aba **Drops TV**, cole uma URL do YouTube Shorts no formulário ou use **Entrada mensal rápida** para colar vários links. Clique em **Adicionar lote mensal**. Depois, edite título, descrição, etiqueta, visibilidade e ordem. No celular, use as setas; no computador, arraste os cartões.
+Na aba **Serviços**, cole uma URL do YouTube Shorts no formulário ou use **Entrada mensal rápida** para colar vários links. Clique em **Adicionar lote mensal**. Depois, edite título, descrição, etiqueta, visibilidade e ordem. No celular, use as setas; no computador, arraste os cartões.
 
 ## Criar uma nova coluna
 

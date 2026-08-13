@@ -196,3 +196,10 @@
 ## Comandos atualizados para GitHub e Render (vídeo limpo)
 - [x] Documentar os comandos de Git para atualizar o repositório com o novo vídeo do Hero sem CapCut
 - [x] Orientar como acionar o redeploy no Render e validar a versão publicada
+
+## Correção do domínio oficial
+- [x] Substituir referências visíveis e documentais de barbearia.com.br por barberloungerio.com.br
+- [x] Atualizar guias, URLs administrativas e instruções de DNS para o domínio oficial
+- [x] Validar que nenhum endereço antigo permaneça em Home, Admin, DnsGuide e documentação
+- [x] Executar testes, build e salvar checkpoint da correção
+

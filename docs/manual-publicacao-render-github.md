@@ -54,4 +54,4 @@ Como o projeto utiliza persistência para o painel administrativo e curadoria, �
 ## Passo 6: Testar e ligar o domínio
 1. Quando o deploy terminar, o Render fornecerá uma URL temporária (ex: `https://barber-lounge-rio.onrender.com`).
 2. Abra essa URL para testar o site e acesse `/admin` para verificar o painel administrativo.
-3. Somente após confirmar que tudo está funcionando perfeitamente, acesse as configurações de domínios no Render, adicione `barbearia.com.br` e copie os registros CNAME/DNS para o **Registro.br**.
+3. Somente após confirmar que tudo está funcionando perfeitamente, acesse as configurações de domínios no Render, adicione `barberloungerio.com.br` e copie os registros CNAME/DNS para o **Registro.br**.

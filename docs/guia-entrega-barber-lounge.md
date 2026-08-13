@@ -26,20 +26,20 @@ O painel administrativo em `/admin` permite alterar qualquer elemento da vitrine
 
 ---
 
-## 3. Hospedagem Gratuita e Conexão de Domínio Próprio (`barbearia.com.br`)
+## 3. Hospedagem Gratuita e Conexão de Domínio Próprio (`barberloungerio.com.br`)
 
-O projeto está pronto para ser hospedado na infraestrutura automatizada de nuvem, aceitando o domínio registrado no **Registro.br** (`barbearia.com.br`).
+O projeto está pronto para ser hospedado na infraestrutura automatizada de nuvem, aceitando o domínio registrado no **Registro.br** (`barberloungerio.com.br`).
 
 ### Passo a passo para configurar o DNS no Registro.br:
 
 1. **Publicação Inicial:** No painel de gerenciamento do projeto, clique no botão **Publish** para gerar a versão de produção.
-2. **Configuração de Domínio:** Em **Settings → Domains**, informe o seu domínio personalizado `barbearia.com.br` (e/ou `www.barbearia.com.br`). O sistema exibirá o destino DNS correspondente (geralmente um registro CNAME ou A).
+2. **Configuração de Domínio:** Em **Settings → Domains**, informe o seu domínio personalizado `barberloungerio.com.br` (e/ou `www.barberloungerio.com.br`). O sistema exibirá o destino DNS correspondente (geralmente um registro CNAME ou A).
 3. **Ajuste na Zona DNS do Registro.br:**
-   - Acesse [registro.br](https://registro.br), entre com suas credenciais e clique em **Domínios → barbearia.com.br → DNS → Editar zona**.
+   - Acesse [registro.br](https://registro.br), entre com suas credenciais e clique em **Domínios → barberloungerio.com.br → DNS → Editar zona**.
    - Insira o registro fornecido pela plataforma de hospedagem (por exemplo, apontando o CNAME de `www` para o destino indicado).
-   - Para o domínio raiz (`barbearia.com.br`), configure o redirecionamento ou o registro IP correspondente orientado no painel.
+   - Para o domínio raiz (`barberloungerio.com.br`), configure o redirecionamento ou o registro IP correspondente orientado no painel.
 4. **Verificação de SSL:** Após salvar os registros no Registro.br, clique em **Verify / Validar** no painel de domínios. O certificado de segurança HTTPS será emitido automaticamente.
-5. **Teste Final:** Acesse `https://barbearia.com.br` e `https://www.barbearia.com.br` para confirmar que a vitrine carrega com segurança e velocidade.
+5. **Teste Final:** Acesse `https://barberloungerio.com.br` e `https://www.barberloungerio.com.br` para confirmar que a vitrine carrega com segurança e velocidade.
 
 ---
 

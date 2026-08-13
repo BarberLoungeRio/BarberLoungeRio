@@ -2,29 +2,29 @@
 
 ## Onde o site fica hospedado
 
-O projeto fica hospedado na infraestrutura gerenciada do próprio ambiente WebDev do Manus. A aplicação funciona em uma URL HTTPS de pré-visualização e, depois que você clicar em **Publish** no painel de gerenciamento, poderá ser publicada em produção com o domínio personalizado `barbearia.com.br`. O banco de dados permanece conectado ao projeto e guarda os textos, cores, serviços e vídeos cadastrados no painel.
+O projeto fica hospedado na infraestrutura gerenciada do próprio ambiente WebDev do Manus. A aplicação funciona em uma URL HTTPS de pré-visualização e, depois que você clicar em **Publish** no painel de gerenciamento, poderá ser publicada em produção com o domínio personalizado `barberloungerio.com.br`. O banco de dados permanece conectado ao projeto e guarda os textos, cores, serviços e vídeos cadastrados no painel.
 
 A hospedagem padrão é automatizada e adequada para um site institucional: o serviço inicia quando recebe acesso, utiliza HTTPS e não exige que o seu computador fique ligado. O domínio próprio é configurado no painel do projeto, em **Settings → Domains**, e depois no Registro.br, conforme o guia de DNS que já está disponível em `/admin/dns`.
 
 ## Qual aplicativo usar no dia a dia
 
-Você não precisa instalar um programa de edição de código. Use o site do Manus pelo navegador para abrir o painel do projeto e, no cartão do projeto, abra a **Pré-visualização**. Para administrar a vitrine, acesse `/admin`, faça login com a conta autorizada e utilize as abas **Conteúdo e cores**, **Serviços** e **Drops TV**.
+Você não precisa instalar um programa de edição de código. Use o site do Manus pelo navegador para abrir o painel do projeto e, no cartão do projeto, abra a **Pré-visualização**. Para administrar a vitrine, acesse `/admin`, faça login com a conta autorizada e utilize as abas **Conteúdo e cores**, **Serviços**, **Thrift Store** e **Novas colunas**.
 
 | O que você deseja alterar | Onde fazer | Como funciona |
 |---|---|---|
 | Palavras, títulos e textos | **Conteúdo e cores** | Clique no campo, substitua o texto e selecione **Salvar alterações**. |
 | Cores da marca | **Conteúdo e cores** | Escolha a cor no seletor ou cole o código hexadecimal e salve. |
 | Imagens e serviços | **Serviços** | Clique em **Editar**, cole a URL da imagem, revise o texto e salve. |
-| Vídeos mensais | **Drops TV** | Clique em **Adicionar Short**, cole a URL do YouTube Shorts e salve. |
-| Ordem dos vídeos | **Drops TV** | Arraste o cartão para outra posição; no celular, use as setas para cima e para baixo. |
-| Ocultar um vídeo | **Drops TV** | Edite o cartão, desmarque **Publicado na galeria** e salve. |
-| Remover um vídeo | **Drops TV** | Use o botão de lixeira e confirme a remoção. |
+| Vídeos mensais | **Serviços** | Clique em **Adicionar Short**, cole a URL do YouTube Shorts e salve. |
+| Ordem dos vídeos | **Serviços** | Arraste o cartão para outra posição; no celular, use as setas para cima e para baixo. |
+| Ocultar um vídeo | **Serviços** | Edite o cartão, desmarque **Publicado na galeria** e salve. |
+| Remover um vídeo | **Serviços** | Use o botão de lixeira e confirme a remoção. |
 
 > O painel não altera o código-fonte. Ele grava os valores no banco de dados e a página pública lê essas informações automaticamente.
 
 ## Como adicionar um vídeo novo
 
-Abra **Drops TV → Adicionar Short** para um vídeo individual. Para publicar vários vídeos de uma vez, use o bloco **Entrada mensal rápida**, cole um link por linha ou separados por espaço e selecione **Adicionar lote mensal**. Os links válidos entram no final da galeria; depois, arraste os cartões ou use as setas para organizar. O site converte cada endereço em um card vertical e tenta iniciar o vídeo sem som; se o navegador ou o YouTube bloquear o autoplay, o visitante ainda poderá abrir o vídeo diretamente no YouTube.
+Abra **Serviços → Adicionar Short** para um vídeo individual. Para publicar vários vídeos de uma vez, use o bloco **Entrada mensal rápida**, cole um link por linha ou separados por espaço e selecione **Adicionar lote mensal**. Os links válidos entram no final da galeria; depois, arraste os cartões ou use as setas para organizar. O site converte cada endereço em um card vertical e tenta iniciar o vídeo sem som; se o navegador ou o YouTube bloquear o autoplay, o visitante ainda poderá abrir o vídeo diretamente no YouTube.
 
 ## Como funciona o Instagram neste momento
 
@@ -34,9 +34,9 @@ A conexão de feed automático real exige autorização da Meta, uma conta profi
 
 Todos os botões de agendamento do site, inclusive o botão flutuante, abrem o WhatsApp com a mensagem pré-preenchida: “Olá, Barber Lounge Rio! Gostaria de agendar um horário.”
 
-## Domínio `barbearia.com.br`
+## Domínio `barberloungerio.com.br`
 
-A publicação do projeto e o domínio são etapas separadas. Primeiro, publique o projeto pelo botão **Publish** e copie o endereço de produção informado pelo painel. Depois, abra o Registro.br, selecione `barbearia.com.br`, entre em **DNS → Editar zona** e crie os registros indicados pelo painel de domínios do projeto. Não invente valores de DNS: o destino pode variar conforme a publicação, portanto use exatamente os registros exibidos em **Settings → Domains**. Após a propagação, volte ao painel, valide o domínio e aguarde a emissão do certificado HTTPS.
+A publicação do projeto e o domínio são etapas separadas. Primeiro, publique o projeto pelo botão **Publish** e copie o endereço de produção informado pelo painel. Depois, abra o Registro.br, selecione `barberloungerio.com.br`, entre em **DNS → Editar zona** e crie os registros indicados pelo painel de domínios do projeto. Não invente valores de DNS: o destino pode variar conforme a publicação, portanto use exatamente os registros exibidos em **Settings → Domains**. Após a propagação, volte ao painel, valide o domínio e aguarde a emissão do certificado HTTPS.
 
 ## Rotina mensal recomendada
 

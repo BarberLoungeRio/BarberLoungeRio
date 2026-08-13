@@ -25,7 +25,7 @@ A ressalva é importante: Render descreve o serviço gratuito como apropriado pa
 Após a migração, o painel continuará dentro do próprio site:
 
 ```text
-https://barbearia.com.br/admin
+https://barberloungerio.com.br/admin
 ```
 
 O usuário continuará editando textos, cores, vídeos, fotos e descrições pelo painel visual. A diferença é que o provedor hospedará o processo do aplicativo; o conteúdo continuará sendo salvo no banco Aiven e os arquivos de mídia deverão ser movidos para armazenamento externo persistente, como S3/R2, em vez de depender do sistema de arquivos efêmero do servidor gratuito.

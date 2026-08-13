@@ -159,9 +159,9 @@ Não faça essa alteração de teste em produção sem confirmar primeiro qual b
 Quando o serviço Render estiver estável:
 
 1. No Render, abra **Settings → Custom Domains**.
-2. Adicione `barbearia.com.br` e, se desejado, `www.barbearia.com.br`.
+2. Adicione `barberloungerio.com.br` e, se desejado, `www.barberloungerio.com.br`.
 3. Copie os registros DNS exibidos pelo Render.
-4. No Registro.br, abra **Domínios → barbearia.com.br → DNS → Editar zona**.
+4. No Registro.br, abra **Domínios → barberloungerio.com.br → DNS → Editar zona**.
 5. Cadastre os registros exatamente como o Render mostrar.
 6. Preserve `MX`, `SPF`, `DKIM` e `DMARC` do e-mail.
 7. Volte ao Render e clique em **Verify**.
