@@ -185,3 +185,10 @@
 - [x] Criar arquivo de prompts operacionais e instruções em `docs/prompts/pacote-instrucoes-github.md`
 - [x] Detalhar em cada prompt o objetivo, o local de uso (Copilot/Issues) e o comportamento esperado
 - [x] Explicar a separação entre comandos executados pelo Git/GitHub e ações no painel do Render
+
+## Correção do vídeo de abertura
+- [x] Remover o trecho final com marca/código do CapCut do vídeo do Hero
+- [x] Publicar a versão limpa do vídeo no armazenamento do projeto
+- [x] Ajustar o enquadramento do Hero para preencher desktop e celular sem distorção
+- [ ] Validar visualmente o vídeo limpo em web e mobile, executar testes e salvar checkpoint
+

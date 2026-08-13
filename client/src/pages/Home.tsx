@@ -3,8 +3,8 @@ import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
 
-const heroVideoUrl = "/manus-storage/hero-google-photos-correct_4a3b4bc1.mp4";
-const heroPosterUrl = "/manus-storage/hero-correct-poster_b3437a5c.jpg";
+const heroVideoUrl = "/manus-storage/hero-google-photos-clean_dea86347.mp4";
+const heroPosterUrl = "/manus-storage/hero-google-photos-clean-poster_ac66263e.jpg";
 const whatsappBookingUrl = `https://wa.me/5521980089047?text=${encodeURIComponent("Olá, Barber Lounge Rio! Gostaria de agendar um horário.")}`;
 
 export default function Home() {
@@ -17,6 +17,7 @@ export default function Home() {
   const instagramUsername = contentByKey.instagramUsername || "@barberlounge.rio";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [heroVideoReady, setHeroVideoReady] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -256,12 +257,19 @@ export default function Home() {
         .hero-bg-video video{
           position:absolute;top:50%;left:50%;
           width:100%;height:100%;
-          object-fit:contain;
-          object-position:center;
+          object-fit:cover;
+          object-position:center center;
           transform:translate(-50%,-50%);
           display:block;
           z-index:1;
+          opacity:0;
+          transition:opacity .4s ease;
           background:#000;
+        }
+        .hero-bg-video.is-ready video{opacity:1;}
+        @media (max-width: 768px){
+          .hero{min-height:100svh;padding:118px 18px 72px;}
+          .hero-bg-video video{object-fit:cover;object-position:50% 50%;}
         }
         .hero-bg-overlay{
           position:absolute;inset:0;
@@ -632,8 +640,26 @@ export default function Home() {
       <main id="top">
         {/* HERO */}
         <section className="hero">
-          <div className="hero-bg-video" style={{ backgroundImage: `url(${heroPosterUrl})` }}>
-            <video autoPlay muted loop playsInline preload="auto" poster={heroPosterUrl} aria-hidden="true">
+          <div className={`hero-bg-video${heroVideoReady ? " is-ready" : ""}`} style={{ backgroundImage: `url(${heroPosterUrl})` }}>
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster={heroPosterUrl}
+              aria-hidden="true"
+              onLoadedMetadata={(event) => {
+                const video = event.currentTarget;
+                if (Number.isFinite(video.duration) && video.duration > 1.2) video.currentTime = 1;
+              }}
+              onCanPlay={(event) => {
+                const video = event.currentTarget;
+                if (video.currentTime < 0.9 && Number.isFinite(video.duration) && video.duration > 1.2) video.currentTime = 1;
+                void video.play().catch(() => undefined);
+                setHeroVideoReady(true);
+              }}
+            >
               <source src={heroVideoUrl} type="video/mp4" />
             </video>
             <div className="hero-bg-overlay"></div>

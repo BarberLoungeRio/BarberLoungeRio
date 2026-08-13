@@ -1,0 +1,4 @@
+Com base na análise dos últimos segundos do vídeo, aqui estão as informações solicitadas:
+
+*   **Início do encerramento do CapCut:** O encerramento, apresentando o texto e a logo do CapCut, começa exatamente no instante **00:14**.
+*   **Descrição do último quadro limpo (00:13):** O último quadro que deve ser preservado exibe um logotipo estilizado e imponente. No centro, há um poste de barbeiro clássico com listras diagonais em preto e branco, detalhes dourados e uma esfera dourada no topo. Atrás do poste, há um par de tesouras douradas abertas e uma grande letra "V" metálica preta com bordas internas que brilham em um tom alaranjado/fogo. O fundo é escuro, com uma textura que lembra rocha ou metal desgastado, e pequenas partículas de luz flutuam ao redor da composição.
