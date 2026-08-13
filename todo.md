@@ -205,8 +205,8 @@
 
 
 ## Identificação pública e acesso ao modo de edição
-- [ ] Atualizar o título público para Barber Lounge Rio — barberloungerio.com.br
-- [ ] Diferenciar o nome técnico interno barbearia-app do nome público e do domínio oficial
-- [ ] Criar um caminho documentado para acessar `/admin`, editar conteúdo e abrir os guias GitHub/Render
-- [ ] Validar título, painel, documentação, testes e build e salvar checkpoint
+- [x] Atualizar o título público para Barber Lounge Rio — barberloungerio.com.br
+- [x] Diferenciar o nome técnico interno barbearia-app do nome público e do domínio oficial
+- [x] Criar um caminho documentado para acessar `/admin`, editar conteúdo e abrir os guias GitHub/Render
+- [x] Validar título, painel, documentação, testes e build e salvar checkpoint
 
