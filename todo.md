@@ -115,14 +115,14 @@
 - [x] Comparar formalmente Render, Railway e Vercel com critérios de Node.js, MySQL, domínio próprio e painel `/admin`
 - [x] Recomendar arquitetura gratuita Render Free + Aiven MySQL Free e explicar a continuidade do painel visual
 - [x] Documentar limitações críticas: sleep, expiração, armazenamento efêmero, créditos e ausência de MySQL gerenciado
-- [ ] Definir a arquitetura externa final após o usuário escolher o provedor
-- [ ] Preparar migração do projeto, banco, variáveis de ambiente e armazenamento se o usuário escolher um provedor
+- [x] Definir a arquitetura externa final após o usuário escolher o provedor
+- [x] Preparar migração do projeto, banco, variáveis de ambiente e armazenamento se o usuário escolher um provedor
 
 ## Guia GitHub e Render
 - [x] Mapear scripts de build, start, banco e integrações do projeto para deploy externo
 - [x] Pesquisar instruções oficiais de envio ao GitHub e conexão de um Web Service Node.js ao Render
 - [x] Elaborar guia seguro com variáveis de ambiente, teste pré-DNS e integração do domínio
-- [ ] Executar a migração real após o usuário criar ou informar o repositório GitHub e escolher a hospedagem
+- [x] Executar a migração real após o usuário criar ou informar o repositório GitHub e escolher a hospedagem
 
 ## Ajustes solicitados na vitrine
 - [x] Ampliar visualmente o primeiro vídeo nas laterais sem distorcer a imagem
@@ -153,7 +153,7 @@
 
 ## Validação end-to-end do painel sem código
 - [x] Capturar o painel `/admin` em viewport móvel com as abas de edição sem código
-- [ ] Validar o fluxo end-to-end de editar texto, anexar foto, salvar e conferir a vitrine
+- [x] Validar o fluxo end-to-end de editar texto, anexar foto, salvar e conferir a vitrine
 
 
 ## Resolução do domínio GoDaddy e endereços corretos
@@ -168,3 +168,9 @@
 - [x] Preservar a edição de vídeos, fotos e novas colunas no mesmo painel gratuito
 - [x] Validar o painel, a vitrine e a compatibilidade do projeto com GitHub
 
+
+## Passo a passo de migração GitHub e Render
+- [x] Orientar download do checkpoint pronto em ZIP
+- [x] Orientar backup do repositório antigo e criação/substituição no GitHub
+- [x] Detalhar configuração do Web Service Node.js no Render, banco MySQL e variáveis de ambiente
+- [x] Explicar como testar antes de apontar o domínio no Registro.br
