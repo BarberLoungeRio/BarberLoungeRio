@@ -180,3 +180,8 @@
 - [x] Explicar como enviar código e prompts juntos para o GitHub
 - [x] Detalhar métodos de envio (GitHub Desktop, VS Code e navegador)
 - [x] Garantir que o Render continue lendo apenas o aplicativo sem conflito com os prompts
+
+## Pacote de Prompts Prontos para o GitHub
+- [x] Criar arquivo de prompts operacionais e instruções em `docs/prompts/pacote-instrucoes-github.md`
+- [x] Detalhar em cada prompt o objetivo, o local de uso (Copilot/Issues) e o comportamento esperado
+- [x] Explicar a separação entre comandos executados pelo Git/GitHub e ações no painel do Render
