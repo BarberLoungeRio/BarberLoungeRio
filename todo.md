@@ -174,3 +174,9 @@
 - [x] Orientar backup do repositório antigo e criação/substituição no GitHub
 - [x] Detalhar configuração do Web Service Node.js no Render, banco MySQL e variáveis de ambiente
 - [x] Explicar como testar antes de apontar o domínio no Registro.br
+
+## Inclusão de prompts e aplicativo no GitHub
+- [x] Organizar os prompts em uma pasta `docs/prompts/` dentro do projeto
+- [x] Explicar como enviar código e prompts juntos para o GitHub
+- [x] Detalhar métodos de envio (GitHub Desktop, VS Code e navegador)
+- [x] Garantir que o Render continue lendo apenas o aplicativo sem conflito com os prompts
