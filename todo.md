@@ -190,5 +190,9 @@
 - [x] Remover o trecho final com marca/código do CapCut do vídeo do Hero
 - [x] Publicar a versão limpa do vídeo no armazenamento do projeto
 - [x] Ajustar o enquadramento do Hero para preencher desktop e celular sem distorção
-- [ ] Validar visualmente o vídeo limpo em web e mobile, executar testes e salvar checkpoint
+- [x] Validar visualmente o vídeo limpo em web e mobile, executar testes e salvar checkpoint
 
+
+## Comandos atualizados para GitHub e Render (vídeo limpo)
+- [x] Documentar os comandos de Git para atualizar o repositório com o novo vídeo do Hero sem CapCut
+- [x] Orientar como acionar o redeploy no Render e validar a versão publicada
