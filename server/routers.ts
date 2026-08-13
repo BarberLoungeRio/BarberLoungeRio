@@ -39,7 +39,7 @@ const videoInput = z.object({
   url: z.string().url(),
   title: z.string().min(2).max(160),
   description: z.string().max(2000).default("Conteúdo Barber Lounge Rio."),
-  tag: z.string().min(1).max(64).default("Drops TV"),
+  tag: z.string().min(1).max(64).default("Serviços"),
   sortOrder: z.number().int().min(0).default(0),
   active: z.boolean().default(true),
 });

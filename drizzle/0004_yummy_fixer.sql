@@ -1,0 +1,1 @@
+ALTER TABLE `youtube_videos` MODIFY COLUMN `tag` varchar(64) NOT NULL DEFAULT 'Serviços';

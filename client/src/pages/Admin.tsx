@@ -64,7 +64,7 @@ function AdminContent() {
   const dataQuery = trpc.admin.data.useQuery(undefined, { retry: false });
   const me = trpc.auth.me.useQuery();
   if (dataQuery.isError) return <><AdminHeader title="Painel interno" eyebrow="Acesso" description="Gerencie a vitrine e mantenha o conteúdo da casa sempre atualizado." /><AccessError /></>;
-  return <><AdminHeader title="Painel interno" eyebrow={`Olá, ${me.data?.name?.split(" ")[0] || "admin"}`} description="Gerencie a vitrine, anexe fotos, crie colunas e mantenha os Drops TV em ordem sem editar código." /><div className="mb-8 flex flex-wrap gap-2 border-b border-white/10 pb-3">{[["content", "Conteúdo e cores", FileText], ["services", "Serviços", ImagePlus], ["videos", "Drops TV", Video], ["thriftStore", "Thrift Store", ImagePlus], ["blocks", "Novas colunas", LayoutGrid]].map(([value, label, Icon]) => <button key={value as string} onClick={() => setTab(value as typeof tab)} className={`flex items-center gap-2 border-b-2 px-3 py-3 font-mono text-[10px] uppercase tracking-[.11em] transition ${tab === value ? "border-[#d5b05b] text-[#e8ca84]" : "border-transparent text-white/40 hover:text-white/75"}`}><Icon className="h-4 w-4" />{label as string}</button>)}</div>{dataQuery.isLoading ? <div className="flex items-center gap-3 p-12 text-white/50"><Loader2 className="h-5 w-5 animate-spin text-[#d5b05b]" /> Carregando conteúdo…</div> : tab === "content" ? <ContentEditor data={dataQuery.data!} /> : tab === "services" ? <ServicesEditor data={dataQuery.data!} /> : tab === "videos" ? <VideosEditor data={dataQuery.data!} /> : tab === "thriftStore" ? <ThriftStoreEditor data={dataQuery.data!} /> : <BlocksEditor data={dataQuery.data!} />}</>;
+  return <><AdminHeader title="Painel interno" eyebrow={`Olá, ${me.data?.name?.split(" ")[0] || "admin"}`} description="Gerencie a vitrine, anexe fotos, crie colunas e mantenha os Serviços em ordem sem editar código." /><div className="mb-8 flex flex-wrap gap-2 border-b border-white/10 pb-3">{[["content", "Conteúdo e cores", FileText], ["services", "Serviços", ImagePlus], ["videos", "Serviços", Video], ["thriftStore", "Thrift Store", ImagePlus], ["blocks", "Novas colunas", LayoutGrid]].map(([value, label, Icon]) => <button key={value as string} onClick={() => setTab(value as typeof tab)} className={`flex items-center gap-2 border-b-2 px-3 py-3 font-mono text-[10px] uppercase tracking-[.11em] transition ${tab === value ? "border-[#d5b05b] text-[#e8ca84]" : "border-transparent text-white/40 hover:text-white/75"}`}><Icon className="h-4 w-4" />{label as string}</button>)}</div>{dataQuery.isLoading ? <div className="flex items-center gap-3 p-12 text-white/50"><Loader2 className="h-5 w-5 animate-spin text-[#d5b05b]" /> Carregando conteúdo…</div> : tab === "content" ? <ContentEditor data={dataQuery.data!} /> : tab === "services" ? <ServicesEditor data={dataQuery.data!} /> : tab === "videos" ? <VideosEditor data={dataQuery.data!} /> : tab === "thriftStore" ? <ThriftStoreEditor data={dataQuery.data!} /> : <BlocksEditor data={dataQuery.data!} />}</>;
 }
 
 function ContentEditor({ data }: { data: AdminData }) {
@@ -72,7 +72,7 @@ function ContentEditor({ data }: { data: AdminData }) {
   const mutation = trpc.admin.content.useMutation({ onSuccess: () => { toast.success("Conteúdo salvo e publicado."); void trpc.useUtils().admin.data.invalidate(); }, onError: (error) => toast.error(error.message) });
   useEffect(() => { setDraft(Object.fromEntries(data.content.map((item) => [item.key, item.value]))); }, [data.content]);
   const groups = useMemo(() => data.content.reduce<Record<string, typeof data.content>>((acc, item) => { (acc[item.section] ||= []).push(item); return acc; }, {}), [data.content]);
-  const labels: Record<string, string> = { hero: "Hero e primeira impressão", services: "Seção de serviços", shorts: "Drops TV", instagram: "Instagram", contact: "Contato", footer: "Rodapé" };
+  const labels: Record<string, string> = { hero: "Hero e primeira impressão", services: "Seção de serviços", shorts: "Serviços", instagram: "Instagram", contact: "Contato", footer: "Rodapé", navigation: "Navegação", concept: "Conceito", thrift: "Thrift Store", reviews: "Avaliações", cta: "Chamada final", blocks: "Novas colunas", brand: "Identidade da marca", theme: "Cores" };
   return <div className="space-y-8"><div className="border border-[#d5b05b]/25 bg-[#d5b05b]/[.05] p-5"><div className="flex items-start gap-3"><Settings2 className="mt-0.5 h-5 w-5 shrink-0 text-[#d5b05b]" /><div><strong className="font-display text-sm uppercase tracking-[.08em] text-[#e8ca84]">Edição visual</strong><p className="mt-2 text-sm leading-6 text-white/50">Altere os textos e URLs abaixo. As mudanças ficam gravadas no banco de dados e aparecem no site público após salvar.</p></div></div></div>{Object.entries(groups).map(([section, fields]) => <section key={section} className="border border-white/10 bg-[#11110f] p-5 sm:p-7"><div className="mb-6 flex items-center justify-between gap-4"><div><span className="font-mono text-[9px] uppercase tracking-[.16em] text-[#d5b05b]">Bloco editável</span><h2 className="mt-2 font-display text-lg font-bold uppercase text-white">{labels[section] || section}</h2></div><Badge className="border-white/10 bg-white/5 font-mono text-[9px] uppercase tracking-[.1em] text-white/40">{fields.length} campos</Badge></div><div className="grid gap-5 md:grid-cols-2">{fields.map((field) => <Field key={field.key} label={field.label} hint={field.fieldType === "url" ? "Cole uma URL completa, incluindo https://" : undefined}>{field.fieldType === "textarea" ? <Textarea value={draft[field.key] ?? ""} onChange={(event) => setDraft((current) => ({ ...current, [field.key]: event.target.value }))} className="min-h-24 resize-y border-white/10 bg-black/20 text-sm text-white placeholder:text-white/25 focus-visible:ring-[#d5b05b]" /> : field.fieldType === "color" ? <div className="flex gap-2"><Input type="color" value={draft[field.key] || "#d5b05b"} onChange={(event) => setDraft((current) => ({ ...current, [field.key]: event.target.value }))} className="h-10 w-14 border-white/10 bg-black/20 p-1" /><Input value={draft[field.key] ?? ""} onChange={(event) => setDraft((current) => ({ ...current, [field.key]: event.target.value }))} className="border-white/10 bg-black/20 text-sm text-white focus-visible:ring-[#d5b05b]" /></div> : <Input type={field.fieldType === "url" ? "url" : "text"} value={draft[field.key] ?? ""} onChange={(event) => setDraft((current) => ({ ...current, [field.key]: event.target.value }))} className="border-white/10 bg-black/20 text-sm text-white focus-visible:ring-[#d5b05b]" />}</Field>)}</div></section>)}<div className="flex justify-end"><Button disabled={mutation.isPending || Object.keys(draft).length === 0} onClick={() => mutation.mutate({ items: Object.entries(draft).map(([key, value]) => ({ key, value })) })} className="gap-2 bg-[#d5b05b] font-display text-[10px] font-bold uppercase tracking-[.13em] text-black hover:bg-[#f0d894]"><Save className="h-4 w-4" /> {mutation.isPending ? "Salvando…" : "Salvar alterações"}</Button></div></div>;
 }
 
@@ -100,15 +100,15 @@ function VideosEditor({ data }: { data: AdminData }) {
   const [draggedId, setDraggedId] = useState<number | null>(null);
   const [bulkUrls, setBulkUrls] = useState("");
   const create = trpc.admin.videos.create.useMutation({
-    onSuccess: () => { toast.success("Short adicionado."); setForm(null); void utils.admin.data.invalidate(); },
+    onSuccess: () => { toast.success("Vídeo adicionado."); setForm(null); void utils.admin.data.invalidate(); },
     onError: (error) => toast.error(error.message),
   });
   const remove = trpc.admin.videos.delete.useMutation({
-    onSuccess: () => { toast.success("Short removido."); void utils.admin.data.invalidate(); },
+    onSuccess: () => { toast.success("Vídeo removido."); void utils.admin.data.invalidate(); },
     onError: (error) => toast.error(error.message),
   });
   const update = trpc.admin.videos.update.useMutation({
-    onSuccess: () => { toast.success("Short atualizado."); setForm(null); void utils.admin.data.invalidate(); },
+    onSuccess: () => { toast.success("Vídeo atualizado."); setForm(null); void utils.admin.data.invalidate(); },
     onError: (error) => toast.error(error.message),
   });
   const reorder = trpc.admin.videos.reorder.useMutation({
@@ -137,8 +137,8 @@ function VideosEditor({ data }: { data: AdminData }) {
   const set = (key: keyof VideoForm, value: string | number | boolean) => setForm((current) => current ? { ...current, [key]: value } : current);
   const bulkLinks = bulkUrls.split(/\\s+/).map((value) => value.trim()).filter((value) => value.startsWith("https://www.youtube.com/shorts/") || value.startsWith("https://youtu.be/"));
   const addBulk = () => {
-    if (bulkLinks.length === 0) { toast.error("Cole pelo menos um link válido do YouTube Shorts."); return; }
-    bulkLinks.forEach((url, index) => create.mutate({ url, title: "Drops TV · Novo " + (data.videos.length + index + 1), description: "Conteúdo Barber Lounge Rio.", tag: "Drops TV", sortOrder: data.videos.length + index + 1, active: true }));
+    if (bulkLinks.length === 0) { toast.error("Cole pelo menos um link válido do YouTube."); return; }
+    bulkLinks.forEach((url, index) => create.mutate({ url, title: "Serviço · Novo " + (data.videos.length + index + 1), description: "Conteúdo Barber Lounge Rio.", tag: "Serviços", sortOrder: data.videos.length + index + 1, active: true }));
     setBulkUrls("");
     toast.success(bulkLinks.length + " link(s) enviados para publicação.");
   };
@@ -146,10 +146,10 @@ function VideosEditor({ data }: { data: AdminData }) {
     <div className="space-y-6">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h2 className="font-display text-xl font-bold uppercase text-white">Drops TV · YouTube Shorts</h2>
-          <p className="mt-2 max-w-xl text-sm leading-6 text-white/45">Os vídeos são exibidos em autoplay sem som. Cole um link do YouTube Shorts, salve e arraste qualquer cartão para mudar a ordem. As setas continuam disponíveis no celular.</p>
+          <h2 className="font-display text-xl font-bold uppercase text-white">Serviços · YouTube Shorts</h2>
+          <p className="mt-2 max-w-xl text-sm leading-6 text-white/45">Os vídeos são exibidos em autoplay sem som. Cole um link de vídeo, salve e arraste qualquer cartão para mudar a ordem. As setas continuam disponíveis no celular.</p>
         </div>
-        <Button onClick={() => setForm({ url: "https://www.youtube.com/shorts/", title: "", description: "Conteúdo Barber Lounge Rio.", tag: "Drops TV", sortOrder: data.videos.length + 1, active: true })} className="gap-2 bg-[#d5b05b] font-display text-[10px] font-bold uppercase tracking-[.12em] text-black hover:bg-[#f0d894]"><Plus className="h-4 w-4" /> Adicionar Short</Button>
+        <Button onClick={() => setForm({ url: "https://www.youtube.com/shorts/", title: "", description: "Conteúdo Barber Lounge Rio.", tag: "Serviços", sortOrder: data.videos.length + 1, active: true })} className="gap-2 bg-[#d5b05b] font-display text-[10px] font-bold uppercase tracking-[.12em] text-black hover:bg-[#f0d894]"><Plus className="h-4 w-4" /> Adicionar vídeo</Button>
       </div>
       <div className="border border-white/10 bg-[#11110f] p-5">
         <div className="flex items-start gap-3">

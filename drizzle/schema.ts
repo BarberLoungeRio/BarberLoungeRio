@@ -54,7 +54,7 @@ export const youtubeVideos = mysqlTable("youtube_videos", {
   url: text("url").notNull(),
   title: varchar("title", { length: 160 }).notNull(),
   description: text("description").notNull(),
-  tag: varchar("tag", { length: 64 }).default("Drops TV").notNull(),
+  tag: varchar("tag", { length: 64 }).default("Serviços").notNull(),
   sortOrder: int("sortOrder").default(0).notNull(),
   active: boolean("active").default(true).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),

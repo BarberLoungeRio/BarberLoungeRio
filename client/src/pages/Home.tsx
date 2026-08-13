@@ -11,7 +11,10 @@ export default function Home() {
   const { data: publicData } = trpc.site.publicData.useQuery();
   const { user } = useAuth();
   const contentByKey = Object.fromEntries((publicData?.content ?? []).map((item) => [item.key, item.value]));
+  const getText = (key: string, fallback: string) => contentByKey[key] || fallback;
   const googleMapsUrl = contentByKey.googleMapsUrl || "https://www.google.com/maps/search/?api=1&query=Barber+Lounge+Rio%2C+Avenida+Churchill%2C+Centro%2C+Rio+de+Janeiro%2C+RJ%2C+20020-050";
+  const instagramUrl = contentByKey.instagramUrl || "https://www.instagram.com/barberlounge.rio/";
+  const instagramUsername = contentByKey.instagramUsername || "@barberlounge.rio";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -59,25 +62,25 @@ export default function Home() {
   }, [publicData]);
 
   const videos = publicData?.videos && publicData.videos.length > 0 ? publicData.videos : [
-    { youtubeId: "1TGsTfbgsbU", title: "Drop 01", description: "Estilo e precisão Barber Lounge Rio" },
-    { youtubeId: "c6-U-FAEt3E", title: "Drop 02", description: "Curadoria de alfaiataria" },
-    { youtubeId: "fiXUh-b76Lk", title: "Drop 03", description: "Detalhes e acabamento" },
-    { youtubeId: "JipFZMgKgHQ", title: "Drop 04", description: "Estilo e atitude" },
-    { youtubeId: "nOITaX2u79o", title: "Drop 05", description: "Ambiente exclusivo" },
-    { youtubeId: "gcFVNQKX8Gk", title: "Drop 06", description: "Barboterapia e ritual" },
-    { youtubeId: "LQUYKXlnsLI", title: "Drop 07", description: "Moda circular e luxo" },
-    { youtubeId: "hnAhD8P8IxI", title: "Drop 08", description: "Corte clássico" },
-    { youtubeId: "XjfYioTB7HA", title: "Drop 09", description: "Estética masculina" },
-    { youtubeId: "NgzDIHcA-oE", title: "Drop 10", description: "Atendimento premium" },
-    { youtubeId: "KAiZ7Ll6NmU", title: "Drop 11", description: "Curadoria de marca" },
-    { youtubeId: "mWhpD4Z7uqE", title: "Drop 12", description: "Tradição e inovação" },
-    { youtubeId: "_tCt_8YqYmg", title: "Drop 13", description: "Detalhes que marcam" },
-    { youtubeId: "ntDdpmPZQS0", title: "Drop 14", description: "Estilo no Centro do Rio" },
-    { youtubeId: "-d4z5irKhTM", title: "Drop 15", description: "Experiência completa" },
-    { youtubeId: "4OGPcp3Qg18", title: "Drop 16", description: "Cuidado e bem-estar" },
-    { youtubeId: "dGZa7-7-hzk", title: "Drop 17", description: "Excelência autoral" },
-    { youtubeId: "LH6LdE2kO_8", title: "Drop 18", description: "Tradição moderna" },
-    { youtubeId: "NrSqWZ3Mtbk", title: "Drop 19", description: "Exclusividade Barber Lounge" },
+    { youtubeId: "1TGsTfbgsbU", title: "Serviço 01", description: "Estilo e precisão Barber Lounge Rio" },
+    { youtubeId: "c6-U-FAEt3E", title: "Serviço 02", description: "Curadoria de alfaiataria" },
+    { youtubeId: "fiXUh-b76Lk", title: "Serviço 03", description: "Detalhes e acabamento" },
+    { youtubeId: "JipFZMgKgHQ", title: "Serviço 04", description: "Estilo e atitude" },
+    { youtubeId: "nOITaX2u79o", title: "Serviço 05", description: "Ambiente exclusivo" },
+    { youtubeId: "gcFVNQKX8Gk", title: "Serviço 06", description: "Barboterapia e ritual" },
+    { youtubeId: "LQUYKXlnsLI", title: "Serviço 07", description: "Moda circular e luxo" },
+    { youtubeId: "hnAhD8P8IxI", title: "Serviço 08", description: "Corte clássico" },
+    { youtubeId: "XjfYioTB7HA", title: "Serviço 09", description: "Estética masculina" },
+    { youtubeId: "NgzDIHcA-oE", title: "Serviço 10", description: "Atendimento premium" },
+    { youtubeId: "KAiZ7Ll6NmU", title: "Serviço 11", description: "Curadoria de marca" },
+    { youtubeId: "mWhpD4Z7uqE", title: "Serviço 12", description: "Tradição e inovação" },
+    { youtubeId: "_tCt_8YqYmg", title: "Serviço 13", description: "Detalhes que marcam" },
+    { youtubeId: "ntDdpmPZQS0", title: "Serviço 14", description: "Estilo no Centro do Rio" },
+    { youtubeId: "-d4z5irKhTM", title: "Serviço 15", description: "Experiência completa" },
+    { youtubeId: "4OGPcp3Qg18", title: "Serviço 16", description: "Cuidado e bem-estar" },
+    { youtubeId: "dGZa7-7-hzk", title: "Serviço 17", description: "Excelência autoral" },
+    { youtubeId: "LH6LdE2kO_8", title: "Serviço 18", description: "Tradição moderna" },
+    { youtubeId: "NrSqWZ3Mtbk", title: "Serviço 19", description: "Exclusividade Barber Lounge" },
   ];
 
   const services = publicData?.services && publicData.services.length > 0 ? publicData.services : [
@@ -592,37 +595,37 @@ export default function Home() {
         <div className="wrap">
           <a href="#top" className="logo">
             <img src="/manus-storage/WhatsAppImage2026-07-28at21.07.17_94e3c791.jpeg" alt="Barber Lounge Rio" style={{ borderRadius: '50%', objectFit: 'cover' }} />
-            <span className="logo-type"><strong>BARBER LOUNGE RIO</strong><span>Centro · Rio de Janeiro</span></span>
+            <span className="logo-type"><strong>{getText("brandName", "BARBER LOUNGE RIO")}</strong><span>{getText("brandLocation", "Centro · Rio de Janeiro")}</span></span>
           </a>
           <nav className="main-nav">
             <ul>
-              <li><a href="#top">Início</a></li>
-              <li><a href="#servicos">Drops TV</a></li>
-              <li><a href="#thrift">Thrift Store</a></li>
-              <li><a href="#instagram">Instagram</a></li>
-              <li><a href="#avaliacoes">Avaliações</a></li>
-              <li><a href="#contato">Contato</a></li>
+              <li><a href="#top">{getText("navHome", "Início")}</a></li>
+              <li><a href="#servicos">{getText("navServices", "Serviços")}</a></li>
+              <li><a href="#thrift">{getText("navThrift", "Thrift Store")}</a></li>
+              <li><a href="#instagram">{getText("navInstagram", "Instagram")}</a></li>
+              <li><a href="#avaliacoes">{getText("navReviews", "Avaliações")}</a></li>
+              <li><a href="#contato">{getText("navContact", "Contato")}</a></li>
               {user?.role === 'admin' && (
-                <li><Link href="/admin" style={{ color: 'var(--gold-light)' }}>Painel Admin</Link></li>
+                <li><Link href="/admin" style={{ color: 'var(--gold-light)' }}>{getText("navAdmin", "Painel Admin")}</Link></li>
               )}
             </ul>
-            <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-outline header-cta-desktop">Agendar Horário</a>
+            <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-outline header-cta-desktop">{getText("navBooking", "Agendar horário")}</a>
           </nav>
           <button className="burger" id="burgerBtn" aria-label="Abrir menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>
             <span></span><span></span><span></span>
           </button>
         </div>
         <div className={`mobile-nav ${mobileOpen ? 'open' : ''}`} id="mobileNav">
-          <a href="#top" onClick={() => setMobileOpen(false)}>Início</a>
-          <a href="#servicos" onClick={() => setMobileOpen(false)}>Drops TV</a>
-          <a href="#thrift" onClick={() => setMobileOpen(false)}>Thrift Store</a>
-          <a href="#instagram" onClick={() => setMobileOpen(false)}>Instagram</a>
-          <a href="#avaliacoes" onClick={() => setMobileOpen(false)}>Avaliações</a>
-          <a href="#contato" onClick={() => setMobileOpen(false)}>Contato</a>
+          <a href="#top" onClick={() => setMobileOpen(false)}>{getText("navHome", "Início")}</a>
+          <a href="#servicos" onClick={() => setMobileOpen(false)}>{getText("navServices", "Serviços")}</a>
+          <a href="#thrift" onClick={() => setMobileOpen(false)}>{getText("navThrift", "Thrift Store")}</a>
+          <a href="#instagram" onClick={() => setMobileOpen(false)}>{getText("navInstagram", "Instagram")}</a>
+          <a href="#avaliacoes" onClick={() => setMobileOpen(false)}>{getText("navReviews", "Avaliações")}</a>
+          <a href="#contato" onClick={() => setMobileOpen(false)}>{getText("navContact", "Contato")}</a>
           {user?.role === 'admin' && (
-            <Link href="/admin" onClick={() => setMobileOpen(false)} style={{ color: 'var(--gold-light)', fontFamily: 'Montserrat', fontWeight: 700, fontSize: '20px', padding: '16px 0', borderBottom: '1px solid var(--line)' }}>Painel Admin</Link>
+            <Link href="/admin" onClick={() => setMobileOpen(false)} style={{ color: 'var(--gold-light)', fontFamily: 'Montserrat', fontWeight: 700, fontSize: '20px', padding: '16px 0', borderBottom: '1px solid var(--line)' }}>{getText("navAdmin", "Painel Admin")}</Link>
           )}
-          <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-outline">Agendar Horário</a>
+          <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-outline">{getText("navBooking", "Agendar horário")}</a>
         </div>
       </header>
 
@@ -636,59 +639,59 @@ export default function Home() {
             <div className="hero-bg-overlay"></div>
           </div>
 
-          <span className="hero-tag"><span className="dot"></span> Centro do Rio · Seg a Sex, 06:30 às 15:00</span>
+          <span className="hero-tag"><span className="dot"></span> {getText("heroEyebrow", "Centro do Rio · Seg a Sex, 06:30 às 15:00")}</span>
 
-          <h1>Mais que um corte, <span>um conceito.</span></h1>
-          <p className="sub">A união da curadoria de estilo com a precisão do corte. Autenticidade, luxo e atitude em um único lugar, no coração do Centro do Rio.</p>
+          <h1>{getText("heroTitle", "Mais que um corte,")} <span>{getText("heroTitleAccent", "um conceito.")}</span></h1>
+          <p className="sub">{getText("heroDescription", "A união da curadoria de estilo com a precisão do corte. Autenticidade, luxo e atitude em um único lugar, no coração do Centro do Rio.")}</p>
 
           <div className="hero-ctas">
-            <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-gold">Agendar Exclusividade</a>
-            <a href="#thrift" className="btn btn-ghost">Explorar Luxury Thrift Store</a>
+            <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-gold">{getText("heroBookingCta", "Agendar Exclusividade")}</a>
+            <a href="#thrift" className="btn btn-ghost">{getText("heroSecondaryCta", "Explorar Luxury Thrift Store")}</a>
           </div>
 
           <div className="hero-meta">
-            <div><span className="num">4,9 ★</span><span className="label">Avaliação no Google</span></div>
-            <div><span className="num">Centro</span><span className="label">Av. Churchill, RJ</span></div>
+            <div><span className="num">{getText("heroRatingNumber", "4,9 ★")}</span><span className="label">{getText("heroRatingLabel", "Avaliação no Google")}</span></div>
+            <div><span className="num">{getText("heroLocationNumber", "Centro")}</span><span className="label">{getText("heroLocationLabel", "Av. Churchill, RJ")}</span></div>
           </div>
 
-          <div className="scroll-cue"><span>Role</span><span className="line"></span></div>
+          <div className="scroll-cue"><span>{getText("heroScrollCue", "Role")}</span><span className="line"></span></div>
         </section>
 
         {/* CONCEITO */}
         <section className="values">
           <div className="wrap">
             <div className="section-head" style={{ marginBottom: '44px' }}>
-              <span className="eyebrow">O Conceito</span>
-              <h2>Bem-vindo à experiência Barber Lounge Rio</h2>
-              <p>Cada detalhe foi desenhado para proporcionar relaxamento e estilo — do corte impecável ao cuidado com a barba, tudo com o padrão de excelência que define a casa.</p>
+              <span className="eyebrow">{getText("conceptEyebrow", "O Conceito")}</span>
+              <h2>{getText("conceptTitle", "Bem-vindo à experiência Barber Lounge Rio")}</h2>
+              <p>{getText("conceptDescription", "Cada detalhe foi desenhado para proporcionar relaxamento e estilo — do corte impecável ao cuidado com a barba, tudo com o padrão de excelência que define a casa.")}</p>
             </div>
             <div className="values-grid">
               <div className="value-item">
                 <span className="num">01</span>
-                <h3>Precisão</h3>
-                <p>Barbeiros especialistas em cortes clássicos e contemporâneos, adaptados ao seu estilo pessoal.</p>
+                <h3>{getText("valueOneTitle", "Precisão")}</h3>
+                <p>{getText("valueOneDescription", "Barbeiros especialistas em cortes clássicos e contemporâneos, adaptados ao seu estilo pessoal.")}</p>
               </div>
               <div className="value-item">
                 <span className="num">02</span>
-                <h3>Luxo</h3>
-                <p>Um ambiente sofisticado no coração do Centro do Rio, pensado para o homem exigente.</p>
+                <h3>{getText("valueTwoTitle", "Luxo")}</h3>
+                <p>{getText("valueTwoDescription", "Um ambiente sofisticado no coração do Centro do Rio, pensado para o homem exigente.")}</p>
               </div>
               <div className="value-item">
                 <span className="num">03</span>
-                <h3>Atitude</h3>
-                <p>Curadoria de estilo, cuidado e bem-estar reunidos em uma experiência única.</p>
+                <h3>{getText("valueThreeTitle", "Atitude")}</h3>
+                <p>{getText("valueThreeDescription", "Curadoria de estilo, cuidado e bem-estar reunidos em uma experiência única.")}</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* DROPS TV (VÍDEOS VERTICAIS) */}
+        {/* SERVIÇOS (VÍDEOS VERTICAIS) */}
         <section className="services section-pad" id="servicos">
           <div className="wrap">
             <div className="section-head" style={{ marginBottom: '34px' }}>
-              <span className="eyebrow">Drops TV</span>
-              <h2>Clipes em movimento</h2>
-              <p>Passe o cursor sobre um vídeo para assistir — cada card traz um clipe vertical no estilo Shorts/Reels.</p>
+              <span className="eyebrow">{getText("shortsEyebrow", "Serviços")}</span>
+              <h2>{getText("shortsTitle", "Serviços em movimento.")}</h2>
+              <p>{getText("shortsDescription", "Passe o cursor sobre um vídeo para assistir — cada card traz um clipe vertical no estilo Shorts/Reels.")}</p>
             </div>
 
             <div className="services-grid">
@@ -707,12 +710,12 @@ export default function Home() {
         {blocks.length > 0 && <section className="custom-blocks section-pad" id="blocos">
           <div className="wrap">
             <div className="section-head">
-              <span className="eyebrow">Conteúdo adicional</span>
-              <h2>Novidades da casa</h2>
-              <p>Colunas criadas e atualizadas pelo painel visual, sem editar código.</p>
+              <span className="eyebrow">{getText("blocksEyebrow", "Conteúdo adicional")}</span>
+              <h2>{getText("blocksTitle", "Novidades da casa")}</h2>
+              <p>{getText("blocksDescription", "Colunas criadas e atualizadas pelo painel visual, sem editar código.")}</p>
             </div>
             <div className="custom-blocks-grid">
-              {blocks.map((block: any) => <article className="custom-block-card" key={block.id}><img src={block.imageUrl} alt={block.title} loading="lazy" /><div className="custom-block-card-body"><h3>{block.title}</h3><p>{block.description}</p>{block.linkUrl && <a href={block.linkUrl} target="_blank" rel="noreferrer">Saiba mais →</a>}</div></article>)}
+              {blocks.map((block: any) => <article className="custom-block-card" key={block.id}><img src={block.imageUrl} alt={block.title} loading="lazy" /><div className="custom-block-card-body"><h3>{block.title}</h3><p>{block.description}</p>{block.linkUrl && <a href={block.linkUrl} target="_blank" rel="noreferrer">{getText("blocksLink", "Saiba mais →")}</a>}</div></article>)}
             </div>
           </div>
         </section>}
@@ -721,9 +724,9 @@ export default function Home() {
         <section className="thrift section-pad" id="thrift">
           <div className="wrap">
             <div className="section-head">
-              <span className="eyebrow">Thrift Store</span>
-              <h2>Curadoria consciente</h2>
-              <p>Fotos, peças e detalhes da curadoria Barber Lounge Rio. Cada descrição pode ser editada no painel administrativo.</p>
+              <span className="eyebrow">{getText("thriftEyebrow", "Thrift Store")}</span>
+              <h2>{getText("thriftTitle", "Curadoria consciente")}</h2>
+              <p>{getText("thriftDescription", "Fotos, peças e detalhes da curadoria Barber Lounge Rio. Cada descrição pode ser editada no painel administrativo.")}</p>
             </div>
           </div>
 
@@ -739,23 +742,23 @@ export default function Home() {
         <section className="instagram section-pad" id="instagram">
           <div className="wrap">
             <div className="section-head">
-              <span className="eyebrow">Barber Lounge no seu Feed</span>
-              <h2>Barber Lounge em movimento</h2>
-              <p>Acompanhe nossa curadoria diária de estilos, cortes e conteúdo. Siga-nos para conferir os resultados em primeira mão.</p>
+              <span className="eyebrow">{getText("instagramSectionEyebrow", "Barber Lounge no seu Feed")}</span>
+              <h2>{getText("instagramSectionTitle", "Barber Lounge em movimento")}</h2>
+              <p>{getText("instagramDescription", "Acompanhe nossa curadoria diária de estilos, cortes e conteúdo. Siga-nos para conferir os resultados em primeira mão.")}</p>
             </div>
 
             <div className="insta-grid insta-profile-card">
               <div className="insta-profile-mark">IG</div>
               <div>
-                <span className="eyebrow">Perfil oficial</span>
-                <h3>@barberlounge.rio</h3>
-                <p>O feed oficial é atualizado diretamente no Instagram. Abra o perfil para ver as publicações mais recentes, sem imagens demonstrativas ou conteúdo de outra fonte.</p>
-                <a href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener" className="btn btn-outline">Abrir perfil no Instagram →</a>
+                <span className="eyebrow">{getText("instagramProfileEyebrow", "Perfil oficial")}</span>
+                <h3>{instagramUsername}</h3>
+                <p>{getText("instagramProfileDescription", "O feed oficial é atualizado diretamente no Instagram. Abra o perfil para ver as publicações mais recentes, sem imagens demonstrativas ou conteúdo de outra fonte.")}</p>
+                <a href={instagramUrl} target="_blank" rel="noopener" className="btn btn-outline">{getText("instagramButton", "Abrir perfil no Instagram →")}</a>
               </div>
             </div>
 
             <div className="section-cta">
-              <a href="https://instagram.com/barberlounge.rio" target="_blank" rel="noopener" className="btn btn-outline">Seguir @barberlounge.rio</a>
+              <a href={instagramUrl} target="_blank" rel="noopener" className="btn btn-outline">{getText("instagramFollowButton", `Seguir ${instagramUsername}`)}</a>
             </div>
           </div>
         </section>
@@ -764,16 +767,17 @@ export default function Home() {
         <section className="reviews section-pad" id="avaliacoes">
           <div className="wrap">
             <div className="section-head">
-              <span className="eyebrow">Avaliações verificáveis</span>
-              <h2>Veja as opiniões reais dos clientes</h2>
-              <p>Para manter esta vitrine transparente, as avaliações são exibidas diretamente no perfil oficial do Google Maps, sem depoimentos demonstrativos aqui.</p>
+              <span className="eyebrow">{getText("reviewsEyebrow", "Avaliações verificáveis")}</span>
+              <h2>{getText("reviewsTitle", "Veja as opiniões reais dos clientes")}</h2>
+              <p>{getText("reviewsDescription", "Para manter esta vitrine transparente, as avaliações são exibidas diretamente no perfil oficial do Google Maps, sem depoimentos demonstrativos aqui.")}</p>
             </div>
             <div className="review-card" style={{ maxWidth: '720px', margin: '0 auto', textAlign: 'center' }}>
               <div className="review-avatar" style={{ margin: '0 auto 12px' }}>G</div>
-              <h3 className="font-display text-xl font-bold uppercase text-white">Perfil oficial no Google Maps</h3>
-              <p className="review-text" style={{ marginTop: '12px' }}>Consulte a nota, os comentários e as fotos diretamente na fonte oficial da Barber Lounge Rio.</p>
+                              <h3 className="font-display text-xl font-bold uppercase text-white">{getText("reviewsProfileTitle", "Perfil oficial no Google Maps")}</h3>
+                <p className="review-text" style={{ marginTop: '12px' }}>{getText("reviewsProfileDescription", "Consulte a nota, os comentários e as fotos diretamente na fonte oficial da Barber Lounge Rio.")}</p>
+
               <div className="reviews-cta">
-                <a href={googleMapsUrl} target="_blank" rel="noopener" className="btn btn-outline">Abrir avaliações no Google →</a>
+                <a href={googleMapsUrl} target="_blank" rel="noopener" className="btn btn-outline">{getText("reviewsButton", "Abrir avaliações no Google →")}</a>
               </div>
             </div>
           </div>
@@ -782,10 +786,10 @@ export default function Home() {
         {/* CTA BAND */}
         <div className="cta-band">
           <div className="wrap">
-            <span className="eyebrow">Reserve a sua exclusividade</span>
-            <h2>Seu horário, sua peça, seu estilo.</h2>
-            <p>Fale com a nossa equipe pelo WhatsApp, garanta seu horário e acompanhe as novas peças do brechó.</p>
-            <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-gold">Agendar pelo WhatsApp</a>
+            <span className="eyebrow">{getText("ctaEyebrow", "Reserve a sua exclusividade")}</span>
+            <h2>{getText("ctaTitle", "Seu horário, sua peça, seu estilo.")}</h2>
+            <p>{getText("ctaDescription", "Fale com a nossa equipe pelo WhatsApp, garanta seu horário e acompanhe as novas peças do brechó.")}</p>
+            <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-gold">{getText("ctaButton", "Agendar pelo WhatsApp")}</a>
           </div>
         </div>
       </main>
@@ -797,28 +801,28 @@ export default function Home() {
             <div className="footer-brand">
               <a href="#top" className="logo">
                 <img src="/manus-storage/WhatsAppImage2026-07-28at21.07.17_94e3c791.jpeg" alt="Barber Lounge Rio" style={{ borderRadius: '50%', objectFit: 'cover' }} />
-                <span className="logo-type"><strong>BARBER LOUNGE RIO</strong><span>Centro · Rio de Janeiro</span></span>
+                <span className="logo-type"><strong>{getText("brandName", "BARBER LOUNGE RIO")}</strong><span>{getText("brandLocation", "Centro · Rio de Janeiro")}</span></span>
               </a>
-              <p>Autenticidade, luxo e atitude em um único lugar. Barbearia de alto padrão e curadoria de moda circular no Centro do Rio de Janeiro.</p>
+              <p>{getText("footerBrandDescription", "Autenticidade, luxo e atitude em um único lugar. Barbearia de alto padrão e curadoria de moda circular no Centro do Rio de Janeiro.")}</p>
               <div className="footer-socials">
-                <a href="https://instagram.com/barberlounge.rio" target="_blank" rel="noreferrer" aria-label="Instagram">IG</a>
+                <a href={instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram">IG</a>
                 <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" aria-label="WhatsApp">WA</a>
               </div>
             </div>
 
             <div className="footer-col">
-              <h5>Endereço & Horário</h5>
-              <p><strong>Av. Churchill, loja 10 C</strong><br />Centro — Rio de Janeiro, RJ</p>
-              <p>Segunda a Sexta · 06:30 às 15:00<br />Sábado e Domingo · Fechado</p>
+              <h5>{getText("footerAddressHeading", "Endereço & Horário")}</h5>
+              <p>{getText("contactStreet", "Av. Churchill, loja 10 C · Centro — Rio de Janeiro, RJ")}</p>
+              <p>{getText("contactHours", "Segunda a Sexta · 06:30 às 15:00")}<br />{getText("contactWeekendHours", "Sábado e Domingo · Fechado")}</p>
             </div>
 
             <div className="footer-col">
-              <h5>Contato Rápido</h5>
-              <a href={whatsappBookingUrl} target="_blank" rel="noreferrer">(21) 98008-9047 — WhatsApp</a>
-              <a href="https://instagram.com/barberlounge.rio" target="_blank" rel="noreferrer">@barberlounge.rio</a>
-              <a href="#servicos">Serviços</a>
+              <h5>{getText("footerContactHeading", "Contato Rápido")}</h5>
+              <a href={whatsappBookingUrl} target="_blank" rel="noreferrer">{getText("contactPhone", "(21) 98008-9047")} — WhatsApp</a>
+              <a href={instagramUrl} target="_blank" rel="noreferrer">{instagramUsername}</a>
+              <a href="#servicos">{getText("navServices", "Serviços")}</a>
               {user?.role === 'admin' && (
-                <Link href="/admin" style={{ color: 'var(--gold-light)', fontWeight: 700, marginTop: '8px', display: 'inline-block' }}>⚙️ Painel Administrativo</Link>
+                <Link href="/admin" style={{ color: 'var(--gold-light)', fontWeight: 700, marginTop: '8px', display: 'inline-block' }}>⚙️ {getText("navAdmin", "Painel Administrativo")}</Link>
               )}
             </div>
           </div>
@@ -827,13 +831,13 @@ export default function Home() {
         <div className="map-block">
           <iframe
             src="https://www.google.com/maps?q=Avenida%20Churchill%2C%20Centro%2C%20Rio%20de%20Janeiro%2C%20RJ%2C%2020020-050&output=embed"
-            loading="lazy" title="Localização Barber Lounge Rio"></iframe>
+            loading="lazy" title={getText("footerMapTitle", "Localização Barber Lounge Rio")}></iframe>
         </div>
 
         <div className="wrap">
           <div className="footer-bottom">
-            <span>© 2026 Barber Lounge Rio · Centro do Rio de Janeiro</span>
-            <a href={whatsappBookingUrl} target="_blank" rel="noreferrer">Falar no WhatsApp →</a>
+            <span>{getText("footerCopyright", "© 2026 Barber Lounge Rio · Centro do Rio de Janeiro")}</span>
+            <a href={whatsappBookingUrl} target="_blank" rel="noreferrer">{getText("footerWhatsapp", "Falar no WhatsApp →")}</a>
           </div>
         </div>
       </footer>

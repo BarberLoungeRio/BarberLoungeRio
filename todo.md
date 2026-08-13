@@ -137,10 +137,10 @@
 
 
 ## Substituição do projeto antigo no GitHub
-- [ ] Criar orientação para backup do repositório antigo antes da substituição
-- [ ] Explicar substituição total, nova branch, novo repositório e edição pelo navegador
-- [ ] Explicar uso combinado de GitHub Desktop, VS Code e painel `/admin`
-- [ ] Documentar quais arquivos manter, substituir ou nunca copiar
+- [x] Criar orientação para backup do repositório antigo antes da substituição
+- [x] Explicar substituição total, nova branch, novo repositório e edição pelo navegador
+- [x] Explicar uso combinado de GitHub Desktop, VS Code e painel `/admin`
+- [x] Documentar quais arquivos manter, substituir ou nunca copiar
 
 
 ## Edição visual sem código
@@ -154,4 +154,17 @@
 ## Validação end-to-end do painel sem código
 - [x] Capturar o painel `/admin` em viewport móvel com as abas de edição sem código
 - [ ] Validar o fluxo end-to-end de editar texto, anexar foto, salvar e conferir a vitrine
+
+
+## Resolução do domínio GoDaddy e endereços corretos
+- [x] Esclarecer que o domínio barbearia.com.br está na GoDaddy e não foi configurado
+- [x] Explicar a diferença entre o endereço de teste do Manus e o domínio real
+- [x] Guiar o acesso correto sem sugerir compra de serviços na GoDaddy
+
+## Renomeação de Drops TV e edição ampliada
+- [x] Renomear todos os rótulos visíveis de Drops TV para Serviços na vitrine, navegação e painel
+- [x] Remover a expressão Drops TV dos títulos e descrições visíveis ao público
+- [x] Tornar editáveis pelo painel os rótulos, títulos e textos principais da vitrine
+- [x] Preservar a edição de vídeos, fotos e novas colunas no mesmo painel gratuito
+- [x] Validar o painel, a vitrine e a compatibilidade do projeto com GitHub
 

@@ -14,6 +14,9 @@ describe("site content contracts", () => {
   it("returns editable content, active services and the seeded Shorts gallery", async () => {
     const publicData = await appRouter.createCaller({ ...context("user"), user: null }).site.publicData();
     expect(publicData.content.some((item) => item.key === "heroTitle")).toBe(true);
+    expect(publicData.content.find((item) => item.key === "navServices")?.value).toBe("Serviços");
+    expect(publicData.content.find((item) => item.key === "shortsEyebrow")?.value).toBe("Serviços");
+    expect(publicData.videos.every((video) => video.tag === "Serviços")).toBe(true);
     expect(publicData.services.length).toBeGreaterThanOrEqual(1);
     expect(publicData.videos.length).toBeGreaterThanOrEqual(19);
     expect(new Set(publicData.videos.map((video) => video.youtubeId)).size).toBe(publicData.videos.length);
@@ -29,12 +32,16 @@ describe("site content contracts", () => {
     expect(data.videos.every((video) => video.url.includes(video.youtubeId))).toBe(true);
     expect(data.thriftStore.every((item) => typeof item.description === "string")).toBe(true);
     expect(data.content.find((item) => item.key === "googleMapsUrl")?.fieldType).toBe("url");
+    expect(data.content.find((item) => item.key === "brandName")?.fieldType).toBe("text");
+    expect(data.content.find((item) => item.key === "footerBrandDescription")?.fieldType).toBe("textarea");
+    expect(data.content.find((item) => item.key === "reviewsProfileTitle")?.fieldType).toBe("text");
+    expect(data.content.find((item) => item.key === "reviewsProfileDescription")?.fieldType).toBe("textarea");
     expect(Array.isArray(data.blocks)).toBe(true);
   });
 
   it("rejects invalid YouTube URLs before touching persistence", async () => {
     const caller = appRouter.createCaller(context("admin"));
-    await expect(caller.admin.videos.create({ url: "https://example.com/not-youtube", title: "Teste", description: "Teste", tag: "Drops TV", sortOrder: 99, active: true })).rejects.toMatchObject({ code: "BAD_REQUEST" });
+    await expect(caller.admin.videos.create({ url: "https://example.com/not-youtube", title: "Teste", description: "Teste", tag: "Serviços", sortOrder: 99, active: true })).rejects.toMatchObject({ code: "BAD_REQUEST" });
   });
 
   it("validates content update payloads", async () => {
@@ -44,7 +51,7 @@ describe("site content contracts", () => {
 
   it("validates update, delete and reorder contracts for Shorts and Thrift Store", async () => {
     const caller = appRouter.createCaller(context("admin"));
-    await expect(caller.admin.videos.update({ id: 1, url: "https://example.com/not-youtube", title: "Teste", description: "Teste", tag: "Drops TV", sortOrder: 1, active: true })).rejects.toMatchObject({ code: "BAD_REQUEST" });
+    await expect(caller.admin.videos.update({ id: 1, url: "https://example.com/not-youtube", title: "Teste", description: "Teste", tag: "Serviços", sortOrder: 1, active: true })).rejects.toMatchObject({ code: "BAD_REQUEST" });
     await expect(caller.admin.videos.delete({ id: 0 })).rejects.toMatchObject({ code: "BAD_REQUEST" });
     await expect(caller.admin.videos.reorder({ ids: [] })).rejects.toMatchObject({ code: "BAD_REQUEST" });
     await expect(caller.admin.thriftStore.update({ id: 0, imageUrl: "/manus-storage/photo.jpg", title: "Teste", description: "Teste", sortOrder: 1, active: true })).rejects.toMatchObject({ code: "BAD_REQUEST" });
