@@ -5,8 +5,10 @@ import {
   InsertSiteContent,
   InsertYoutubeVideo,
   InsertThriftStoreItem,
+  InsertContentBlock,
   services,
   siteContent,
+  contentBlocks,
   siteSettings,
   thriftStoreItems,
   InsertUser,
@@ -186,27 +188,29 @@ export async function ensureSeeded() {
 export async function getPublicSiteData() {
   await ensureSeeded();
   const db = await getDb();
-  if (!db) return { content: [], services: [], videos: [], thriftStore: [] };
-  const [content, activeServices, videos, thriftStore] = await Promise.all([
+  if (!db) return { content: [], services: [], videos: [], thriftStore: [], blocks: [] };
+  const [content, activeServices, videos, thriftStore, blocks] = await Promise.all([
     db.select().from(siteContent).orderBy(asc(siteContent.section), asc(siteContent.key)),
     db.select().from(services).where(eq(services.active, true)).orderBy(asc(services.sortOrder)),
     db.select().from(youtubeVideos).where(eq(youtubeVideos.active, true)).orderBy(asc(youtubeVideos.sortOrder)),
     db.select().from(thriftStoreItems).where(eq(thriftStoreItems.active, true)).orderBy(asc(thriftStoreItems.sortOrder)),
+    db.select().from(contentBlocks).where(eq(contentBlocks.active, true)).orderBy(asc(contentBlocks.sortOrder)),
   ]);
-  return { content, services: activeServices, videos, thriftStore };
+  return { content, services: activeServices, videos, thriftStore, blocks };
 }
 
 export async function getAdminSiteData() {
   await ensureSeeded();
   const db = await getDb();
-  if (!db) return { content: [], services: [], videos: [], thriftStore: [] };
-  const [content, allServices, allVideos, allThriftStore] = await Promise.all([
+  if (!db) return { content: [], services: [], videos: [], thriftStore: [], blocks: [] };
+  const [content, allServices, allVideos, allThriftStore, allBlocks] = await Promise.all([
     db.select().from(siteContent).orderBy(asc(siteContent.section), asc(siteContent.key)),
     db.select().from(services).orderBy(asc(services.sortOrder)),
     db.select().from(youtubeVideos).orderBy(asc(youtubeVideos.sortOrder)),
     db.select().from(thriftStoreItems).orderBy(asc(thriftStoreItems.sortOrder)),
+    db.select().from(contentBlocks).orderBy(asc(contentBlocks.sortOrder)),
   ]);
-  return { content, services: allServices, videos: allVideos, thriftStore: allThriftStore };
+  return { content, services: allServices, videos: allVideos, thriftStore: allThriftStore, blocks: allBlocks };
 }
 
 export async function updateContent(items: Array<Pick<InsertSiteContent, "key" | "value">>, updatedBy: number) {
@@ -214,6 +218,33 @@ export async function updateContent(items: Array<Pick<InsertSiteContent, "key" |
   if (!db) return;
   for (const item of items) {
     await db.update(siteContent).set({ value: item.value, updatedBy }).where(eq(siteContent.key, item.key));
+  }
+}
+
+export async function createContentBlock(block: Omit<InsertContentBlock, "id" | "createdAt" | "updatedAt">) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.insert(contentBlocks).values(block);
+}
+
+export async function updateContentBlock(id: number, block: Partial<Omit<InsertContentBlock, "id" | "createdAt" | "updatedAt">>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(contentBlocks).set(block).where(eq(contentBlocks.id, id));
+}
+
+export async function deleteContentBlock(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.delete(contentBlocks).where(eq(contentBlocks.id, id));
+}
+
+export async function reorderContentBlocks(ids: number[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  for (let index = 0; index < ids.length; index += 1) {
+    const id = ids[index];
+    await db.update(contentBlocks).set({ sortOrder: index + 1 }).where(eq(contentBlocks.id, id));
   }
 }
 

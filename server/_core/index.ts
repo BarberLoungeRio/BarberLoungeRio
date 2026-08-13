@@ -8,6 +8,8 @@ import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
+import { storagePut } from "../storage";
+import { sdk } from "./sdk";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -36,6 +38,31 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   registerStorageProxy(app);
   registerOAuthRoutes(app);
+  app.post("/api/admin/upload", async (req, res) => {
+    try {
+      const user = await sdk.authenticateRequest(req);
+      if (!user || user.role !== "admin") {
+        res.status(403).json({ message: "Acesso restrito ao administrador." });
+        return;
+      }
+      const { fileName, mimeType, data } = req.body as { fileName?: string; mimeType?: string; data?: string };
+      if (!fileName || !mimeType || !data || !mimeType.startsWith("image/")) {
+        res.status(400).json({ message: "Envie uma imagem válida." });
+        return;
+      }
+      const buffer = Buffer.from(data, "base64");
+      if (buffer.byteLength > 10 * 1024 * 1024) {
+        res.status(413).json({ message: "A imagem deve ter no máximo 10 MB." });
+        return;
+      }
+      const safeName = fileName.replace(/[^a-zA-Z0-9._-]/g, "-").slice(-120) || "imagem";
+      const uploaded = await storagePut(`uploads/${user.id}/${Date.now()}-${safeName}`, buffer, mimeType);
+      res.json(uploaded);
+    } catch (error) {
+      console.error("[Admin Upload] Failed:", error);
+      res.status(500).json({ message: "Não foi possível enviar a imagem." });
+    }
+  });
   // tRPC API
   app.use(
     "/api/trpc",

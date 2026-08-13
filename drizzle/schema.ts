@@ -91,3 +91,22 @@ export const siteSettings = mysqlTable("site_settings", {
 
 export type SiteSetting = typeof siteSettings.$inferSelect;
 export type InsertSiteSetting = typeof siteSettings.$inferInsert;
+
+export const contentBlocks = mysqlTable("content_blocks", {
+  id: int("id").autoincrement().primaryKey(),
+  section: varchar("section", { length: 64 }).default("custom").notNull(),
+  title: varchar("title", { length: 160 }).notNull(),
+  description: text("description").notNull(),
+  imageUrl: text("imageUrl").notNull(),
+  linkUrl: text("linkUrl").notNull(),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  active: boolean("active").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  sectionIdx: index("content_blocks_section_idx").on(table.section),
+  orderIdx: index("content_blocks_order_idx").on(table.sortOrder),
+}));
+
+export type ContentBlock = typeof contentBlocks.$inferSelect;
+export type InsertContentBlock = typeof contentBlocks.$inferInsert;

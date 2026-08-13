@@ -135,3 +135,23 @@
 - [x] Implementar um enquadramento verificável que preserve o vídeo 1 completo e preencha as laterais sem distorção
 - [x] Capturar e validar a página em viewport móvel, incluindo Hero, Conceito e rodapé
 
+
+## Substituição do projeto antigo no GitHub
+- [ ] Criar orientação para backup do repositório antigo antes da substituição
+- [ ] Explicar substituição total, nova branch, novo repositório e edição pelo navegador
+- [ ] Explicar uso combinado de GitHub Desktop, VS Code e painel `/admin`
+- [ ] Documentar quais arquivos manter, substituir ou nunca copiar
+
+
+## Edição visual sem código
+- [x] Garantir edição de textos e links por formulários visuais
+- [x] Garantir inclusão e troca de fotos por upload no painel
+- [x] Garantir inclusão de vídeos por colagem de links e reordenação visual
+- [x] Permitir criar e editar colunas/blocos de conteúdo sem alterar código
+- [x] Validar o fluxo de publicação e edição pelo painel em desktop e celular
+
+
+## Validação end-to-end do painel sem código
+- [x] Capturar o painel `/admin` em viewport móvel com as abas de edição sem código
+- [ ] Validar o fluxo end-to-end de editar texto, anexar foto, salvar e conferir a vitrine
+

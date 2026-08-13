@@ -87,6 +87,7 @@ export default function Home() {
   ];
 
   const thriftStore = publicData?.thriftStore ?? [];
+  const blocks = publicData?.blocks ?? [];
 
   return (
     <>
@@ -408,6 +409,16 @@ export default function Home() {
         .service-card:hover .service-play-hint{opacity:0.85;}
         .service-media-video.is-playing .service-play-hint{opacity:0;}
 
+        .custom-blocks{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+        .custom-blocks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;}
+        .custom-block-card{display:flex;min-height:100%;flex-direction:column;overflow:hidden;background:var(--bg);border:1px solid var(--line);transition:transform .3s ease,border-color .3s ease;}
+        .custom-block-card:hover{transform:translateY(-5px);border-color:rgba(212,175,55,.55);}
+        .custom-block-card img{width:100%;aspect-ratio:4/3;object-fit:cover;}
+        .custom-block-card-body{display:flex;flex:1;flex-direction:column;padding:22px;}
+        .custom-block-card-body h3{font-size:20px;text-transform:uppercase;}
+        .custom-block-card-body p{margin-top:10px;color:var(--muted);font-size:14px;line-height:1.6;}
+        .custom-block-card-body a{align-self:flex-start;margin-top:auto;padding-top:18px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-light);}
+
         .thrift{background:var(--bg);}
         .thrift-marquee{
           overflow:hidden;
@@ -692,6 +703,19 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {blocks.length > 0 && <section className="custom-blocks section-pad" id="blocos">
+          <div className="wrap">
+            <div className="section-head">
+              <span className="eyebrow">Conteúdo adicional</span>
+              <h2>Novidades da casa</h2>
+              <p>Colunas criadas e atualizadas pelo painel visual, sem editar código.</p>
+            </div>
+            <div className="custom-blocks-grid">
+              {blocks.map((block: any) => <article className="custom-block-card" key={block.id}><img src={block.imageUrl} alt={block.title} loading="lazy" /><div className="custom-block-card-body"><h3>{block.title}</h3><p>{block.description}</p>{block.linkUrl && <a href={block.linkUrl} target="_blank" rel="noreferrer">Saiba mais →</a>}</div></article>)}
+            </div>
+          </div>
+        </section>}
 
         {/* THRIFT STORE */}
         <section className="thrift section-pad" id="thrift">

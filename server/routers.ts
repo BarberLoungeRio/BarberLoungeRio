@@ -19,13 +19,17 @@ import {
   deleteThriftStoreItem,
   reorderThriftStoreItems,
   updateThriftStoreItem,
+  createContentBlock,
+  updateContentBlock,
+  deleteContentBlock,
+  reorderContentBlocks,
 } from "./db";
 
 const serviceInput = z.object({
   title: z.string().min(2).max(160),
   description: z.string().min(2).max(2000),
   price: z.string().min(1).max(64),
-  imageUrl: z.string().url(),
+  imageUrl: z.string().min(1).refine((value) => value.startsWith("/manus-storage/") || /^https?:\/\//.test(value), "Informe uma URL pública ou um caminho /manus-storage válido."),
   tag: z.string().min(1).max(64),
   sortOrder: z.number().int().min(0).default(0),
   active: z.boolean().default(true),
@@ -36,6 +40,16 @@ const videoInput = z.object({
   title: z.string().min(2).max(160),
   description: z.string().max(2000).default("Conteúdo Barber Lounge Rio."),
   tag: z.string().min(1).max(64).default("Drops TV"),
+  sortOrder: z.number().int().min(0).default(0),
+  active: z.boolean().default(true),
+});
+
+const contentBlockInput = z.object({
+  section: z.string().min(1).max(64).default("custom"),
+  title: z.string().min(1).max(160),
+  description: z.string().max(2000).default(""),
+  imageUrl: z.string().min(1).refine((value) => value.startsWith("/manus-storage/") || /^https?:\/\//.test(value), "Informe uma URL pública ou um caminho /manus-storage válido."),
+  linkUrl: z.string().refine((value) => value === "" || /^https?:\/\//.test(value), "Informe uma URL https:// válida ou deixe vazio."),
   sortOrder: z.number().int().min(0).default(0),
   active: z.boolean().default(true),
 });
@@ -99,6 +113,15 @@ export const appRouter = router({
       }),
       delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ input }) => deleteYoutubeVideo(input.id)),
       reorder: adminProcedure.input(z.object({ ids: z.array(z.number().int().positive()).min(1) })).mutation(({ input }) => reorderYoutubeVideos(input.ids)),
+    }),
+    blocks: router({
+      create: adminProcedure.input(contentBlockInput).mutation(({ input }) => createContentBlock(input)),
+      update: adminProcedure.input(contentBlockInput.extend({ id: z.number().int().positive() })).mutation(({ input }) => {
+        const { id, ...payload } = input;
+        return updateContentBlock(id, payload);
+      }),
+      delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ input }) => deleteContentBlock(input.id)),
+      reorder: adminProcedure.input(z.object({ ids: z.array(z.number().int().positive()).min(1) })).mutation(({ input }) => reorderContentBlocks(input.ids)),
     }),
     thriftStore: router({
       create: adminProcedure.input(thriftStoreInput).mutation(({ input }) => createThriftStoreItem(input)),

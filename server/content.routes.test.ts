@@ -19,6 +19,7 @@ describe("site content contracts", () => {
     expect(new Set(publicData.videos.map((video) => video.youtubeId)).size).toBe(publicData.videos.length);
     expect(publicData.thriftStore.length).toBeGreaterThanOrEqual(23);
     expect(publicData.thriftStore.every((item) => item.imageUrl.startsWith("/manus-storage/"))).toBe(true);
+    expect(Array.isArray(publicData.blocks)).toBe(true);
   });
 
   it("exposes the same editable collections to an authorized admin", async () => {
@@ -28,6 +29,7 @@ describe("site content contracts", () => {
     expect(data.videos.every((video) => video.url.includes(video.youtubeId))).toBe(true);
     expect(data.thriftStore.every((item) => typeof item.description === "string")).toBe(true);
     expect(data.content.find((item) => item.key === "googleMapsUrl")?.fieldType).toBe("url");
+    expect(Array.isArray(data.blocks)).toBe(true);
   });
 
   it("rejects invalid YouTube URLs before touching persistence", async () => {
@@ -48,5 +50,7 @@ describe("site content contracts", () => {
     await expect(caller.admin.thriftStore.update({ id: 0, imageUrl: "/manus-storage/photo.jpg", title: "Teste", description: "Teste", sortOrder: 1, active: true })).rejects.toMatchObject({ code: "BAD_REQUEST" });
     await expect(caller.admin.thriftStore.delete({ id: 0 })).rejects.toMatchObject({ code: "BAD_REQUEST" });
     await expect(caller.admin.thriftStore.reorder({ ids: [] })).rejects.toMatchObject({ code: "BAD_REQUEST" });
+    await expect(caller.admin.blocks.create({ section: "custom", title: "", description: "", imageUrl: "/manus-storage/photo.jpg", linkUrl: "", sortOrder: 1, active: true })).rejects.toMatchObject({ code: "BAD_REQUEST" });
+    await expect(caller.admin.blocks.reorder({ ids: [] })).rejects.toMatchObject({ code: "BAD_REQUEST" });
   });
 });
