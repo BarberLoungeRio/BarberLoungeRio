@@ -217,3 +217,9 @@
 - [x] Validar o acesso pelo painel e pelo link direto
 - [x] Executar testes/build e salvar checkpoint da correção
 
+
+## Correção do ERR_PNPM_PATCH_FAILED no Render
+- [ ] Analisar o patch do Wouter e a versão instalada
+- [ ] Remover o patch problemático do package.json e da pasta patches para evitar falha no Render
+- [ ] Validar pnpm install limpo sem patches
+- [ ] Executar typecheck, testes e build de produção
