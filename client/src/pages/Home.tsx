@@ -7,7 +7,7 @@ const heroVideoUrl = "https://files.manuscdn.com/user_upload_by_module/session_f
 const heroPosterUrl = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/lKrbDjDOgozFykzN.jpg";
 const whatsappBookingUrl = `https://wa.me/5521980089047?text=${encodeURIComponent("Olá, Barber Lounge Rio! Gostaria de agendar um horário.")}`;
 
-export default function Home() {
+export function Home() {
   const { data: publicData } = trpc.site.publicData.useQuery();
   const { user } = useAuth();
   const contentByKey = Object.fromEntries((publicData?.content ?? []).map((item) => [item.key, item.value]));
@@ -874,3 +874,5 @@ export default function Home() {
     </>
   );
 }
+
+export default Home;

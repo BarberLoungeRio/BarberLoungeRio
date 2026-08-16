@@ -237,8 +237,7 @@
 
 ## Problemas reportados após o último deploy no Render
 
-- [ ] Corrigir a divergência entre a versão publicada no Render e o layout premium esperado, incluindo vídeo de abertura, cores e identidade visual.
-- [ ] Diagnosticar e corrigir a página em branco no domínio oficial barberloungerio.com.br.
-- [ ] Validar os assets de vídeo e a configuração de build/publicação para garantir que a versão correta seja servida.
-- [ ] Sincronizar a versão atual do Home.tsx e os assets públicos com o repositório GitHub que alimenta o Render.
-- [ ] Remover o domínio oficial da publicação placeholder e apontá-lo ao Web Service correto do Render.
+- [ ] Enviar a versão corrigida de `client/src/pages/Home.tsx` e dos assets públicos para o repositório GitHub conectado ao Render.
+- [ ] Acionar novo deploy no Render com Clear build cache & deploy e validar a versão em `https://barberloungerio.onrender.com`.
+- [ ] Configurar o domínio personalizado `barberloungerio.com.br` no painel do Web Service do Render e ajustar os apontamentos DNS no Registro.br.
+
