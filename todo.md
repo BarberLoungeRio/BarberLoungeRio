@@ -225,7 +225,7 @@
 - [x] Executar typecheck, testes e build de produção
 
 ## Correção do Erro de Build no Render (vite-plugin-manus-runtime)
-- [ ] Analisar o vite.config.ts e o uso do plugin manus-runtime
-- [ ] Ajustar vite.config.ts para produção para evitar falha ao carregar plugins internos do Manus
-- [ ] Validar build local com NODE_ENV=production
-- [ ] Entregar instruções claras para o Render
+- [x] Analisar o vite.config.ts e o uso do plugin manus-runtime
+- [x] Ajustar vite.config.ts para produção para evitar falha ao carregar plugins internos do Manus
+- [x] Validar build local com NODE_ENV=production
+- [x] Entregar instruções claras para o Render
