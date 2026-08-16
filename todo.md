@@ -229,3 +229,8 @@
 - [x] Ajustar vite.config.ts para produção para evitar falha ao carregar plugins internos do Manus
 - [x] Validar build local com NODE_ENV=production
 - [x] Entregar instruções claras para o Render
+
+## Correção do Erro Could not resolve entry module index.html no Render
+- [ ] Verificar o valor de root no vite.config.ts em relação ao Root Directory do Render
+- [ ] Garantir que o index.html esteja na pasta client/ conforme a propriedade root: path.resolve(PROJECT_ROOT, "client")
+- [ ] Documentar os campos corretos no painel do Render
