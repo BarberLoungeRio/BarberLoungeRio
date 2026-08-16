@@ -231,6 +231,6 @@
 - [x] Entregar instruções claras para o Render
 
 ## Correção do Erro Could not resolve entry module index.html no Render
-- [ ] Verificar o valor de root no vite.config.ts em relação ao Root Directory do Render
-- [ ] Garantir que o index.html esteja na pasta client/ conforme a propriedade root: path.resolve(PROJECT_ROOT, "client")
-- [ ] Documentar os campos corretos no painel do Render
+- [x] Verificar o valor de root no vite.config.ts em relação ao Root Directory do Render
+- [x] Garantir que o index.html esteja na pasta client/ conforme a propriedade root: path.resolve(PROJECT_ROOT, "client")
+- [x] Documentar os campos corretos no painel do Render
