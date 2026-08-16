@@ -768,9 +768,9 @@ export function Home() {
         <section className="instagram section-pad" id="instagram">
           <div className="wrap">
             <div className="section-head">
-              <span className="eyebrow">{getText("instagramSectionEyebrow", "Barber Lounge no seu Feed")}</span>
+              <span className="eyebrow">{getText("instagramSectionEyebrow", "Curadoria Visual · Barber Lounge")}</span>
               <h2>{getText("instagramSectionTitle", "Barber Lounge em movimento")}</h2>
-              <p>{getText("instagramDescription", "Acompanhe nossa curadoria diária de estilos, cortes e conteúdo. Siga-nos para conferir os resultados em primeira mão.")}</p>
+              <p>{getText("instagramDescription", "Grade editorial de referência com imagens de corte e ambiente da casa. O feed automático oficial está temporariamente pausado por restrições da API da Meta.")}</p>
             </div>
 
             <div className="insta-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '36px' }}>

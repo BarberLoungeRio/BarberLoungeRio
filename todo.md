@@ -237,9 +237,9 @@
 
 ## Solicitação de feed automático do Instagram
 
-- [ ] Definir e implementar a integração automática do Instagram para o perfil @barberlounge.rio, com fallback visual e permissões documentadas.
-- [ ] Manter temporariamente uma grade editorial de referência, claramente identificada, enquanto a API oficial do Instagram estiver pausada.
-- [ ] Localizar ou reconstruir o slideshow em flashes da segunda edição, composto por fotos da barbearia, sem confundi-lo com a vinheta da logo.
+- [ ] Definir e implementar a integração automática do Instagram para o perfil @barberlounge.rio quando a Meta normalizar o acesso, com fallback visual e permissões documentadas.
+- [ ] Rotular visualmente a seção atual do Instagram como grade editorial de referência / imagens ilustrativas da casa.
+- [ ] Localizar ou recolocar o slideshow em flashes da segunda edição no Hero do site.
 
 ## Problemas reportados após o último deploy no Render
 
