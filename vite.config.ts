@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 import fs from "node:fs";
 import path from "node:path";
 import { defineConfig, type Plugin, type ViteDevServer } from "vite";
-import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
+// import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 
 // =============================================================================
 // Manus Debug Collector - Vite Plugin
@@ -150,7 +150,21 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+const plugins = [
+  react(),
+  tailwindcss(),
+  jsxLocPlugin(),
+  // Try loading manus runtime safely if available
+  ...(function() {
+    try {
+      const mod = require("vite-plugin-manus-runtime");
+      return [mod.vitePluginManusRuntime ? mod.vitePluginManusRuntime() : null].filter(Boolean);
+    } catch {
+      return [];
+    }
+  })(),
+  vitePluginManusDebugCollector(),
+];
 
 export default defineConfig({
   plugins,

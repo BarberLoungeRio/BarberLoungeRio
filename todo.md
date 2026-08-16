@@ -223,3 +223,9 @@
 - [x] Remover o patch problemático do package.json e da pasta patches para evitar falha no Render
 - [x] Validar pnpm install limpo sem patches
 - [x] Executar typecheck, testes e build de produção
+
+## Correção do Erro de Build no Render (vite-plugin-manus-runtime)
+- [ ] Analisar o vite.config.ts e o uso do plugin manus-runtime
+- [ ] Ajustar vite.config.ts para produção para evitar falha ao carregar plugins internos do Manus
+- [ ] Validar build local com NODE_ENV=production
+- [ ] Entregar instruções claras para o Render
