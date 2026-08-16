@@ -773,14 +773,20 @@ export function Home() {
               <p>{getText("instagramDescription", "Acompanhe nossa curadoria diária de estilos, cortes e conteúdo. Siga-nos para conferir os resultados em primeira mão.")}</p>
             </div>
 
-            <div className="insta-grid insta-profile-card">
-              <div className="insta-profile-mark">IG</div>
-              <div>
-                <span className="eyebrow">{getText("instagramProfileEyebrow", "Perfil oficial")}</span>
-                <h3>{instagramUsername}</h3>
-                <p>{getText("instagramProfileDescription", "O feed oficial é atualizado diretamente no Instagram. Abra o perfil para ver as publicações mais recentes, sem imagens demonstrativas ou conteúdo de outra fonte.")}</p>
-                <a href={instagramUrl} target="_blank" rel="noopener" className="btn btn-outline">{getText("instagramButton", "Abrir perfil no Instagram →")}</a>
-              </div>
+            <div className="insta-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '36px' }}>
+              {[
+                { img: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=85", title: "Corte & Estilo · Barber Lounge" },
+                { img: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=800&q=85", title: "Atendimento Exclusivo no Centro" },
+                { img: "https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=800&q=85", title: "Tesoura e Acabamento Autoral" },
+                { img: "https://images.unsplash.com/photo-1512864694403-124e4d7d9667?auto=format&fit=crop&w=800&q=85", title: "Curadoria Luxury Thrift Store" },
+              ].map((item, idx) => (
+                <a href={instagramUrl} target="_blank" rel="noopener noreferrer" key={idx} style={{ position: 'relative', display: 'block', borderRadius: '8px', overflow: 'hidden', aspectRatio: '1/1', border: '1px solid rgba(212,175,55,0.25)', background: '#111' }}>
+                  <img src={item.img} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .4s ease' }} className="hover:scale-105" loading="lazy" />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.85) 100%)', display: 'flex', alignItems: 'flex-end', padding: '16px' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: '#f3e5ab', fontFamily: 'Montserrat, sans-serif' }}>{item.title}</span>
+                  </div>
+                </a>
+              ))}
             </div>
 
             <div className="section-cta">
