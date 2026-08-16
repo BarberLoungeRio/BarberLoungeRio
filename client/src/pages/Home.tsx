@@ -3,8 +3,8 @@ import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
 
-const heroVideoUrl = "/manus-storage/hero-google-photos-clean_dea86347.mp4";
-const heroPosterUrl = "/manus-storage/hero-google-photos-clean-poster_ac66263e.jpg";
+const heroVideoUrl = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/ZBzopxXcFFpkkqyR.mp4";
+const heroPosterUrl = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/lKrbDjDOgozFykzN.jpg";
 const whatsappBookingUrl = `https://wa.me/5521980089047?text=${encodeURIComponent("Olá, Barber Lounge Rio! Gostaria de agendar um horário.")}`;
 
 export default function Home() {
@@ -602,7 +602,7 @@ export default function Home() {
       <header id="site-header" style={{ background: scrolled ? 'rgba(0,0,0,0.9)' : 'rgba(0,0,0,0.6)' }}>
         <div className="wrap">
           <a href="#top" className="logo">
-            <img src="/manus-storage/WhatsAppImage2026-07-28at21.07.17_94e3c791.jpeg" alt="Barber Lounge Rio" style={{ borderRadius: '50%', objectFit: 'cover' }} />
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/rMltXKXDOqUbQOLF.jpeg" alt="Barber Lounge Rio" style={{ borderRadius: '50%', objectFit: 'cover' }} />
             <span className="logo-type"><strong>{getText("brandName", "BARBER LOUNGE RIO")}</strong><span>{getText("brandLocation", "Centro · Rio de Janeiro")}</span></span>
           </a>
           <nav className="main-nav">
@@ -826,7 +826,7 @@ export default function Home() {
           <div className="footer-top">
             <div className="footer-brand">
               <a href="#top" className="logo">
-                <img src="/manus-storage/WhatsAppImage2026-07-28at21.07.17_94e3c791.jpeg" alt="Barber Lounge Rio" style={{ borderRadius: '50%', objectFit: 'cover' }} />
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/rMltXKXDOqUbQOLF.jpeg" alt="Barber Lounge Rio" style={{ borderRadius: '50%', objectFit: 'cover' }} />
                 <span className="logo-type"><strong>{getText("brandName", "BARBER LOUNGE RIO")}</strong><span>{getText("brandLocation", "Centro · Rio de Janeiro")}</span></span>
               </a>
               <p>{getText("footerBrandDescription", "Autenticidade, luxo e atitude em um único lugar. Barbearia de alto padrão e curadoria de moda circular no Centro do Rio de Janeiro.")}</p>

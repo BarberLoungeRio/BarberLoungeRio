@@ -234,3 +234,11 @@
 - [x] Verificar o valor de root no vite.config.ts em relação ao Root Directory do Render
 - [x] Garantir que o index.html esteja na pasta client/ conforme a propriedade root: path.resolve(PROJECT_ROOT, "client")
 - [x] Documentar os campos corretos no painel do Render
+
+## Problemas reportados após o último deploy no Render
+
+- [ ] Corrigir a divergência entre a versão publicada no Render e o layout premium esperado, incluindo vídeo de abertura, cores e identidade visual.
+- [ ] Diagnosticar e corrigir a página em branco no domínio oficial barberloungerio.com.br.
+- [ ] Validar os assets de vídeo e a configuração de build/publicação para garantir que a versão correta seja servida.
+- [ ] Sincronizar a versão atual do Home.tsx e os assets públicos com o repositório GitHub que alimenta o Render.
+- [ ] Remover o domínio oficial da publicação placeholder e apontá-lo ao Web Service correto do Render.
