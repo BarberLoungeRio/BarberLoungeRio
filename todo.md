@@ -212,8 +212,8 @@
 
 
 ## Correção do Guia de Prompts
-- [ ] Reproduzir o 404 do botão Guia GitHub e Prompts
-- [ ] Corrigir a rota ou criar um fallback público funcional para o manual
-- [ ] Validar o acesso pelo painel e pelo link direto
-- [ ] Executar testes/build e salvar checkpoint da correção
+- [x] Reproduzir o 404 do botão Guia GitHub e Prompts
+- [x] Corrigir a rota ou criar um fallback público funcional para o manual
+- [x] Validar o acesso pelo painel e pelo link direto
+- [x] Executar testes/build e salvar checkpoint da correção
 
