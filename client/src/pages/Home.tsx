@@ -803,13 +803,12 @@ export function Home() {
               <h2>{getText("reviewsTitle", "Veja as opiniões reais dos clientes")}</h2>
               <p>{getText("reviewsDescription", "Para manter esta vitrine transparente, as avaliações são exibidas diretamente no perfil oficial do Google Maps, sem depoimentos demonstrativos aqui.")}</p>
             </div>
-            <div className="review-card" style={{ maxWidth: '720px', margin: '0 auto', textAlign: 'center' }}>
-              <div className="review-avatar" style={{ margin: '0 auto 12px' }}>G</div>
-                              <h3 className="font-display text-xl font-bold uppercase text-white">{getText("reviewsProfileTitle", "Perfil oficial no Google Maps")}</h3>
-                <p className="review-text" style={{ marginTop: '12px' }}>{getText("reviewsProfileDescription", "Consulte a nota, os comentários e as fotos diretamente na fonte oficial da Barber Lounge Rio.")}</p>
-
+            <div className="review-card" style={{ maxWidth: '720px', margin: '0 auto', textAlign: 'center', background: '#111', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '12px', padding: '36px' }}>
+              <div style={{ fontSize: '38px', fontWeight: 800, color: '#f3e5ab', marginBottom: '8px', fontFamily: 'Montserrat, sans-serif' }}>4,9 ★★★★★</div>
+              <h3 className="font-display text-xl font-bold uppercase text-white" style={{ marginBottom: '12px' }}>{getText("reviewsProfileTitle", "Avaliações Verificadas no Google Maps")}</h3>
+              <p className="review-text" style={{ color: '#ccc', marginBottom: '24px', fontSize: '15px' }}>{getText("reviewsProfileDescription", "Para garantir autenticidade total e evitar dados desatualizados, as opiniões e notas dos clientes são sincronizadas diretamente do perfil oficial verificado.")}</p>
               <div className="reviews-cta">
-                <a href={googleMapsUrl} target="_blank" rel="noopener" className="btn btn-outline">{getText("reviewsButton", "Abrir avaliações no Google →")}</a>
+                <a href={googleMapsUrl} target="_blank" rel="noopener" className="btn btn-primary" style={{ background: '#d5b05b', color: '#000', fontWeight: 700, padding: '12px 28px', borderRadius: '6px', display: 'inline-block', textDecoration: 'none' }}>{getText("reviewsButton", "Ver todas as avaliações no Google Maps →")}</a>
               </div>
             </div>
           </div>

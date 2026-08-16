@@ -235,9 +235,15 @@
 - [x] Garantir que o index.html esteja na pasta client/ conforme a propriedade root: path.resolve(PROJECT_ROOT, "client")
 - [x] Documentar os campos corretos no painel do Render
 
+## Solicitação de feed automático do Instagram
+
+- [ ] Definir e implementar a integração automática do Instagram para o perfil @barberlounge.rio, com fallback visual e permissões documentadas.
+- [ ] Manter temporariamente uma grade editorial de referência, claramente identificada, enquanto a API oficial do Instagram estiver pausada.
+- [ ] Localizar ou reconstruir o slideshow em flashes da segunda edição, composto por fotos da barbearia, sem confundi-lo com a vinheta da logo.
+
 ## Problemas reportados após o último deploy no Render
 
-- [ ] Enviar a versão corrigida de `client/src/pages/Home.tsx` e dos assets públicos para o repositório GitHub conectado ao Render.
+- [ ] Enviar a versão corrigida de `client/src/pages/Home.tsx`, o `server/db.ts` atualizado e os assets públicos para o repositório GitHub conectado ao Render.
 - [ ] Acionar novo deploy no Render com Clear build cache & deploy e validar a versão em `https://barberloungerio.onrender.com`.
 - [ ] Configurar o domínio personalizado `barberloungerio.com.br` no painel do Web Service do Render e ajustar os apontamentos DNS no Registro.br.
 
