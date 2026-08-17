@@ -1,0 +1,7 @@
+# Comparação visual dos vídeos do Hero
+
+Os contact sheets de `ARTEPARASITE.mp4` e `Downloads/barber_lounge_rio_site.mp4` mostram a mesma peça visual: composição abstrata com tesouras e navalhas ao redor de um elemento central dourado, em fundo preto/vermelho. Ambos são versões da vinheta/arte da logo, não o slideshow em flashes de fotos da barbearia mencionado pelo usuário.
+
+A versão atual do Home.tsx usa um URL CDN cujo conteúdo corresponde à vinheta de tesouras/navalhas com fundo preto e vermelho, não ao slideshow da segunda edição. Os contact sheets mostram que `hero-google-photos-clean`, `hero-google-photos-correct`, `barberloungerio/hero.mp4`, `ARTEPARASITE.mp4` e `barber_lounge_rio_site.mp4` são a mesma família de vinheta. Já `hero-google-photos-hq.mp4` é um slideshow com fotos do ambiente/Thrift Store e não a vinheta da logo. A comparação do último frame confirmou definitivamente a diferença: `barber_lounge_rio_site.mp4` termina com a tela preta contendo o logo CapCut e o ID `5546168777`, enquanto `hero-google-photos-clean.mp4` termina no quadro da arte da logo, sem a tela CapCut. O CDN `zUJLBvHNrfTIaAHK.mp4` agora aponta para essa versão limpa de 13,966667 segundos, e `zpxjhSjWfCeXTgze.jpg` é o poster correspondente.
+
+Também foi confirmado no Home.tsx que a Thrift Store está em um marquee contínuo com itens duplicados e `gap:20px` no track. A ausência percebida de espaço provavelmente vem do efeito de faixa contínua/duplicada e da largura fixa dos itens, não da remoção dos dados: `server/db.ts` ainda possui as 23 imagens CDN.

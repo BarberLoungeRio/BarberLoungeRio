@@ -3,8 +3,9 @@ import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
 
-const heroVideoUrl = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/ZBzopxXcFFpkkqyR.mp4";
-const heroPosterUrl = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/lKrbDjDOgozFykzN.jpg";
+// Versão corrigida do vídeo da logo: corte sem a tela final antiga do CapCut, preparada para ocupar o Hero em desktop e mobile.
+const heroVideoUrl = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/zUJLBvHNrfTIaAHK.mp4";
+const heroPosterUrl = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/zpxjhSjWfCeXTgze.jpg";
 const whatsappBookingUrl = `https://wa.me/5521980089047?text=${encodeURIComponent("Olá, Barber Lounge Rio! Gostaria de agendar um horário.")}`;
 
 export function Home() {
@@ -433,12 +434,13 @@ export function Home() {
         .thrift{background:var(--bg);}
         .thrift-marquee{
           overflow:hidden;
+          padding:0 32px;
           -webkit-mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
           mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
         }
         .thrift-track{
           display:flex;
-          gap:20px;
+          gap:32px;
           width:max-content;
           animation:thriftScroll 38s linear infinite;
         }
@@ -594,6 +596,8 @@ export function Home() {
           .hero-ctas{flex-direction:column;align-items:stretch;width:100%;}
           .hero-ctas .btn{width:100%;}
           .reviews-track{grid-template-columns:1fr;}
+          .thrift-marquee{padding:0 18px;}
+          .thrift-track{gap:18px;}
           .thrift-item{width:190px;}
           .services-grid{grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));gap:14px;}
         }
@@ -676,7 +680,7 @@ export function Home() {
           </div>
 
           <div className="hero-meta">
-            <div><span className="num">{getText("heroRatingNumber", "4,9 ★")}</span><span className="label">{getText("heroRatingLabel", "Avaliação no Google")}</span></div>
+            <div><span className="num">{getText("heroRatingNumber", "Perfil oficial")}</span><span className="label">{getText("heroRatingLabel", "Ver no Google Maps")}</span></div>
             <div><span className="num">{getText("heroLocationNumber", "Centro")}</span><span className="label">{getText("heroLocationLabel", "Av. Churchill, RJ")}</span></div>
           </div>
 
@@ -804,7 +808,7 @@ export function Home() {
               <p>{getText("reviewsDescription", "Para manter esta vitrine transparente, as avaliações são exibidas diretamente no perfil oficial do Google Maps, sem depoimentos demonstrativos aqui.")}</p>
             </div>
             <div className="review-card" style={{ maxWidth: '720px', margin: '0 auto', textAlign: 'center', background: '#111', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '12px', padding: '36px' }}>
-              <div style={{ fontSize: '38px', fontWeight: 800, color: '#f3e5ab', marginBottom: '8px', fontFamily: 'Montserrat, sans-serif' }}>4,9 ★★★★★</div>
+              <div style={{ fontSize: '24px', fontWeight: 800, color: '#f3e5ab', marginBottom: '8px', fontFamily: 'Montserrat, sans-serif' }}>Perfil oficial</div>
               <h3 className="font-display text-xl font-bold uppercase text-white" style={{ marginBottom: '12px' }}>{getText("reviewsProfileTitle", "Avaliações Verificadas no Google Maps")}</h3>
               <p className="review-text" style={{ color: '#ccc', marginBottom: '24px', fontSize: '15px' }}>{getText("reviewsProfileDescription", "Para garantir autenticidade total e evitar dados desatualizados, as opiniões e notas dos clientes são sincronizadas diretamente do perfil oficial verificado.")}</p>
               <div className="reviews-cta">

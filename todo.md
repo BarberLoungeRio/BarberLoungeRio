@@ -237,9 +237,11 @@
 
 ## Solicitação de feed automático do Instagram
 
-- [ ] Definir e implementar a integração automática do Instagram para o perfil @barberlounge.rio quando a Meta normalizar o acesso, com fallback visual e permissões documentadas.
-- [ ] Rotular visualmente a seção atual do Instagram como grade editorial de referência / imagens ilustrativas da casa.
-- [ ] Localizar ou recolocar o slideshow em flashes da segunda edição no Hero do site.
+- [ ] Integrar feed automático do Instagram via API oficial quando a Meta normalizar o acesso (atualmente pausado por restrições da Meta).
+- [x] Rotular visualmente a seção do Instagram como grade editorial de referência / imagens ilustrativas da casa.
+- [ ] Recolocar o slideshow em flashes da segunda edição no Hero do site (pendente confirmação do arquivo exato).
+- [x] Restaurar o vídeo correto da logo com finalização do CapCut e exibição em tela inteira.
+- [x] Recuperar os espaçamentos e a apresentação original das fotos enviadas da Thrift Store.
 
 ## Problemas reportados após o último deploy no Render
 
