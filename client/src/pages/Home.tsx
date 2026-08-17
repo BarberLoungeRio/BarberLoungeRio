@@ -1,6 +1,8 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
+import { MapView } from "@/components/Map";
+import { normalizeGoogleReviews, type NormalizedGoogleReview } from "@shared/googleReviews";
 import { useState, useEffect } from "react";
 
 // Versão corrigida do vídeo da logo: corte sem a tela final antiga do CapCut, preparada para ocupar o Hero em desktop e mobile.
@@ -34,6 +36,16 @@ const fallbackThriftStoreItems = [
   { imageUrl: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/kqeTVmqudmEdrEgp.jpg", title: "Peça 23", description: "Curadoria de moda circular e vestuário Barber Lounge Rio." },
 ];
 
+type LiveReviewsState = {
+  status: "loading" | "ready" | "empty" | "error";
+  placeName: string;
+  address: string;
+  rating: number | null;
+  ratingCount: number | null;
+  reviews: NormalizedGoogleReview[];
+  googleMapsUri?: string;
+};
+
 export function Home() {
   const { data: publicData } = trpc.site.publicData.useQuery();
   const { user } = useAuth();
@@ -45,6 +57,76 @@ export function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [heroVideoReady, setHeroVideoReady] = useState(false);
+  const [liveReviews, setLiveReviews] = useState<LiveReviewsState>({
+    status: "loading",
+    placeName: "",
+    address: "",
+    rating: null,
+    ratingCount: null,
+    reviews: [],
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    let timeoutId: number | undefined;
+
+    const loadGoogleReviews = async () => {
+      try {
+        const mapsApi = (window as Window & { google?: any }).google?.maps;
+        if (!mapsApi?.importLibrary) throw new Error("Google Maps ainda não foi carregado");
+
+        const { Place } = await mapsApi.importLibrary("places");
+        const result = await Place.searchByText({
+          textQuery: "BARBER LOUNGE RIO -Barbearia & Luxury Thrift Store, Av. Churchill, 10C, Centro, Rio de Janeiro",
+          fields: ["id", "displayName", "formattedAddress", "rating", "userRatingCount", "reviews", "googleMapsURI"],
+          maxResultCount: 1,
+          language: "pt-BR",
+          region: "BR",
+        });
+        const place = result?.places?.[0];
+        if (!place) throw new Error("Perfil oficial não localizado pelo Google Places");
+
+        const reviews = normalizeGoogleReviews(place.id || "barber-lounge-rio", place.reviews, 3);
+
+        if (cancelled) return;
+        setLiveReviews({
+          status: reviews.length > 0 ? "ready" : "empty",
+          placeName: place.displayName || "BARBER LOUNGE RIO",
+          address: place.formattedAddress || "",
+          rating: typeof place.rating === "number" ? place.rating : null,
+          ratingCount: typeof place.userRatingCount === "number" ? place.userRatingCount : null,
+          reviews,
+          googleMapsUri: place.googleMapsURI || undefined,
+        });
+      } catch (error) {
+        if (cancelled) return;
+        console.warn("Não foi possível carregar as avaliações do Google Maps", error);
+        setLiveReviews((current) => ({ ...current, status: "error" }));
+      }
+    };
+
+    const waitForMaps = () => {
+      const mapsReady = Boolean((window as Window & { google?: any }).google?.maps?.importLibrary);
+      if (mapsReady) {
+        void loadGoogleReviews();
+        return;
+      }
+      timeoutId = window.setTimeout(waitForMaps, 250);
+    };
+
+    waitForMaps();
+    const hardStop = window.setTimeout(() => {
+      if (!cancelled && liveReviews.status === "loading") {
+        setLiveReviews((current) => current.status === "loading" ? { ...current, status: "error" } : current);
+      }
+    }, 12000);
+
+    return () => {
+      cancelled = true;
+      if (timeoutId) window.clearTimeout(timeoutId);
+      window.clearTimeout(hardStop);
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -552,6 +634,25 @@ export function Home() {
         .review-source{font-size:11px;color:var(--muted-2);display:flex;align-items:center;gap:6px;margin-top:auto;}
         .reviews-note{margin-top:26px;font-size:12px;color:var(--muted-2);border-top:1px solid var(--line);padding-top:18px;text-align:center;}
         .reviews-cta{margin-top:36px;display:flex;justify-content:center;}
+        .reviews-live-layout{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(300px,.88fr);gap:22px;align-items:stretch;}
+        .reviews-live-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:30px 28px;min-height:380px;}
+        .reviews-live-panel h3{font-family:'Montserrat',sans-serif;font-size:18px;line-height:1.35;color:var(--ivory);margin-bottom:8px;}
+        .reviews-live-address{font-size:12px;color:var(--muted-2);margin-bottom:18px;}
+        .reviews-live-summary{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+        .reviews-live-score{font-family:'Montserrat',sans-serif;font-weight:900;font-size:34px;color:var(--gold-light);line-height:1;}
+        .reviews-live-count{font-size:12px;color:var(--muted);}
+        .reviews-live-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+        .reviews-live-card{min-width:0;background:#101010;border:1px solid rgba(212,175,55,.18);border-radius:4px;padding:18px;display:flex;flex-direction:column;gap:12px;}
+        .reviews-live-author{display:flex;align-items:center;gap:10px;min-width:0;}
+        .reviews-live-author img,.reviews-live-avatar{width:34px;height:34px;border-radius:50%;flex:0 0 34px;object-fit:cover;}
+        .reviews-live-avatar{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--gold-light),var(--gold));font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;color:#171410;}
+        .reviews-live-author a{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:var(--ivory);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .reviews-live-author span{display:block;font-size:11px;color:var(--muted-2);margin-top:2px;}
+        .reviews-live-card .review-text{min-height:72px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
+        .reviews-live-card .review-source{margin-top:auto;}
+        .reviews-map-frame{height:380px!important;min-height:380px;border:1px solid var(--line);border-radius:4px;overflow:hidden;filter:grayscale(1) contrast(1.08) brightness(.72);}
+        .reviews-map-frame:hover{filter:grayscale(.15) contrast(1.02) brightness(.88);}
+        .google-maps-attribution{margin-top:20px;font-family:Roboto,Arial,sans-serif;font-size:12px;font-weight:400;letter-spacing:normal;color:#d7d7d7;white-space:nowrap;}
 
         .cta-band{
           background:linear-gradient(120deg, #17140f, #0a0a0a 60%);
@@ -606,6 +707,8 @@ export function Home() {
           .values-grid{grid-template-columns:1fr;gap:36px;}
           .footer-top{grid-template-columns:1fr;gap:44px;}
           .reviews-track{grid-template-columns:1fr 1fr;}
+          .reviews-live-layout{grid-template-columns:1fr;}
+          .reviews-live-list{grid-template-columns:1fr 1fr;}
         }
         @media (max-width:840px){
           nav.main-nav ul{display:none;}
@@ -622,6 +725,9 @@ export function Home() {
           .hero-ctas{flex-direction:column;align-items:stretch;width:100%;}
           .hero-ctas .btn{width:100%;}
           .reviews-track{grid-template-columns:1fr;}
+          .reviews-live-list{grid-template-columns:1fr;}
+          .reviews-live-panel{padding:24px 20px;}
+          .reviews-map-frame{height:300px!important;min-height:300px;}
           .thrift-marquee{padding:0 18px;}
           .thrift-track{gap:18px;}
           .thrift-item{width:190px;}
@@ -831,15 +937,61 @@ export function Home() {
             <div className="section-head">
               <span className="eyebrow">{getText("reviewsEyebrow", "Avaliações verificáveis")}</span>
               <h2>{getText("reviewsTitle", "Veja as opiniões reais dos clientes")}</h2>
-              <p>{getText("reviewsDescription", "Para manter esta vitrine transparente, as avaliações são exibidas diretamente no perfil oficial do Google Maps, sem depoimentos demonstrativos aqui.")}</p>
+              <p>{getText("reviewsDescription", "As avaliações abaixo são carregadas automaticamente do perfil oficial da Barber Lounge Rio no Google Maps. Nenhum depoimento é criado ou armazenado pelo site.")}</p>
             </div>
-            <div className="review-card" style={{ maxWidth: '720px', margin: '0 auto', textAlign: 'center', background: '#111', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '12px', padding: '36px' }}>
-              <div style={{ fontSize: '24px', fontWeight: 800, color: '#f3e5ab', marginBottom: '8px', fontFamily: 'Montserrat, sans-serif' }}>Perfil oficial</div>
-              <h3 className="font-display text-xl font-bold uppercase text-white" style={{ marginBottom: '12px' }}>{getText("reviewsProfileTitle", "Avaliações Verificadas no Google Maps")}</h3>
-              <p className="review-text" style={{ color: '#ccc', marginBottom: '24px', fontSize: '15px' }}>{getText("reviewsProfileDescription", "Para garantir autenticidade total e evitar dados desatualizados, as opiniões e notas dos clientes são sincronizadas diretamente do perfil oficial verificado.")}</p>
-              <div className="reviews-cta">
-                <a href={googleMapsUrl} target="_blank" rel="noopener" className="btn btn-primary" style={{ background: '#d5b05b', color: '#000', fontWeight: 700, padding: '12px 28px', borderRadius: '6px', display: 'inline-block', textDecoration: 'none' }}>{getText("reviewsButton", "Ver todas as avaliações no Google Maps →")}</a>
+
+            <div className="reviews-live-layout">
+              <div className="reviews-live-panel">
+                {liveReviews.status === "loading" && <p className="review-text">Carregando avaliações diretamente do Google Maps…</p>}
+                {liveReviews.status === "error" && (
+                  <>
+                    <h3>{getText("reviewsProfileTitle", "Perfil oficial no Google Maps")}</h3>
+                    <p className="review-text">O Google Maps não disponibilizou os dados automaticamente neste carregamento. Consulte a fonte oficial para ver a nota e todos os comentários atualizados.</p>
+                  </>
+                )}
+                {(liveReviews.status === "ready" || liveReviews.status === "empty") && (
+                  <>
+                    <h3>{liveReviews.placeName}</h3>
+                    {liveReviews.address && <p className="reviews-live-address">{liveReviews.address}</p>}
+                    <div className="reviews-live-summary">
+                      <span className="reviews-live-score">{liveReviews.rating !== null ? liveReviews.rating.toFixed(1).replace('.', ',') : "—"}</span>
+                      <div>
+                        <div className="stars" aria-label={liveReviews.rating !== null ? `Nota ${liveReviews.rating.toFixed(1)} de 5` : "Nota indisponível"}>★★★★★</div>
+                        <span className="reviews-live-count">{liveReviews.ratingCount !== null ? `${liveReviews.ratingCount} avaliações no Google Maps` : "Avaliações verificadas no Google Maps"}</span>
+                      </div>
+                    </div>
+                    {liveReviews.reviews.length > 0 ? (
+                      <div className="reviews-live-list">
+                        {liveReviews.reviews.map((review) => {
+                          const initials = review.authorName.trim().slice(0, 1).toUpperCase() || "G";
+                          return (
+                            <article className="reviews-live-card" key={review.id}>
+                              <div className="reviews-live-author">
+                                {review.authorPhoto ? <img src={review.authorPhoto} alt="" loading="lazy" /> : <span className="reviews-live-avatar" aria-hidden="true">{initials}</span>}
+                                <div style={{ minWidth: 0 }}>
+                                  {review.authorUri ? <a href={review.authorUri} target="_blank" rel="noreferrer">{review.authorName}</a> : <span style={{ color: 'var(--ivory)', fontFamily: 'Montserrat', fontWeight: 700 }}>{review.authorName}</span>}
+                                  <span>{review.relativeTime || "Avaliação verificada"}</span>
+                                </div>
+                              </div>
+                              <div className="stars" aria-label={`Nota ${review.rating} de 5`}>{"★".repeat(Math.max(0, Math.min(5, Math.round(review.rating))))}</div>
+                              <p className="review-text">{review.text || "Esta avaliação não possui comentário textual."}</p>
+                              <span className="review-source">Fonte: Google Maps</span>
+                            </article>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <p className="review-text">O perfil foi localizado, mas o Google não retornou comentários textuais neste carregamento.</p>
+                    )}
+                  </>
+                )}
+                <div className="reviews-cta">
+                  <a href={liveReviews.googleMapsUri || googleMapsUrl} target="_blank" rel="noopener" className="btn btn-primary" style={{ background: '#d5b05b', color: '#000', fontWeight: 700, padding: '12px 28px', borderRadius: '6px', display: 'inline-block', textDecoration: 'none' }}>{getText("reviewsButton", "Ver todas as avaliações no Google Maps →")}</a>
+                </div>
+                <p className="google-maps-attribution" translate="no">Google Maps</p>
               </div>
+
+              <MapView className="reviews-map-frame" initialCenter={{ lat: -22.9068, lng: -43.1729 }} initialZoom={16} />
             </div>
           </div>
         </section>

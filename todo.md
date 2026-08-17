@@ -252,3 +252,12 @@
 - [x] Acionar novo deploy no Render com Clear build cache & deploy e validar a versão em `https://barberloungerio.com.br`. (Render Live com 23 fotos da Thrift Store e vídeo limpo da logo)
 - [x] Configurar o domínio personalizado `barberloungerio.com.br` no painel do Web Service do Render e ajustar os apontamentos DNS no Registro.br. (Domínios adicionados com sucesso; DNS aguardando propagação no Registro.br)
 
+
+## Verificação solicitada em 2026-08-17 (DNS e Instagram)
+- [x] Verificar o status real do domínio personalizado `barberloungerio.com.br` no painel do Render após alteração no Registro.br.
+- [x] Conferir os apontamentos DNS (CNAME/A) exigidos pelo Render para o Registro.br.
+- [ ] Inspecionar o comportamento da seção do Instagram na versão publicada e ajustar links ou interatividade.
+
+## Avaliações automáticas do Google Maps
+- [x] Auditar e implementar a exibição automática das avaliações do perfil oficial do Google Maps, sem depender apenas de clique.
+- [x] Validar a origem dos dados das avaliações, as credenciais/API necessárias e o comportamento quando o Google não autorizar carregamento público.
