@@ -18,6 +18,14 @@
 - Em hospedagem Render externa, os caminhos `/manus-storage/` dependem do proxy/storage Manus; se esse proxy não existir ou não tiver os arquivos, o vídeo não aparece.
 - O domínio precisa ser removido de qualquer serviço placeholder e adicionado ao Web Service Render correto como domínio personalizado.
 
+## Verificação após o commit `eef615c` — 17/08/2026
+
+A API pública do Render agora responde HTTP 200 com `content: 90`, `services: 3`, `videos: 19`, `thriftStore: 23` e `blocks: 0`. O primeiro item contém uma URL CDN HTTP 200, portanto o fallback do servidor chegou ao Render.
+
+Entretanto, ao abrir `https://barberloungerio.onrender.com/#thrift`, o HTML visível mostra o título `Curadoria consciente` e o texto da Thrift Store, mas não mostra elementos de imagem da galeria antes da seção `Barber Lounge em movimento`. A inspeção do navegador confirmou `itemCount: 0`, `imageCount: 0` e `.thrift-track` com largura 0, embora um fetch executado no mesmo navegador retorne `thriftStore: 23`.
+
+A correção local adicionou o fallback direto das 23 URLs CDN no próprio `Home.tsx`, usa os itens retornados quando houver dados e os itens embutidos quando a lista vier vazia, além de carregar os seis primeiros itens sem lazy loading. O build, testes e typecheck passaram. A captura full-page local confirmou visualmente a faixa com fotos, captions e espaçamento entre os cards. Portanto, a próxima publicação precisa servir o bundle do novo `Home.tsx`; o problema restante é o bundle/client publicado no Render estar desatualizado ou não ter sido redeployado após a correção.
+
 ## Diagnóstico adicional — 17/08/2026
 
 A consulta direta ao endpoint público do Render `https://barberloungerio.onrender.com/api/trpc/site.publicData?batch=1&input=%7B%7D` respondeu HTTP 200, porém retornou `content: []`, `services: []`, `videos: []`, `thriftStore: []` e `blocks: []`. Isso explica por que a página publicada não mostra as fotos: a API estava devolvendo arrays vazios quando o banco externo não estava disponível ou ainda não havia sido populado.

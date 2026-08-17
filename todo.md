@@ -245,8 +245,9 @@
 
 ## Problemas reportados após o último deploy no Render
 
-- [ ] Enviar a versão corrigida de `client/src/pages/Home.tsx`, o `server/db.ts` atualizado e os assets públicos para o repositório GitHub conectado ao Render. (Em andamento)
-- [ ] Corrigir a carga dos registros e imagens da Thrift Store na versão publicada do Render sem substituir o vídeo funcional.
+- [x] Enviar a versão corrigida de `client/src/pages/Home.tsx`, o `server/db.ts` atualizado e os assets públicos para o repositório GitHub conectado ao Render. (Commits `024d61c` e `eef615c` confirmados)
+- [x] Investigar por que a Thrift Store publicada no Render ainda exibe faixas vazias ou sem espaçamento, apesar do commit `eef615c` no `server/db.ts`.
+- [ ] Publicar o novo `Home.tsx` com fallback cliente das 23 fotos e validar a faixa no Render.
 - [ ] Acionar novo deploy no Render com Clear build cache & deploy e validar a versão em `https://barberloungerio.com.br`.
 - [ ] Configurar o domínio personalizado `barberloungerio.com.br` no painel do Web Service do Render e ajustar os apontamentos DNS no Registro.br.
 
