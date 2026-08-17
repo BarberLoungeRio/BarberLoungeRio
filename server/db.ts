@@ -235,10 +235,30 @@ export async function ensureSeeded() {
   return _seedPromise;
 }
 
+function fallbackVideos(): InsertYoutubeVideo[] {
+  return defaultShorts.map((youtubeId, index) => ({
+    youtubeId,
+    url: `https://www.youtube.com/shorts/${youtubeId}`,
+    title: `Serviço · Episódio ${String(index + 1).padStart(2, "0")}`,
+    description: "Conteúdo Barber Lounge Rio.",
+    tag: "Serviços",
+    sortOrder: index + 1,
+    active: true,
+  }));
+}
+
 export async function getPublicSiteData() {
   await ensureSeeded();
   const db = await getDb();
-  if (!db) return { content: [], services: [], videos: [], thriftStore: [], blocks: [] };
+  if (!db) {
+    return {
+      content: defaultContent,
+      services: defaultServices,
+      videos: fallbackVideos(),
+      thriftStore: defaultThriftStoreItems,
+      blocks: [],
+    };
+  }
   const [content, activeServices, videos, thriftStore, blocks] = await Promise.all([
     db.select().from(siteContent).orderBy(asc(siteContent.section), asc(siteContent.key)),
     db.select().from(services).where(eq(services.active, true)).orderBy(asc(services.sortOrder)),
@@ -246,7 +266,13 @@ export async function getPublicSiteData() {
     db.select().from(thriftStoreItems).where(eq(thriftStoreItems.active, true)).orderBy(asc(thriftStoreItems.sortOrder)),
     db.select().from(contentBlocks).where(eq(contentBlocks.active, true)).orderBy(asc(contentBlocks.sortOrder)),
   ]);
-  return { content, services: activeServices, videos, thriftStore, blocks };
+  return {
+    content: content.length > 0 ? content : defaultContent,
+    services: activeServices.length > 0 ? activeServices : defaultServices,
+    videos: videos.length > 0 ? videos : fallbackVideos(),
+    thriftStore: thriftStore.length > 0 ? thriftStore : defaultThriftStoreItems,
+    blocks,
+  };
 }
 
 export async function getAdminSiteData() {

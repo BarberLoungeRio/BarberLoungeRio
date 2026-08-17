@@ -245,7 +245,8 @@
 
 ## Problemas reportados após o último deploy no Render
 
-- [ ] Enviar a versão corrigida de `client/src/pages/Home.tsx`, o `server/db.ts` atualizado e os assets públicos para o repositório GitHub conectado ao Render.
-- [ ] Acionar novo deploy no Render com Clear build cache & deploy e validar a versão em `https://barberloungerio.onrender.com`.
+- [ ] Enviar a versão corrigida de `client/src/pages/Home.tsx`, o `server/db.ts` atualizado e os assets públicos para o repositório GitHub conectado ao Render. (Em andamento)
+- [ ] Corrigir a carga dos registros e imagens da Thrift Store na versão publicada do Render sem substituir o vídeo funcional.
+- [ ] Acionar novo deploy no Render com Clear build cache & deploy e validar a versão em `https://barberloungerio.com.br`.
 - [ ] Configurar o domínio personalizado `barberloungerio.com.br` no painel do Web Service do Render e ajustar os apontamentos DNS no Registro.br.
 
