@@ -394,3 +394,5 @@
 - [x] Validar, testar e publicar a correção no GitHub e Render.
 - [x] Remover a numeração contínua (Peça 01, Peça 02...) dos títulos da Thrift Store em server/db.ts e Home.tsx.
 - [x] Validar, testar e publicar a alteração no GitHub e Render.
+- [x] Localizar e remover a numeração automática no componente frontend e nas rotas tRPC da Thrift Store.
+- [x] Validar, testar e publicar a correção definitive no GitHub e Render.
