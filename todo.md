@@ -326,3 +326,7 @@
 - [x] Conduzir auditoria e refatoração completa do painel Admin para gerenciar todas as seções e atualizações do site.
 - [x] Testar salvamento e reflexão imediata no site público.
 - [x] Publicar checkpoint final e verificação de funcionamento do Admin.
+
+- [x] Conduzir auditoria e refatoração completa do Instagram, Google Maps e Painel Admin.
+- [x] Validar funcionamento em testes locais e build de produção.
+- [x] Publicar no GitHub e Render e confirmar operação no ar.
