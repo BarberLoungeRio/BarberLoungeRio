@@ -1050,7 +1050,7 @@ export function Home() {
           </div>
 
           <h1>Mais que um corte, <span>um conceito.</span></h1>
-          <p className="sub" style={{ maxWidth: '640px', margin: '0 auto 32px' }}>A união da curadoria de estilo com a precisão da alta barbearia. Autenticidade, sofisticação e atitude.</p>
+          <p className="sub" style={{ maxWidth: '600px', margin: '0 auto 32px', padding: '0 16px', lineHeight: '1.6' }}>A união da curadoria de estilo com a precisão da alta barbearia. Autenticidade, sofisticação e atitude.</p>
 
           <div className="hero-ctas" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
             <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ padding: '16px 42px', fontSize: '14px', fontWeight: 800 }}>{getText("heroBookingCta", "Agendar Exclusividade")}</a>

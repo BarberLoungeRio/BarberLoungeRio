@@ -360,3 +360,5 @@
 - [x] Simplificar o Hero em Home.tsx: deixar somente o CTA centralizado "Agendar exclusividade", eliminar o segundo botão e textos desnecessários.
 - [x] Ajustar o enquadramento do vídeo de fundo e espaçamentos do Hero para exibir mais o vídeo da logo.
 - [x] Compilar, testar e publicar a alteração no GitHub e Render.
+- [x] Ajustar largura máxima, font-size responsivo e padding do subtítulo do Hero em Home.tsx para evitar transbordamento.
+- [x] Executar typecheck, testes e build de produção, publicando a correção no GitHub e Render.
