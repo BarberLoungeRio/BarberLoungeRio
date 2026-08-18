@@ -357,3 +357,6 @@
 - [x] Validar build, testes unitários e sincronização com GitHub e Render.
 - [x] Remover a quantidade fixa do botão e exibir apenas “Ver avaliações reais”.
 - [x] Validar, testar e publicar a atualização do texto do botão.
+- [x] Simplificar o Hero em Home.tsx: deixar somente o CTA centralizado "Agendar exclusividade", eliminar o segundo botão e textos desnecessários.
+- [x] Ajustar o enquadramento do vídeo de fundo e espaçamentos do Hero para exibir mais o vídeo da logo.
+- [x] Compilar, testar e publicar a alteração no GitHub e Render.
