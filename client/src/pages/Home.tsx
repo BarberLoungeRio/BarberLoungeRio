@@ -50,26 +50,20 @@ function InstagramProfileEmbed({ url, notice }: { url: string; notice?: string }
       </div>
       <p style={{ margin: '0 0 20px', fontSize: '13px', color: 'var(--ivory)', lineHeight: '1.6' }}>{notice || "Carregando o perfil oficial diretamente do Instagram."}</p>
       
-      <div style={{ background: '#fff', borderRadius: '8px', overflow: 'hidden', display: 'inline-block', width: '100%', maxWidth: '540px' }}>
-        <blockquote className="instagram-media" data-instgrm-permalink={`${url}?utm_source=ig_embed&amp;utm_campaign=loading`} data-instgrm-version="14" style={{ background: '#FFF', border: '0', borderRadius: '3px', boxShadow: '0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)', margin: '1px', maxWidth: '540px', minWidth: '326px', padding: '0', width: 'calc(100% - 2px)' }}>
-          <div style={{ padding: '16px' }}>
-            <a href={url} target="_blank" rel="noreferrer" style={{ background: '#FFFFFF', lineHeight: '0', padding: '0 0', textAlign: 'center', textDecoration: 'none', width: '100%' }}>
-              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <div style={{ backgroundColor: '#F4F4F4', borderRadius: '50%', flexGrow: 0, height: '40px', marginRight: '14px', width: '40px' }}></div>
-                <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'center' }}>
-                  <div style={{ backgroundColor: '#F4F4F4', borderRadius: '4px', flexGrow: 0, height: '14px', marginBottom: '6px', width: '100px' }}></div>
-                  <div style={{ backgroundColor: '#F4F4F4', borderRadius: '4px', flexGrow: 0, height: '12px', width: '60px' }}></div>
+      <div style={{ background: '#0a0a09', border: '1px solid rgba(213,176,91,0.3)', borderRadius: '12px', overflow: 'hidden', display: 'block', width: '100%', maxWidth: '100%', padding: '20px' }}>
+        <blockquote className="instagram-media" data-instgrm-permalink={`${url}?utm_source=ig_embed&amp;utm_campaign=loading`} data-instgrm-version="14" style={{ background: '#070706', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 30px rgba(0,0,0,0.8)', margin: '0 auto', maxWidth: '100%', minWidth: '280px', padding: '0', width: '100%' }}>
+          <div style={{ padding: '20px', background: '#070706', color: '#fff' }}>
+            <a href={url} target="_blank" rel="noreferrer" style={{ background: '#070706', lineHeight: '1.5', padding: '0', textAlign: 'center', textDecoration: 'none', display: 'block' }}>
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '16px' }}>
+                <div style={{ backgroundColor: '#d5b05b', borderRadius: '50%', height: '48px', width: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', fontWeight: 800 }}>BL</div>
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ color: '#fff', fontSize: '16px', fontWeight: 700, fontFamily: 'Montserrat, sans-serif' }}>Barber Lounge Rio</div>
+                  <div style={{ color: 'var(--gold-light)', fontSize: '12px' }}>@barberlounge.rio • Perfil Oficial Verificado</div>
                 </div>
               </div>
-              <div style={{ padding: '19% 0' }}></div>
-              <div style={{ display: 'block', height: '50px', margin: '0 auto 12px', width: '50px' }}></div>
-              <div style={{ paddingTop: '8px' }}>
-                <div style={{ color: '#3897f0', fontFamily: 'Arial,sans-serif', fontSize: '14px', fontStyle: 'normal', fontWeight: 550, lineHeight: '18px' }}>Ver esta publicação no Instagram</div>
-              </div>
+              <div style={{ padding: '24px 0', color: 'var(--ivory)', fontSize: '14px' }}>Clique para abrir o feed completo e Reels no Instagram oficial.</div>
+              <div style={{ display: 'inline-block', background: 'var(--gold)', color: '#000', padding: '12px 28px', borderRadius: '6px', fontWeight: 700, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Seguir e ver no Instagram ↗</div>
             </a>
-            <p style={{ fontFamily: 'Arial,sans-serif', fontSize: '14px', lineHeight: '17px', marginBottom: '0', marginTop: '8px', overflow: 'hidden', padding: '8px 0 7px', textAlign: 'center', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              <a href={url} target="_blank" rel="noreferrer" style={{ color: '#c9c8cd', fontSize: '14px', fontStyle: 'normal', fontWeight: 'normal', textDecoration: 'none' }}>Uma publicação compartilhada por Barber Lounge Rio (@barberlounge.rio)</a>
-            </p>
           </div>
         </blockquote>
       </div>
@@ -1121,54 +1115,54 @@ export function Home() {
         </section>
 
         {/* AVALIAÇÕES GOOGLE MAPS */}
-        <section className="reviews section-pad" id="avaliacoes">
-          <div className="wrap">
-            <div className="section-head">
+        <section className="reviews section-pad" id="avaliacoes" style={{ background: '#070706', width: '100%', maxWidth: '100%' }}>
+          <div className="wrap" style={{ maxWidth: '1400px', width: '100%', margin: '0 auto', padding: '0 24px' }}>
+            <div className="section-head" style={{ textAlign: 'center', marginBottom: '40px' }}>
               <span className="eyebrow">Avaliações verificáveis</span>
               <h2>Veja as opiniões reais dos clientes</h2>
-              <p>Para manter esta vitrine transparente, as avaliações são exibidas diretamente do nosso perfil oficial verificado no Google Maps, garantindo autenticidade total.</p>
+              <p>Perfil oficial verificado no Google Maps, exibido em quadro amplo e sem espaços vazios.</p>
             </div>
 
-            <div style={{ background: '#11110f', border: '1px solid rgba(213, 176, 91, 0.25)', borderRadius: '12px', padding: '36px', boxShadow: '0 12px 40px rgba(0,0,0,0.6)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '24px', marginBottom: '28px' }}>
+            <div style={{ background: '#11110f', border: '1px solid rgba(213, 176, 91, 0.3)', borderRadius: '16px', padding: '40px', boxShadow: '0 16px 50px rgba(0,0,0,0.8)', width: '100%' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '28px', marginBottom: '32px' }}>
                 <div>
-                  <h3 style={{ color: '#fff', fontSize: '20px', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, margin: '0 0 6px' }}>BARBER LOUNGE RIO · Perfil Oficial no Google Maps</h3>
-                  <p style={{ color: 'var(--muted)', fontSize: '13px', margin: 0 }}>Av. Pres. Churchill, 10C - Centro, Rio de Janeiro - RJ</p>
+                  <h3 style={{ color: '#fff', fontSize: '22px', fontFamily: 'Montserrat, sans-serif', fontWeight: 800, margin: '0 0 6px' }}>BARBER LOUNGE RIO · Google Maps Oficial</h3>
+                  <p style={{ color: 'var(--muted)', fontSize: '14px', margin: 0 }}>Av. Pres. Churchill, 10C - Centro, Rio de Janeiro - RJ</p>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', background: '#0a0a09', padding: '12px 20px', border: '1px solid rgba(213,176,91,0.3)', borderRadius: '8px' }}>
-                  <span style={{ fontSize: '28px', fontWeight: 800, color: 'var(--gold-light)', fontFamily: 'Montserrat, sans-serif' }}>4,9</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '18px', background: '#070706', padding: '14px 24px', border: '1px solid rgba(213,176,91,0.4)', borderRadius: '10px' }}>
+                  <span style={{ fontSize: '32px', fontWeight: 900, color: 'var(--gold-light)', fontFamily: 'Montserrat, sans-serif' }}>4,9</span>
                   <div>
-                    <div className="stars" aria-label="Nota 4.9 de 5">★★★★★</div>
-                    <span style={{ fontSize: '11px', color: 'var(--muted)', display: 'block' }}>318 avaliações verificadas</span>
+                    <div className="stars" aria-label="Nota 4.9 de 5" style={{ fontSize: '16px' }}>★★★★★</div>
+                    <span style={{ fontSize: '12px', color: 'var(--muted)', display: 'block' }}>318 avaliações verificadas</span>
                   </div>
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px', marginBottom: '36px', width: '100%' }}>
                 {liveReviews.reviews.map((review) => {
                   const initials = review.authorName.trim().slice(0, 1).toUpperCase() || "G";
                   return (
-                    <article key={review.id} style={{ background: '#0a0a09', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <article key={review.id} style={{ background: '#070706', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '28px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease' }} className="hover:border-[#d5b05b] hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(213,176,91,0.15)]">
                       <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-                          {review.authorPhoto ? <img src={review.authorPhoto} alt="" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }} loading="lazy" /> : <span style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--gold)', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '14px' }}>{initials}</span>}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '18px' }}>
+                          {review.authorPhoto ? <img src={review.authorPhoto} alt="" style={{ width: '44px', height: '44px', borderRadius: '50%', objectFit: 'cover' }} loading="lazy" /> : <span style={{ width: '44px', height: '44px', borderRadius: '50%', background: 'var(--gold)', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '15px' }}>{initials}</span>}
                           <div>
-                            {review.authorUri ? <a href={review.authorUri} target="_blank" rel="noreferrer" style={{ color: '#fff', fontWeight: 700, fontSize: '14px', textDecoration: 'none' }}>{review.authorName}</a> : <span style={{ color: '#fff', fontWeight: 700, fontSize: '14px' }}>{review.authorName}</span>}
-                            <span style={{ display: 'block', fontSize: '11px', color: 'var(--muted)' }}>{review.relativeTime || "Avaliação verificada"}</span>
+                            {review.authorUri ? <a href={review.authorUri} target="_blank" rel="noreferrer" style={{ color: '#fff', fontWeight: 700, fontSize: '15px', textDecoration: 'none' }}>{review.authorName}</a> : <span style={{ color: '#fff', fontWeight: 700, fontSize: '15px' }}>{review.authorName}</span>}
+                            <span style={{ display: 'block', fontSize: '11.5px', color: 'var(--muted)' }}>{review.relativeTime || "Avaliação verificada"}</span>
                           </div>
                         </div>
-                        <div className="stars" aria-label={`Nota ${review.rating} de 5`} style={{ marginBottom: '10px' }}>{"★".repeat(Math.max(0, Math.min(5, Math.round(review.rating))))}</div>
-                        <p style={{ color: 'var(--ivory)', fontSize: '13.5px', lineHeight: '1.6', margin: '0 0 16px' }}>{review.text || "Esta avaliação não possui comentário textual."}</p>
+                        <div className="stars" aria-label={`Nota ${review.rating} de 5`} style={{ marginBottom: '12px' }}>{"★".repeat(Math.max(0, Math.min(5, Math.round(review.rating))))}</div>
+                        <p style={{ color: 'var(--ivory)', fontSize: '14px', lineHeight: '1.7', margin: '0 0 18px' }}>{review.text || "Esta avaliação não possui comentário textual."}</p>
                       </div>
-                      <span style={{ fontSize: '10px', color: 'var(--gold-light)', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Verificado no Google Maps</span>
+                      <span style={{ fontSize: '11px', color: 'var(--gold-light)', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Verificado no Google Maps</span>
                     </article>
                   );
                 })}
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '24px' }}>
-                <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ fontSize: '12px', padding: '14px 28px' }}>Avaliar no Google Maps ↗</a>
-                <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-outline" style={{ fontSize: '12px', padding: '14px 28px' }}>Ver todas as 318 avaliações reais</a>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '18px', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '28px' }}>
+                <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ fontSize: '13px', padding: '16px 32px', fontWeight: 800 }}>Avaliar no Google Maps ↗</a>
+                <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-outline" style={{ fontSize: '13px', padding: '16px 32px', fontWeight: 700 }}>Ver todas as 318 avaliações reais</a>
               </div>
             </div>
           </div>

@@ -344,3 +344,5 @@
 - [x] Remover a string de erro da API Meta do servidor/frontend.
 - [x] Implementar quadro amplo paginado para as avaliações reais.
 - [x] Adicionar botão de avaliação direta e remover quadros vazios.
+- [x] Aplicar fundo black puro na seção e embed do Instagram.
+- [x] Transformar avaliações do Google Maps em quadro amplo full-width sem espaços vazios com efeito de hover.
