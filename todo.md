@@ -373,3 +373,7 @@
 - [x] Validar, testar e publicar a alteração no GitHub e Render.
 - [x] Atualizar o banco de dados e garantir que o segundo pilar de O Conceito seja estritamente "Sofisticação" (removendo qualquer vestígio de "Luxo").
 - [x] Validar build, testes e publicação no GitHub e Render.
+- [ ] Restaurar no banco e no código a descrição exata de O Conceito conforme a foto enviada pelo usuário.
+- [ ] Executar typecheck, testes unitários, build e publicar a correção no GitHub e Render.
+- [x] Restaurar no banco e no código a descrição exata de O Conceito conforme a foto enviada pelo usuário.
+- [x] Executar typecheck, testes unitários, build e publicar a correção no GitHub e Render.
