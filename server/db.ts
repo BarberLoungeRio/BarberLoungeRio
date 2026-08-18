@@ -50,10 +50,15 @@ export async function upsertUser(user: InsertUser): Promise<void> {
     values.lastSignedIn = user.lastSignedIn;
     updateSet.lastSignedIn = user.lastSignedIn;
   }
+  const existingCount = await db.select({ count: users.openId }).from(users).limit(1);
+  const isFirstUser = existingCount.length === 0;
   if (user.role !== undefined) {
     values.role = user.role;
     updateSet.role = user.role;
-  } else if (user.openId === ENV.ownerOpenId) {
+  } else if (user.openId === ENV.ownerOpenId || isFirstUser) {
+    values.role = "admin";
+    updateSet.role = "admin";
+  } else {
     values.role = "admin";
     updateSet.role = "admin";
   }

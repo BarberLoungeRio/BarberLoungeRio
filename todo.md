@@ -314,3 +314,7 @@
 - [x] Inspecionar e corrigir o redirecionamento da rota /admin e garantir elementos clicáveis funcionais.
 - [x] Forçar a sincronização e verificar o Render para assegurar que Instagram escuro e Google Maps apareçam no domínio oficial.
 - [x] Validar cliques e visual na URL oficial.
+
+- [x] Inspecionar autenticação e autorização do painel /admin.
+- [x] Garantir que o painel abra, carregue e permita salvar dados sem travar.
+- [x] Validar salvamento e publicar a versão corrigida no GitHub e Render.
