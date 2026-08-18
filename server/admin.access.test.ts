@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
@@ -21,6 +21,13 @@ function createContext(role: "admin" | "user"): TrpcContext {
 }
 
 describe("admin access control", () => {
+  beforeEach(() => {
+    vi.stubEnv("INSTAGRAM_ACCESS_TOKEN", "");
+    vi.stubEnv("INSTAGRAM_BUSINESS_ACCOUNT_ID", "");
+  });
+
+  afterEach(() => vi.unstubAllEnvs());
+
   it("rejects authenticated non-admin users from the admin data route", async () => {
     const caller = appRouter.createCaller(createContext("user"));
     await expect(caller.admin.data()).rejects.toMatchObject({ code: "FORBIDDEN" });

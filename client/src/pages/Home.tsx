@@ -10,6 +10,77 @@ const heroVideoUrl = "https://files.manuscdn.com/user_upload_by_module/session_f
 const heroPosterUrl = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/zpxjhSjWfCeXTgze.jpg";
 const whatsappBookingUrl = `https://wa.me/5521980089047?text=${encodeURIComponent("Olá, Barber Lounge Rio! Gostaria de agendar um horário.")}`;
 
+type InstagramEmbedWindow = Window & { instgrm?: { Embeds?: { process: () => void } } };
+let instagramEmbedPromise: Promise<void> | null = null;
+
+function loadInstagramEmbedScript() {
+  const instagramWindow = window as InstagramEmbedWindow;
+  if (instagramWindow.instgrm?.Embeds?.process) return Promise.resolve();
+  if (instagramEmbedPromise) return instagramEmbedPromise;
+  instagramEmbedPromise = new Promise<void>((resolve, reject) => {
+    const existing = document.querySelector<HTMLScriptElement>('script[data-instagram-embed="true"]');
+    if (existing) {
+      existing.addEventListener("load", () => resolve(), { once: true });
+      existing.addEventListener("error", () => reject(new Error("O embed oficial do Instagram não carregou.")), { once: true });
+      return;
+    }
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = "https://www.instagram.com/embed.js";
+    script.dataset.instagramEmbed = "true";
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("O embed oficial do Instagram não carregou."));
+    document.body.appendChild(script);
+  });
+  return instagramEmbedPromise;
+}
+
+function InstagramProfileEmbed({ url, notice }: { url: string; notice?: string }) {
+  const [embedState, setEmbedState] = useState<"loading" | "ready" | "error">("loading");
+  useEffect(() => {
+    let cancelled = false;
+    void loadInstagramEmbedScript().then(() => {
+      if (cancelled) return;
+      (window as InstagramEmbedWindow).instgrm?.Embeds?.process();
+      setEmbedState("ready");
+    }).catch(() => {
+      if (!cancelled) setEmbedState("error");
+    });
+    return () => { cancelled = true; };
+  }, [url]);
+  return <div className="insta-profile-embed-shell">
+    <div className="insta-profile-embed-status">{embedState === "loading" ? "Abrindo o perfil oficial…" : embedState === "error" ? "O embed foi bloqueado pelo Instagram neste navegador." : notice || "Publicações e Reels oficiais do perfil Barber Lounge Rio."}</div>
+    <blockquote className="instagram-media" data-instgrm-permalink={url} data-instgrm-version="14"><a href={url} target="_self" rel="noreferrer">Abrir o perfil oficial no Instagram</a></blockquote>
+    {embedState === "error" && <a href={url} target="_self" rel="noreferrer" className="btn btn-outline">Abrir Instagram</a>}
+  </div>;
+}
+
+function InstagramMediaCard({ item }: { item: { id: string; caption: string; mediaType: "IMAGE" | "VIDEO" | "CAROUSEL_ALBUM"; mediaUrl: string | null; thumbnailUrl: string | null; permalink: string } }) {
+  const title = item.caption?.split(/\r?\n/)[0]?.trim() || (item.mediaType === "VIDEO" ? "Reel Barber Lounge Rio" : "Publicação Barber Lounge Rio");
+  const needsOfficialEmbed = item.mediaType === "VIDEO" && !item.mediaUrl;
+  const [embedState, setEmbedState] = useState<"idle" | "loading" | "ready" | "error">(needsOfficialEmbed ? "loading" : "idle");
+
+  useEffect(() => {
+    if (!needsOfficialEmbed) return;
+    let cancelled = false;
+    void loadInstagramEmbedScript().then(() => {
+      if (cancelled) return;
+      (window as InstagramEmbedWindow).instgrm?.Embeds?.process();
+      setEmbedState("ready");
+    }).catch(() => {
+      if (!cancelled) setEmbedState("error");
+    });
+    return () => { cancelled = true; };
+  }, [needsOfficialEmbed, item.permalink]);
+
+  return <article className={`insta-live-card${needsOfficialEmbed ? " is-official-embed" : ""}`}>
+    <div className="insta-media-frame">
+      {needsOfficialEmbed ? <div className="insta-official-embed"><blockquote className="instagram-media" data-instgrm-permalink={item.permalink} data-instgrm-version="14"><a href={item.permalink} target="_self" rel="noreferrer">Abrir este Reel no Instagram</a></blockquote></div> : item.mediaType === "VIDEO" && item.mediaUrl ? <video src={item.mediaUrl} poster={item.thumbnailUrl || undefined} muted loop autoPlay playsInline controls preload="metadata" aria-label={title} /> : <img src={item.mediaUrl || item.thumbnailUrl || ""} alt={title} loading="lazy" />}
+    </div>
+    <div className="insta-live-meta"><span className="insta-live-title">{title}</span><a href={item.permalink} target="_self" rel="noreferrer" className="insta-open-link">Abrir no Instagram ↗</a>{needsOfficialEmbed && embedState === "error" && <span className="insta-embed-note">O Instagram não carregou o embed agora. Use o botão acima para abrir o Reel original.</span>}</div>
+  </article>;
+}
+
 const fallbackThriftStoreItems = [
   { imageUrl: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/dSrCQFfUPBhNofMK.jpg", title: "Peça 01", description: "Curadoria de moda circular e vestuário Barber Lounge Rio." },
   { imageUrl: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/bjEpGmEDbCbBVgHD.jpg", title: "Peça 02", description: "Curadoria de moda circular e vestuário Barber Lounge Rio." },
@@ -56,7 +127,7 @@ export function Home() {
   const instagramUrl = contentByKey.instagramUrl || "https://www.instagram.com/barberlounge.rio/";
   const instagramUsername = contentByKey.instagramUsername || "@barberlounge.rio";
   const rawInstagramItems = instagramFeed?.items ?? [];
-  const liveInstagramItems = rawInstagramItems.filter((item) => Boolean(item.mediaUrl || item.thumbnailUrl));
+  const liveInstagramItems = rawInstagramItems.filter((item) => Boolean(item.permalink && (item.mediaUrl || item.thumbnailUrl || item.mediaType === "VIDEO")));
   const instagramIsLive = liveInstagramItems.length > 0;
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -606,8 +677,21 @@ export function Home() {
           opacity:0;transition:opacity .3s ease;
         }
         .insta-item:hover .insta-overlay{opacity:1;}
-        .insta-grid>a{transition:transform .28s ease, border-color .28s ease, box-shadow .28s ease;}
-        .insta-grid>a:hover{transform:translateY(-5px);border-color:rgba(212,175,55,.68)!important;box-shadow:0 12px 28px rgba(0,0,0,.34);}
+        .insta-live-card{display:flex;min-width:0;flex-direction:column;overflow:hidden;border:1px solid rgba(212,175,55,.24);background:#10100e;transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease;}
+        .insta-live-card:hover,.insta-live-card:focus-within{transform:translateY(-5px);border-color:rgba(212,175,55,.68);box-shadow:0 12px 28px rgba(0,0,0,.34);}
+        .insta-media-frame{position:relative;display:flex;min-height:220px;aspect-ratio:1/1;align-items:center;justify-content:center;overflow:hidden;background:#000;}
+        .insta-media-frame img,.insta-media-frame video{width:100%;height:100%;object-fit:cover;}
+        .insta-media-frame video{display:block;cursor:pointer;}
+        .insta-official-embed{width:100%;min-height:100%;background:#fff;}
+        .insta-official-embed .instagram-media{width:calc(100% - 2px)!important;min-width:0!important;margin:0 auto!important;}
+        .insta-profile-embed-shell{display:flex;min-height:260px;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:18px;background:#10100e;border:1px solid rgba(212,175,55,.24);}
+        .insta-profile-embed-shell .instagram-media{width:calc(100% - 2px)!important;min-width:0!important;margin:0 auto!important;background:#fff;}
+        .insta-profile-embed-status{max-width:760px;text-align:center;font-size:12px;line-height:1.5;color:var(--muted);}
+        .insta-live-meta{display:flex;min-height:112px;flex-direction:column;gap:10px;padding:16px;background:#151512;}
+        .insta-live-title{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;line-height:1.45;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-light);}
+        .insta-open-link{width:max-content;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ivory);text-decoration:none;}
+        .insta-open-link:hover,.insta-open-link:focus-visible{color:var(--gold-light);text-decoration:underline;text-underline-offset:4px;}
+        .insta-embed-note{font-size:11px;line-height:1.45;color:var(--muted);}
         .insta-loading-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
         .insta-loading-tile{display:block;aspect-ratio:1;border:1px solid rgba(212,175,55,.12);background:linear-gradient(120deg,rgba(255,255,255,.04),rgba(212,175,55,.12),rgba(255,255,255,.04));background-size:220% 100%;animation:instagramPulse 1.6s ease-in-out infinite;}
         @keyframes instagramPulse{0%,100%{opacity:.42;background-position:0 0;}50%{opacity:.9;background-position:100% 0;}}
@@ -910,30 +994,18 @@ export function Home() {
         <section className="instagram section-pad" id="instagram">
           <div className="wrap">
             <div className="section-head">
-              <span className="eyebrow">Acompanhe nossa rotina</span>
-              <h2>Barber Lounge em movimento</h2>
-              <p>Bastidores da alta barbearia e curadoria diária de estilos. Siga o nosso perfil e acompanhe os resultados em primeira mão.</p>
+              <span className="eyebrow">{getText("instagramSectionEyebrow", "Acompanhe nossa rotina")}</span>
+              <h2>{getText("instagramSectionTitle", "Barber Lounge em movimento")}</h2>
+              <p>{getText("instagramProfileDescription", "Bastidores da alta barbearia e curadoria diária de estilos. Siga o nosso perfil e acompanhe os resultados em primeira mão.")}</p>
             </div>
 
             {instagramIsLive ? (
-              <div className="insta-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '36px' }}>
-                {liveInstagramItems.map((item) => {
-                  const mediaSource = item.mediaUrl || item.thumbnailUrl || "";
-                  const title = item.caption?.split(/\r?\n/)[0]?.trim() || "Publicação Barber Lounge Rio";
-                  return (
-                    <a href={item.permalink} target="_self" rel="noopener noreferrer" key={item.id} aria-label={`Abrir publicação oficial: ${title}`} style={{ position: 'relative', display: 'block', borderRadius: '8px', overflow: 'hidden', aspectRatio: '1/1', border: '1px solid rgba(212,175,55,0.25)', background: '#111' }}>
-                      {item.mediaType === "VIDEO" && item.mediaUrl ? <video src={item.mediaUrl} poster={item.thumbnailUrl || undefined} muted loop autoPlay playsInline preload="metadata" aria-label={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <img src={mediaSource} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />}
-                      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.85) 100%)', display: 'flex', alignItems: 'flex-end', padding: '16px' }}>
-                        <span style={{ fontSize: '13px', fontWeight: 600, color: '#f3e5ab', fontFamily: 'Montserrat, sans-serif' }}>{title}</span>
-                      </div>
-                    </a>
-                  );
-                })}
+              <div className="insta-grid live-instagram-grid" style={{ marginBottom: '36px' }}>
+                {liveInstagramItems.map((item) => <InstagramMediaCard item={item} key={item.id} />)}
               </div>
             ) : (
-              <div className="insta-empty-state" style={{ marginBottom: '36px', padding: '42px 24px', border: '1px solid rgba(212,175,55,0.2)', background: 'rgba(17,17,17,0.72)', textAlign: 'center' }}>
-                {instagramFeed?.status === 'error' || instagramFeed?.status === 'unavailable' ? <p style={{ margin: 0, color: 'var(--ivory)', fontFamily: 'Montserrat, sans-serif' }}>O Instagram oficial não disponibilizou as publicações neste momento.</p> : <div className="insta-loading-grid" aria-label="Sincronizando publicações oficiais do Instagram">{Array.from({ length: 6 }).map((_, index) => <span className="insta-loading-tile" key={index} />)}</div>}
-                <a href={instagramUrl} target="_self" rel="noopener" className="btn btn-outline" style={{ marginTop: '24px' }}>Abrir o perfil oficial no Instagram</a>
+              <div className="insta-empty-state" style={{ marginBottom: '36px' }}>
+                <InstagramProfileEmbed url={instagramUrl} notice={instagramFeed?.message || "Feed oficial conectado ao perfil Barber Lounge Rio."} />
               </div>
             )}
             {instagramIsLive && <p style={{ marginTop: '-18px', marginBottom: '28px', fontSize: '11px', color: 'var(--muted-2)' }}>Atualizado automaticamente pela API oficial do Instagram. Cada publicação abre a fonte original.</p>}

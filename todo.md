@@ -286,8 +286,15 @@
 - [x] Garantir carregamento imediato de posts e Reels do Instagram assim que a página abre, sem mensagem de "Carregando informações".
 - [x] Conectar e exibir instantaneamente a nota 4,9 e os depoimentos verificados do Google Maps, evitando qualquer travamento ou estado vazio.
 
-- [ ] Remover definitivamente os cards e tópicos ilustrativos do Instagram e exibir somente as últimas publicações reais retornadas pela API oficial.
-- [ ] Fazer o link do perfil Instagram abrir diretamente na mesma aba e eliminar o estado textual de carregamento quando o feed oficial já estiver disponível.
-- [ ] Remover nota e comentários hardcoded do Google Maps, corrigir o botão de avaliações e manter a fonte oficial verificável.
-- [ ] Concluir o botão flutuante do WhatsApp e os efeitos de hover/foco dos botões e cards, mantendo acessibilidade.
-- [ ] Testar, sincronizar no GitHub/Render e validar a navegação e os dados reais no domínio oficial.
+- [x] Remover definitivamente os cards e tópicos ilustrativos do Instagram e exibir somente as últimas publicações reais retornadas pela API oficial.
+- [x] Fazer o link do perfil Instagram abrir diretamente na mesma aba e eliminar o estado textual de carregamento quando o feed oficial já estiver disponível.
+- [x] Remover nota e comentários hardcoded do Google Maps, corrigir o botão de avaliações e manter a fonte oficial verificável.
+- [x] Concluir o botão flutuante do WhatsApp e os efeitos de hover/foco dos botões e cards, mantendo acessibilidade.
+- [x] Testar, sincronizar no GitHub/Render e validar a navegação e os dados reais no domínio oficial.
+
+- [x] Restaurar as rotas /admin, /admin/dns, /admin/guide e /docs no App.tsx publicado no GitHub/Render.
+- [x] Garantir que a página /admin mostre login, painel ou acesso negado de forma clara, nunca NotFound.
+- [x] Implementar embed oficial do Instagram para posts e Reels públicos quando media_url não estiver disponível.
+- [x] Adicionar reprodução inline controlável para Reels cujo media_url seja fornecido pela API, respeitando autoplay e controles do navegador.
+- [x] Tornar transparente a indisponibilidade da API Meta e orientar a correção do token sem inventar publicações.
+- [x] Testar build, rotas, embed e sincronizar as restaurações no GitHub e Render.

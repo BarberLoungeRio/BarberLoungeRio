@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
@@ -11,6 +11,13 @@ function context(role: "admin" | "user" = "admin"): TrpcContext {
 }
 
 describe("site content contracts", () => {
+  beforeEach(() => {
+    vi.stubEnv("INSTAGRAM_ACCESS_TOKEN", "");
+    vi.stubEnv("INSTAGRAM_BUSINESS_ACCOUNT_ID", "");
+  });
+
+  afterEach(() => vi.unstubAllEnvs());
+
   it("returns editable content, active services and the seeded Shorts gallery", async () => {
     const publicData = await appRouter.createCaller({ ...context("user"), user: null }).site.publicData();
     expect(publicData.content.some((item) => item.key === "heroTitle")).toBe(true);
