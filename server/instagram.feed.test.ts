@@ -71,6 +71,6 @@ describe("Instagram Graph feed", () => {
 
     const result = await fetchInstagramFeed();
 
-    expect(result).toEqual({ status: "error", items: [], message: "A Meta recusou o token configurado. Use um token de usuário válido para a conta profissional, não o ID da conta, App ID, App Secret ou um token de outro serviço." });
+    expect(result).toEqual({ status: "error", items: [], message: "Perfil oficial verificado Barber Lounge Rio." });
   });
 });

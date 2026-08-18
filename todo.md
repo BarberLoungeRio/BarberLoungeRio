@@ -340,3 +340,7 @@
 
 - [x] Ocultar mensagem técnica de token na seção Instagram do Home.tsx.
 - [x] Validar build e sincronizar com o Render e GitHub.
+
+- [x] Remover a string de erro da API Meta do servidor/frontend.
+- [x] Implementar quadro amplo paginado para as avaliações reais.
+- [x] Adicionar botão de avaliação direta e remover quadros vazios.

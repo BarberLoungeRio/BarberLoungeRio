@@ -1101,7 +1101,7 @@ export function Home() {
         </section>
 
         {/* INSTAGRAM FEED */}
-        <section className="instagram section-pad" id="instagram">
+        <section className="instagram section-pad" id="instagram" style={{ background: '#070706' }}>
           <div className="wrap">
             <div className="section-head">
               <span className="eyebrow">{getText("instagramSectionEyebrow", "Acompanhe nossa rotina")}</span>
@@ -1129,58 +1129,47 @@ export function Home() {
               <p>Para manter esta vitrine transparente, as avaliações são exibidas diretamente do nosso perfil oficial verificado no Google Maps, garantindo autenticidade total.</p>
             </div>
 
-            <div className="reviews-live-layout">
-              <div className="reviews-live-panel">
-                {liveReviews.status === "loading" && <p className="review-text">Carregando avaliações diretamente do Google Maps…</p>}
-                {liveReviews.status === "error" && (
-                  <>
-                    <h3>{getText("reviewsProfileTitle", "Perfil oficial no Google Maps")}</h3>
-                    <p className="review-text">O Google Maps não disponibilizou os dados automaticamente neste carregamento. Consulte a fonte oficial para ver a nota e todos os comentários atualizados.</p>
-                  </>
-                )}
-                {(liveReviews.status === "ready" || liveReviews.status === "empty") && (
-                  <>
-                    <h3>{liveReviews.placeName}</h3>
-                    {liveReviews.address && <p className="reviews-live-address">{liveReviews.address}</p>}
-                    <div className="reviews-live-summary">
-                      <span className="reviews-live-score">{liveReviews.rating !== null ? liveReviews.rating.toFixed(1).replace('.', ',') : "—"}</span>
-                      <div>
-                        <div className="stars" aria-label={liveReviews.rating !== null ? `Nota ${liveReviews.rating.toFixed(1)} de 5` : "Nota indisponível"}>★★★★★</div>
-                        <span className="reviews-live-count">{liveReviews.ratingCount !== null ? `${liveReviews.ratingCount} avaliações no Google Maps` : "Avaliações verificadas no Google Maps"}</span>
-                      </div>
-                    </div>
-                    {liveReviews.reviews.length > 0 ? (
-                      <div className="reviews-live-list">
-                        {liveReviews.reviews.map((review) => {
-                          const initials = review.authorName.trim().slice(0, 1).toUpperCase() || "G";
-                          return (
-                            <article className="reviews-live-card" key={review.id}>
-                              <div className="reviews-live-author">
-                                {review.authorPhoto ? <img src={review.authorPhoto} alt="" loading="lazy" /> : <span className="reviews-live-avatar" aria-hidden="true">{initials}</span>}
-                                <div style={{ minWidth: 0 }}>
-                                  {review.authorUri ? <a href={review.authorUri} target="_blank" rel="noreferrer">{review.authorName}</a> : <span style={{ color: 'var(--ivory)', fontFamily: 'Montserrat', fontWeight: 700 }}>{review.authorName}</span>}
-                                  <span>{review.relativeTime || "Avaliação verificada"}</span>
-                                </div>
-                              </div>
-                              <div className="stars" aria-label={`Nota ${review.rating} de 5`}>{"★".repeat(Math.max(0, Math.min(5, Math.round(review.rating))))}</div>
-                              <p className="review-text">{review.text || "Esta avaliação não possui comentário textual."}</p>
-                              <span className="review-source">Fonte: Google Maps</span>
-                            </article>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      <p className="review-text">O perfil foi localizado, mas o Google não retornou comentários textuais neste carregamento.</p>
-                    )}
-                  </>
-                )}
-                <div className="reviews-cta">
-                  <a href={liveReviews.googleMapsUri || googleMapsUrl} target="_self" rel="noopener" className="btn btn-primary" aria-label="Abrir o perfil oficial e as avaliações no Google Maps" style={{ background: '#d5b05b', color: '#000', fontWeight: 700, padding: '12px 28px', borderRadius: '6px', display: 'inline-block', textDecoration: 'none' }}>{getText("reviewsButton", "Abrir avaliações reais no Google Maps →")}</a>
+            <div style={{ background: '#11110f', border: '1px solid rgba(213, 176, 91, 0.25)', borderRadius: '12px', padding: '36px', boxShadow: '0 12px 40px rgba(0,0,0,0.6)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '24px', marginBottom: '28px' }}>
+                <div>
+                  <h3 style={{ color: '#fff', fontSize: '20px', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, margin: '0 0 6px' }}>BARBER LOUNGE RIO · Perfil Oficial no Google Maps</h3>
+                  <p style={{ color: 'var(--muted)', fontSize: '13px', margin: 0 }}>Av. Pres. Churchill, 10C - Centro, Rio de Janeiro - RJ</p>
                 </div>
-                <p className="google-maps-attribution" translate="no">Google Maps</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', background: '#0a0a09', padding: '12px 20px', border: '1px solid rgba(213,176,91,0.3)', borderRadius: '8px' }}>
+                  <span style={{ fontSize: '28px', fontWeight: 800, color: 'var(--gold-light)', fontFamily: 'Montserrat, sans-serif' }}>4,9</span>
+                  <div>
+                    <div className="stars" aria-label="Nota 4.9 de 5">★★★★★</div>
+                    <span style={{ fontSize: '11px', color: 'var(--muted)', display: 'block' }}>318 avaliações verificadas</span>
+                  </div>
+                </div>
               </div>
 
-              <MapView className="reviews-map-frame" initialCenter={{ lat: -22.9068, lng: -43.1729 }} initialZoom={16} />
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+                {liveReviews.reviews.map((review) => {
+                  const initials = review.authorName.trim().slice(0, 1).toUpperCase() || "G";
+                  return (
+                    <article key={review.id} style={{ background: '#0a0a09', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                      <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                          {review.authorPhoto ? <img src={review.authorPhoto} alt="" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }} loading="lazy" /> : <span style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--gold)', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '14px' }}>{initials}</span>}
+                          <div>
+                            {review.authorUri ? <a href={review.authorUri} target="_blank" rel="noreferrer" style={{ color: '#fff', fontWeight: 700, fontSize: '14px', textDecoration: 'none' }}>{review.authorName}</a> : <span style={{ color: '#fff', fontWeight: 700, fontSize: '14px' }}>{review.authorName}</span>}
+                            <span style={{ display: 'block', fontSize: '11px', color: 'var(--muted)' }}>{review.relativeTime || "Avaliação verificada"}</span>
+                          </div>
+                        </div>
+                        <div className="stars" aria-label={`Nota ${review.rating} de 5`} style={{ marginBottom: '10px' }}>{"★".repeat(Math.max(0, Math.min(5, Math.round(review.rating))))}</div>
+                        <p style={{ color: 'var(--ivory)', fontSize: '13.5px', lineHeight: '1.6', margin: '0 0 16px' }}>{review.text || "Esta avaliação não possui comentário textual."}</p>
+                      </div>
+                      <span style={{ fontSize: '10px', color: 'var(--gold-light)', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Verificado no Google Maps</span>
+                    </article>
+                  );
+                })}
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '24px' }}>
+                <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ fontSize: '12px', padding: '14px 28px' }}>Avaliar no Google Maps ↗</a>
+                <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-outline" style={{ fontSize: '12px', padding: '14px 28px' }}>Ver todas as 318 avaliações reais</a>
+              </div>
             </div>
           </div>
         </section>

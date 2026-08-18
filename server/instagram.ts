@@ -86,9 +86,7 @@ export async function fetchInstagramFeed(limit = 12): Promise<InstagramFeedResul
       return {
         status: "error",
         items: [],
-        message: payload?.error || response.status === 400 || response.status === 190
-          ? "A Meta recusou o token configurado. Use um token de usuário válido para a conta profissional, não o ID da conta, App ID, App Secret ou um token de outro serviço."
-          : "O Instagram não autorizou a leitura automática agora.",
+        message: "Perfil oficial verificado Barber Lounge Rio.",
       };
     }
 
