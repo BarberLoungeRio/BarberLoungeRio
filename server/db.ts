@@ -16,6 +16,7 @@ import {
   youtubeVideos,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
+import { fetchInstagramFeed } from "./instagram";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 let _seedPromise: Promise<void> | null = null;
@@ -83,23 +84,23 @@ const defaultContent: InsertSiteContent[] = [
   { key: "conceptTitle", label: "Conceito · título", section: "concept", value: "Bem-vindo à experiência Barber Lounge Rio", fieldType: "text" },
   { key: "conceptDescription", label: "Conceito · descrição", section: "concept", value: "Cada detalhe foi desenhado para proporcionar relaxamento e estilo — do corte impecável ao cuidado com a barba, tudo com o padrão de excelência que define a casa.", fieldType: "textarea" },
   { key: "valueOneTitle", label: "Conceito · valor 1 título", section: "concept", value: "Precisão", fieldType: "text" },
-  { key: "valueOneDescription", label: "Conceito · valor 1 descrição", section: "concept", value: "Barbeiros especialistas em cortes clássicos e contemporâneos, adaptados ao seu estilo pessoal.", fieldType: "textarea" },
-  { key: "valueTwoTitle", label: "Conceito · valor 2 título", section: "concept", value: "Luxo", fieldType: "text" },
-  { key: "valueTwoDescription", label: "Conceito · valor 2 descrição", section: "concept", value: "Um ambiente sofisticado no coração do Centro do Rio, pensado para o homem exigente.", fieldType: "textarea" },
+  { key: "valueOneDescription", label: "Conceito · valor 1 descrição", section: "concept", value: "Especialista em cortes clássicos, contemporâneos e modernos, executados com rigor técnico e adaptados ao seu estilo pessoal.", fieldType: "textarea" },
+  { key: "valueTwoTitle", label: "Conceito · valor 2 título", section: "concept", value: "Sofisticação", fieldType: "text" },
+  { key: "valueTwoDescription", label: "Conceito · valor 2 descrição", section: "concept", value: "Um ambiente exclusivo e reservado no Centro do Rio, pensado para o homem que valoriza o seu tempo e a sua imagem.", fieldType: "textarea" },
   { key: "valueThreeTitle", label: "Conceito · valor 3 título", section: "concept", value: "Atitude", fieldType: "text" },
-  { key: "valueThreeDescription", label: "Conceito · valor 3 descrição", section: "concept", value: "Curadoria de estilo, cuidado e bem-estar reunidos em uma experiência única.", fieldType: "textarea" },
-  { key: "thriftEyebrow", label: "Thrift Store · selo", section: "thrift", value: "Thrift Store", fieldType: "text" },
-  { key: "thriftTitle", label: "Thrift Store · título", section: "thrift", value: "Curadoria consciente", fieldType: "text" },
-  { key: "thriftDescription", label: "Thrift Store · descrição", section: "thrift", value: "Fotos, peças e detalhes da curadoria Barber Lounge Rio. Cada descrição pode ser editada no painel administrativo.", fieldType: "textarea" },
-  { key: "instagramSectionEyebrow", label: "Instagram · selo da seção", section: "instagram", value: "Curadoria visual · Barber Lounge", fieldType: "text" },
+  { key: "valueThreeDescription", label: "Conceito · valor 3 descrição", section: "concept", value: "Curadoria de estilo, cuidado e bem-estar reunidos em uma experiência única de alta barbearia.", fieldType: "textarea" },
+  { key: "thriftEyebrow", label: "Thrift Store · selo", section: "thrift", value: "Luxury Thrift Store", fieldType: "text" },
+  { key: "thriftTitle", label: "Thrift Store · título", section: "thrift", value: "Curadoria de Estilo", fieldType: "text" },
+  { key: "thriftDescription", label: "Thrift Store · descrição", section: "thrift", value: "Novas seleções todas as semanas. Acervo Premium. Peças exclusivas de alfaiataria, camisaria e grifes globais que unem história, design e consumo inteligente.", fieldType: "textarea" },
+  { key: "instagramSectionEyebrow", label: "Instagram · selo da seção", section: "instagram", value: "Acompanhe nossa rotina", fieldType: "text" },
   { key: "instagramSectionTitle", label: "Instagram · título da seção", section: "instagram", value: "Barber Lounge em movimento", fieldType: "text" },
   { key: "instagramProfileEyebrow", label: "Instagram · selo do perfil", section: "instagram", value: "Perfil oficial", fieldType: "text" },
-  { key: "instagramProfileDescription", label: "Instagram · descrição do perfil", section: "instagram", value: "Grade editorial de referência enquanto a integração automática oficial do Instagram está pausada. Abra o perfil para ver as publicações reais e mais recentes.", fieldType: "textarea" },
+  { key: "instagramProfileDescription", label: "Instagram · descrição do perfil", section: "instagram", value: "Bastidores da alta barbearia e curadoria diária de estilos. Siga o nosso perfil e acompanhe os resultados em primeira mão.", fieldType: "textarea" },
   { key: "instagramButton", label: "Instagram · botão do perfil", section: "instagram", value: "Abrir perfil no Instagram →", fieldType: "text" },
   { key: "instagramFollowButton", label: "Instagram · botão seguir", section: "instagram", value: "Seguir @barberlounge.rio", fieldType: "text" },
   { key: "reviewsEyebrow", label: "Avaliações · selo", section: "reviews", value: "Avaliações verificáveis", fieldType: "text" },
   { key: "reviewsTitle", label: "Avaliações · título", section: "reviews", value: "Veja as opiniões reais dos clientes", fieldType: "text" },
-  { key: "reviewsDescription", label: "Avaliações · descrição", section: "reviews", value: "Para manter esta vitrine transparente, as avaliações são exibidas diretamente no perfil oficial do Google Maps, sem depoimentos demonstrativos aqui.", fieldType: "textarea" },
+  { key: "reviewsDescription", label: "Avaliações · descrição", section: "reviews", value: "Para manter esta vitrine transparente, as avaliações são exibidas diretamente do nosso perfil oficial verificado no Google Maps, garantindo autenticidade total.", fieldType: "textarea" },
   { key: "reviewsButton", label: "Avaliações · botão", section: "reviews", value: "Abrir avaliações no Google →", fieldType: "text" },
   { key: "reviewsProfileTitle", label: "Avaliações · título do perfil", section: "reviews", value: "Perfil oficial no Google Maps", fieldType: "text" },
   { key: "reviewsProfileDescription", label: "Avaliações · texto do perfil", section: "reviews", value: "Consulte a nota, os comentários e as fotos diretamente na fonte oficial da Barber Lounge Rio.", fieldType: "textarea" },
@@ -114,7 +115,7 @@ const defaultContent: InsertSiteContent[] = [
   { key: "heroEyebrow", label: "Hero · selo", section: "hero", value: "BARBER LOUNGE RIO · Centro do Rio", fieldType: "text" },
   { key: "heroTitle", label: "Hero · título", section: "hero", value: "Mais que um corte,", fieldType: "text" },
   { key: "heroTitleAccent", label: "Hero · destaque do título", section: "hero", value: "um conceito.", fieldType: "text" },
-  { key: "heroDescription", label: "Hero · descrição", section: "hero", value: "Cultura, estilo e precisão no coração do Rio de Janeiro.", fieldType: "textarea" },
+  { key: "heroDescription", label: "Hero · descrição", section: "hero", value: "A união da curadoria de estilo com a precisão da alta barbearia. Autenticidade, sofisticação e atitude em um único lugar.", fieldType: "textarea" },
   { key: "heroCta", label: "Hero · chamada principal", section: "hero", value: "Agendar horário", fieldType: "text" },
   { key: "heroSecondaryCta", label: "Hero · chamada secundária", section: "hero", value: "Explorar Luxury Thrift Store", fieldType: "text" },
   { key: "heroBookingCta", label: "Hero · botão de agendamento", section: "hero", value: "Agendar Exclusividade", fieldType: "text" },
@@ -134,8 +135,8 @@ const defaultContent: InsertSiteContent[] = [
   { key: "servicesDescription", label: "Serviços · descrição", section: "services", value: "Técnica precisa, atendimento próximo e uma experiência criada nos mínimos detalhes.", fieldType: "textarea" },
   { key: "servicesNote", label: "Serviços · observação", section: "services", value: "Valores sob consulta. Fale com a equipe para montar seu ritual.", fieldType: "text" },
   { key: "shortsEyebrow", label: "Serviços · selo dos vídeos", section: "shorts", value: "Serviços", fieldType: "text" },
-  { key: "shortsTitle", label: "Serviços · título dos vídeos", section: "shorts", value: "Serviços em movimento.", fieldType: "text" },
-  { key: "shortsDescription", label: "Serviços · descrição dos vídeos", section: "shorts", value: "Cortes, conversas e referências que traduzem o espírito Barber Lounge Rio.", fieldType: "textarea" },
+  { key: "shortsTitle", label: "Serviços · título dos vídeos", section: "shorts", value: "Serviços em movimento", fieldType: "text" },
+  { key: "shortsDescription", label: "Serviços · descrição dos vídeos", section: "shorts", value: "Assista aos protocolos em tempo real. Cada card traz um vislumbre prático e autoexplicativo dos nossos cortes e tratamentos de alta performance.", fieldType: "textarea" },
   { key: "instagramEyebrow", label: "Instagram · selo", section: "instagram", value: "Imagens ilustrativas da casa", fieldType: "text" },
   { key: "instagramTitle", label: "Instagram · título", section: "instagram", value: "Barber Lounge em movimento", fieldType: "text" },
   { key: "instagramDescription", label: "Instagram · descrição", section: "instagram", value: "Grade editorial de referência com imagens de corte e ambiente. O feed automático oficial está temporariamente pausado por restrições da API da Meta.", fieldType: "textarea" },
@@ -249,7 +250,7 @@ function fallbackVideos(): InsertYoutubeVideo[] {
 
 export async function getPublicSiteData() {
   await ensureSeeded();
-  const db = await getDb();
+  const [db, instagramFeed] = await Promise.all([getDb(), fetchInstagramFeed(12)]);
   if (!db) {
     return {
       content: defaultContent,
@@ -257,6 +258,7 @@ export async function getPublicSiteData() {
       videos: fallbackVideos(),
       thriftStore: defaultThriftStoreItems,
       blocks: [],
+      instagramFeed,
     };
   }
   const [content, activeServices, videos, thriftStore, blocks] = await Promise.all([
@@ -272,6 +274,7 @@ export async function getPublicSiteData() {
     videos: videos.length > 0 ? videos : fallbackVideos(),
     thriftStore: thriftStore.length > 0 ? thriftStore : defaultThriftStoreItems,
     blocks,
+    instagramFeed,
   };
 }
 

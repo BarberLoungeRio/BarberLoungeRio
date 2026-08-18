@@ -22,6 +22,8 @@ describe("site content contracts", () => {
     expect(new Set(publicData.videos.map((video) => video.youtubeId)).size).toBe(publicData.videos.length);
     expect(publicData.thriftStore.length).toBeGreaterThanOrEqual(23);
     expect(publicData.thriftStore.every((item) => item.imageUrl.startsWith("/manus-storage/"))).toBe(true);
+    expect(["ready", "empty", "error", "unavailable"]).toContain(publicData.instagramFeed.status);
+    expect(Array.isArray(publicData.instagramFeed.items)).toBe(true);
     expect(Array.isArray(publicData.blocks)).toBe(true);
   });
 

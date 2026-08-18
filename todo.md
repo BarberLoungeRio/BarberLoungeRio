@@ -237,7 +237,7 @@
 
 ## Solicitação de feed automático do Instagram
 
-- [ ] Integrar feed automático do Instagram via API oficial quando a Meta normalizar o acesso (atualmente pausado por restrições da Meta).
+- [x] Integrar feed automático do Instagram via API oficial quando a Meta normalizar o acesso (implementado no backend com fallback editorial; ativação no Render depende das variáveis oficiais da Meta).
 - [x] Rotular visualmente a seção do Instagram como grade editorial de referência / imagens ilustrativas da casa.
 - [ ] Recolocar o slideshow em flashes da segunda edição no Hero do site (pendente confirmação do arquivo exato).
 - [x] Restaurar o vídeo correto da logo com finalização do CapCut e exibição em tela inteira.
@@ -261,3 +261,17 @@
 ## Avaliações automáticas do Google Maps
 - [x] Auditar e implementar a exibição automática das avaliações do perfil oficial do Google Maps, sem depender apenas de clique.
 - [x] Validar a origem dos dados das avaliações, as credenciais/API necessárias e o comportamento quando o Google não autorizar carregamento público.
+
+- [x] Configurar no Render as variáveis oficiais da Meta/Instagram (`INSTAGRAM_ACCESS_TOKEN`, `INSTAGRAM_BUSINESS_ACCOUNT_ID`) e concluir redeploy Live; o ID confirmado da conta é `17841409173794713`.
+- [ ] Sincronizar para o GitHub main o backend/client do feed Instagram que existe no projeto local e acionar novo deploy, pois o commit main atual não contém `site.instagramFeed` e a rota publicada retorna 404.
+- [ ] Corrigir o build do Render enviando `shared/googleReviews.ts`, dependência importada pelo Home.tsx sincronizado.
+- [ ] Validar na versão publicada que a seção do Instagram exibe posts reais recentes do @barberlounge.rio, com fallback seguro para `thumbnail_url`/`permalink` quando `media_url` não vier ou expirar.
+- [ ] Corrigir a renderização cliente do feed Instagram e das avaliações caso as queries tRPC permaneçam em fallback apesar das respostas batched `status=ready` e dos dados públicos válidos.
+- [ ] Documentar a renovação do token da Meta (60 dias) ou automatizar a rotação para evitar quebra futura do feed em produção.
+
+- [x] Atualizar Hero para os novos textos e remover elementos inferiores excessivos ("perfil oficial", "centro", etc.).
+- [x] Atualizar seção O Conceito retirando a numeração e aplicando os novos tópicos descritos.
+- [x] Atualizar seção Serviços em Movimento com o título e texto solicitados.
+- [x] Atualizar seção Luxury Thrift Store com o título Curadoria de Estilo e acervo premium.
+- [x] Atualizar seção Instagram com os novos títulos e subtítulos de rotina.
+- [x] Atualizar seção Avaliações com o texto de transparência oficial do Google Maps.

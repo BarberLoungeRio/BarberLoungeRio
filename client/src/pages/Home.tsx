@@ -47,13 +47,16 @@ type LiveReviewsState = {
 };
 
 export function Home() {
-  const { data: publicData } = trpc.site.publicData.useQuery();
+  const { data: publicData } = trpc.site.publicData.useQuery(undefined, { retry: 2, refetchOnMount: "always" });
+  const instagramFeed = publicData?.instagramFeed;
   const { user } = useAuth();
   const contentByKey = Object.fromEntries((publicData?.content ?? []).map((item) => [item.key, item.value]));
   const getText = (key: string, fallback: string) => contentByKey[key] || fallback;
   const googleMapsUrl = contentByKey.googleMapsUrl || "https://www.google.com/maps/search/?api=1&query=Barber+Lounge+Rio%2C+Avenida+Churchill%2C+Centro%2C+Rio+de+Janeiro%2C+RJ%2C+20020-050";
   const instagramUrl = contentByKey.instagramUrl || "https://www.instagram.com/barberlounge.rio/";
   const instagramUsername = contentByKey.instagramUsername || "@barberlounge.rio";
+  const liveInstagramItems = (instagramFeed?.items ?? []).filter((item) => Boolean(item.mediaUrl || item.thumbnailUrl));
+  const instagramIsLive = liveInstagramItems.length > 0;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [heroVideoReady, setHeroVideoReady] = useState(false);
@@ -906,11 +909,22 @@ export function Home() {
             <div className="section-head">
               <span className="eyebrow">{getText("instagramSectionEyebrow", "Curadoria Visual · Barber Lounge")}</span>
               <h2>{getText("instagramSectionTitle", "Barber Lounge em movimento")}</h2>
-              <p>{getText("instagramDescription", "Grade editorial de referência com imagens de corte e ambiente da casa. O feed automático oficial está temporariamente pausado por restrições da API da Meta.")}</p>
+              <p>{instagramIsLive ? "Publicações recentes carregadas automaticamente do perfil oficial @barberlounge.rio." : getText("instagramDescription", "Grade editorial de referência com imagens de corte e ambiente da casa. O feed automático oficial está temporariamente pausado por restrições da API da Meta.")}</p>
             </div>
 
             <div className="insta-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '36px' }}>
-              {[
+              {instagramIsLive ? liveInstagramItems.map((item) => {
+                const mediaSource = item.mediaUrl || item.thumbnailUrl || "";
+                const title = item.caption?.split(/\r?\n/)[0]?.trim() || "Publicação Barber Lounge Rio";
+                return (
+                  <a href={item.permalink} target="_blank" rel="noopener noreferrer" key={item.id} style={{ position: 'relative', display: 'block', borderRadius: '8px', overflow: 'hidden', aspectRatio: '1/1', border: '1px solid rgba(212,175,55,0.25)', background: '#111' }}>
+                    {item.mediaType === "VIDEO" && item.mediaUrl ? <video src={item.mediaUrl} poster={item.thumbnailUrl || undefined} muted loop autoPlay playsInline preload="metadata" aria-label={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <img src={mediaSource} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />}
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.85) 100%)', display: 'flex', alignItems: 'flex-end', padding: '16px' }}>
+                      <span style={{ fontSize: '13px', fontWeight: 600, color: '#f3e5ab', fontFamily: 'Montserrat, sans-serif' }}>{title}</span>
+                    </div>
+                  </a>
+                );
+              }) : [
                 { img: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=85", title: "Corte & Estilo · Barber Lounge" },
                 { img: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=800&q=85", title: "Atendimento Exclusivo no Centro" },
                 { img: "https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=800&q=85", title: "Tesoura e Acabamento Autoral" },
@@ -924,6 +938,7 @@ export function Home() {
                 </a>
               ))}
             </div>
+            {instagramIsLive && <p style={{ marginTop: '-18px', marginBottom: '28px', fontSize: '11px', color: 'var(--muted-2)' }}>Atualizado automaticamente pela API oficial do Instagram. Cada publicação abre a fonte original.</p>}
 
             <div className="section-cta">
               <a href={instagramUrl} target="_blank" rel="noopener" className="btn btn-outline">{getText("instagramFollowButton", `Seguir ${instagramUsername}`)}</a>

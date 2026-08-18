@@ -24,6 +24,7 @@ import {
   deleteContentBlock,
   reorderContentBlocks,
 } from "./db";
+import { fetchInstagramFeed } from "./instagram";
 
 const serviceInput = z.object({
   title: z.string().min(2).max(160),
@@ -89,6 +90,7 @@ export const appRouter = router({
   }),
   site: router({
     publicData: publicProcedure.query(() => getPublicSiteData()),
+    instagramFeed: publicProcedure.query(() => fetchInstagramFeed(12)),
   }),
   admin: router({
     data: adminProcedure.query(() => getAdminSiteData()),
