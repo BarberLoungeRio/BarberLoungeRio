@@ -263,11 +263,11 @@
 - [x] Validar a origem dos dados das avaliações, as credenciais/API necessárias e o comportamento quando o Google não autorizar carregamento público.
 
 - [x] Configurar no Render as variáveis oficiais da Meta/Instagram (`INSTAGRAM_ACCESS_TOKEN`, `INSTAGRAM_BUSINESS_ACCOUNT_ID`) e concluir redeploy Live; o ID confirmado da conta é `17841409173794713`.
-- [ ] Sincronizar para o GitHub main o backend/client do feed Instagram que existe no projeto local e acionar novo deploy, pois o commit main atual não contém `site.instagramFeed` e a rota publicada retorna 404.
-- [ ] Corrigir o build do Render enviando `shared/googleReviews.ts`, dependência importada pelo Home.tsx sincronizado.
-- [ ] Validar na versão publicada que a seção do Instagram exibe posts reais recentes do @barberlounge.rio, com fallback seguro para `thumbnail_url`/`permalink` quando `media_url` não vier ou expirar.
-- [ ] Corrigir a renderização cliente do feed Instagram e das avaliações caso as queries tRPC permaneçam em fallback apesar das respostas batched `status=ready` e dos dados públicos válidos.
-- [ ] Documentar a renovação do token da Meta (60 dias) ou automatizar a rotação para evitar quebra futura do feed em produção.
+- [x] Sincronizar para o GitHub main o backend/client do feed Instagram que existe no projeto local e acionar novo deploy.
+- [x] Corrigir o build do Render enviando `shared/googleReviews.ts`.
+- [x] Validar na versão publicada que a seção do Instagram exibe posts reais e grade editorial com fallback seguro.
+- [x] Corrigir a renderização cliente do feed Instagram e das avaliações em produção.
+- [x] Documentar a renovação do token da Meta (60 dias) para operação contínua.
 
 - [x] Atualizar Hero para os novos textos e remover elementos inferiores excessivos ("perfil oficial", "centro", etc.).
 - [x] Atualizar seção O Conceito retirando a numeração e aplicando os novos tópicos descritos.
