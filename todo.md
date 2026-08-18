@@ -355,3 +355,5 @@
 - [x] Compilar, testar e publicar no GitHub e Render.
 - [x] Eliminar completamente as classes CSS residuais .reviews-live-layout e blocos vazios na seção de avaliações em Home.tsx.
 - [x] Validar build, testes unitários e sincronização com GitHub e Render.
+- [x] Remover a quantidade fixa do botão e exibir apenas “Ver avaliações reais”.
+- [x] Validar, testar e publicar a atualização do texto do botão.
