@@ -56,50 +56,21 @@ export function Home() {
   const instagramUrl = contentByKey.instagramUrl || "https://www.instagram.com/barberlounge.rio/";
   const instagramUsername = contentByKey.instagramUsername || "@barberlounge.rio";
   const rawInstagramItems = instagramFeed?.items ?? [];
-  const liveInstagramItems = rawInstagramItems.length > 0 ? rawInstagramItems : [
-    { id: 'fb-1', permalink: instagramUrl, mediaType: 'VIDEO', mediaUrl: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=85', thumbnailUrl: null, caption: 'Corte Signature & Alta Barbearia' },
-    { id: 'fb-2', permalink: instagramUrl, mediaType: 'VIDEO', mediaUrl: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=800&q=85', thumbnailUrl: null, caption: 'Atendimento exclusivo no Centro do Rio' },
-    { id: 'fb-3', permalink: instagramUrl, mediaType: 'IMAGE', mediaUrl: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=800&q=85', thumbnailUrl: null, caption: 'Tesoura e acabamento autoral' },
-    { id: 'fb-4', permalink: instagramUrl, mediaType: 'IMAGE', mediaUrl: 'https://images.unsplash.com/photo-1512864694403-124e4d7d9667?auto=format&fit=crop&w=800&q=85', thumbnailUrl: null, caption: 'Curadoria Luxury Thrift Store semanal' },
-    { id: 'fb-5', permalink: instagramUrl, mediaType: 'IMAGE', mediaUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=85', thumbnailUrl: null, caption: 'Estilo, atitude e alfaiataria' },
-    { id: 'fb-6', permalink: instagramUrl, mediaType: 'IMAGE', mediaUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=85', thumbnailUrl: null, caption: 'Experiência exclusiva Barber Lounge' },
-  ];
-  const instagramIsLive = true;
+  const liveInstagramItems = rawInstagramItems.filter((item) => Boolean(item.mediaUrl || item.thumbnailUrl));
+  const instagramIsLive = liveInstagramItems.length > 0;
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [heroVideoReady, setHeroVideoReady] = useState(false);
-	  const [liveReviews, setLiveReviews] = useState<LiveReviewsState>({
-	    status: "ready",
-	    placeName: "BARBER LOUNGE RIO · Alta Barbearia & Luxury Thrift Store",
-	    address: "Avenida Churchill, 10C - Centro, Rio de Janeiro - RJ",
-	    rating: 4.9,
-	    ratingCount: 148,
-	    googleMapsUri: googleMapsUrl,
-	    reviews: [
-	      {
-	        id: "rev-1",
-	        authorName: "Rodrigo S.",
-	        rating: 5,
-	        text: "Simplesmente a melhor barbearia do Centro do Rio. Atendimento impecável, corte e barba de alto nível e um ambiente reservado e sofisticado.",
-	        relativeTime: "Há 2 semanas",
-	      },
-	      {
-	        id: "rev-2",
-	        authorName: "Marcelo M.",
-	        rating: 5,
-	        text: "Profissionais extremamente qualificados. Curadoria de estilo impecável e peças exclusivas no thrift store. Recomendo de olhos fechados!",
-	        relativeTime: "Há 1 mês",
-	      },
-	      {
-	        id: "rev-3",
-	        authorName: "Felipe C.",
-	        rating: 5,
-	        text: "Ambiente exclusivo, pontualidade e acabamento autoral. Vale cada centavo pela experiência e pelo padrão de excelência.",
-	        relativeTime: "Há 1 mês",
-	      },
-	    ],
-	  });
+  const [liveReviews, setLiveReviews] = useState<LiveReviewsState>({
+    status: "loading",
+    placeName: "",
+    address: "",
+    rating: null,
+    ratingCount: null,
+    reviews: [],
+    googleMapsUri: googleMapsUrl,
+  });
 
   useEffect(() => {
     let cancelled = false;
@@ -350,6 +321,8 @@ export function Home() {
         .btn-gold:hover{background-color:var(--gold-light);border-color:var(--gold-light);transform:scale(1.05);}
         .btn-outline{background-color:transparent;color:var(--gold);border:1.5px solid var(--gold);}
         .btn-outline:hover{background-color:var(--gold);color:var(--bg);transform:translateY(-2px);}
+        .btn:active{transform:translateY(0) scale(.98);}
+        .btn:focus-visible,.wa-float:focus-visible,.insta-grid a:focus-visible,.reviews-live-card a:focus-visible{outline:2px solid var(--gold-light);outline-offset:4px;}
         .btn-ghost{border:1px solid rgba(255,255,255,0.28);color:var(--ivory);background:transparent;}
         .btn-ghost:hover{border-color:var(--gold-light);color:var(--gold-light);}
         .btn-sm{padding:10px 18px;font-size:10.5px;}
@@ -633,6 +606,11 @@ export function Home() {
           opacity:0;transition:opacity .3s ease;
         }
         .insta-item:hover .insta-overlay{opacity:1;}
+        .insta-grid>a{transition:transform .28s ease, border-color .28s ease, box-shadow .28s ease;}
+        .insta-grid>a:hover{transform:translateY(-5px);border-color:rgba(212,175,55,.68)!important;box-shadow:0 12px 28px rgba(0,0,0,.34);}
+        .insta-loading-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+        .insta-loading-tile{display:block;aspect-ratio:1;border:1px solid rgba(212,175,55,.12);background:linear-gradient(120deg,rgba(255,255,255,.04),rgba(212,175,55,.12),rgba(255,255,255,.04));background-size:220% 100%;animation:instagramPulse 1.6s ease-in-out infinite;}
+        @keyframes instagramPulse{0%,100%{opacity:.42;background-position:0 0;}50%{opacity:.9;background-position:100% 0;}}
         .insta-overlay svg{width:26px;height:26px;fill:var(--gold-light);}
         .insta-overlay span{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ivory);}
 
@@ -734,7 +712,8 @@ export function Home() {
           background-color:var(--wa);display:flex;align-items:center;justify-content:center;
           box-shadow:0 4px 15px rgba(0,0,0,0.5);transition:transform 0.3s ease;
         }
-        .wa-float:hover{transform:scale(1.1);}
+        .wa-float:hover{transform:translateY(-4px) scale(1.08);box-shadow:0 10px 28px rgba(37,211,102,.32);}
+        .wa-float:active{transform:translateY(0) scale(.96);}
         .wa-float svg{width:28px;height:28px;fill:#fff;}
 
         @media (max-width:980px){
@@ -942,7 +921,7 @@ export function Home() {
                   const mediaSource = item.mediaUrl || item.thumbnailUrl || "";
                   const title = item.caption?.split(/\r?\n/)[0]?.trim() || "Publicação Barber Lounge Rio";
                   return (
-                    <a href={item.permalink} target="_blank" rel="noopener noreferrer" key={item.id} style={{ position: 'relative', display: 'block', borderRadius: '8px', overflow: 'hidden', aspectRatio: '1/1', border: '1px solid rgba(212,175,55,0.25)', background: '#111' }}>
+                    <a href={item.permalink} target="_self" rel="noopener noreferrer" key={item.id} aria-label={`Abrir publicação oficial: ${title}`} style={{ position: 'relative', display: 'block', borderRadius: '8px', overflow: 'hidden', aspectRatio: '1/1', border: '1px solid rgba(212,175,55,0.25)', background: '#111' }}>
                       {item.mediaType === "VIDEO" && item.mediaUrl ? <video src={item.mediaUrl} poster={item.thumbnailUrl || undefined} muted loop autoPlay playsInline preload="metadata" aria-label={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <img src={mediaSource} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />}
                       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.85) 100%)', display: 'flex', alignItems: 'flex-end', padding: '16px' }}>
                         <span style={{ fontSize: '13px', fontWeight: 600, color: '#f3e5ab', fontFamily: 'Montserrat, sans-serif' }}>{title}</span>
@@ -953,14 +932,14 @@ export function Home() {
               </div>
             ) : (
               <div className="insta-empty-state" style={{ marginBottom: '36px', padding: '42px 24px', border: '1px solid rgba(212,175,55,0.2)', background: 'rgba(17,17,17,0.72)', textAlign: 'center' }}>
-                <p style={{ margin: 0, color: 'var(--ivory)', fontFamily: 'Montserrat, sans-serif' }}>{instagramFeed?.status === 'error' ? 'A API oficial do Instagram não disponibilizou as publicações neste momento.' : 'Carregando as últimas publicações e Reels do Instagram…'}</p>
-                <span style={{ display: 'block', marginTop: '10px', fontSize: '12px', color: 'var(--muted-2)' }}>As fotos exibidas aqui vêm exclusivamente do perfil oficial @barberlounge.rio.</span>
+                {instagramFeed?.status === 'error' || instagramFeed?.status === 'unavailable' ? <p style={{ margin: 0, color: 'var(--ivory)', fontFamily: 'Montserrat, sans-serif' }}>O Instagram oficial não disponibilizou as publicações neste momento.</p> : <div className="insta-loading-grid" aria-label="Sincronizando publicações oficiais do Instagram">{Array.from({ length: 6 }).map((_, index) => <span className="insta-loading-tile" key={index} />)}</div>}
+                <a href={instagramUrl} target="_self" rel="noopener" className="btn btn-outline" style={{ marginTop: '24px' }}>Abrir o perfil oficial no Instagram</a>
               </div>
             )}
             {instagramIsLive && <p style={{ marginTop: '-18px', marginBottom: '28px', fontSize: '11px', color: 'var(--muted-2)' }}>Atualizado automaticamente pela API oficial do Instagram. Cada publicação abre a fonte original.</p>}
 
             <div className="section-cta">
-              <a href={instagramUrl} target="_blank" rel="noopener" className="btn btn-outline">{getText("instagramFollowButton", `Seguir ${instagramUsername}`)}</a>
+              <a href={instagramUrl} target="_self" rel="noopener" className="btn btn-outline" aria-label={`Abrir ${instagramUsername} no Instagram`}>{getText("instagramFollowButton", `Abrir ${instagramUsername}`)}</a>
             </div>
           </div>
         </section>
@@ -1020,7 +999,7 @@ export function Home() {
                   </>
                 )}
                 <div className="reviews-cta">
-                  <a href={liveReviews.googleMapsUri || googleMapsUrl} target="_blank" rel="noopener" className="btn btn-primary" style={{ background: '#d5b05b', color: '#000', fontWeight: 700, padding: '12px 28px', borderRadius: '6px', display: 'inline-block', textDecoration: 'none' }}>{getText("reviewsButton", "Ver todas as avaliações no Google Maps →")}</a>
+                  <a href={liveReviews.googleMapsUri || googleMapsUrl} target="_self" rel="noopener" className="btn btn-primary" aria-label="Abrir o perfil oficial e as avaliações no Google Maps" style={{ background: '#d5b05b', color: '#000', fontWeight: 700, padding: '12px 28px', borderRadius: '6px', display: 'inline-block', textDecoration: 'none' }}>{getText("reviewsButton", "Abrir avaliações reais no Google Maps →")}</a>
                 </div>
                 <p className="google-maps-attribution" translate="no">Google Maps</p>
               </div>

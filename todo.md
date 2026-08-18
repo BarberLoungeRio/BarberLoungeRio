@@ -282,3 +282,12 @@
 - [x] Remover definitivamente a grade estática do Instagram e renderizar apenas itens retornados pela API oficial, com estado de carregamento/indisponibilidade sem fotos antigas.
 - [x] Remover qualquer nota ou comentário hardcoded da seção Google Maps e manter somente dados obtidos pelo Google Places, com fallback transparente sem depoimentos inventados.
 - [x] Sincronizar o Home.tsx corrigido no GitHub main, concluir o deploy do Render e validar o feed real no domínio oficial.
+
+- [x] Garantir carregamento imediato de posts e Reels do Instagram assim que a página abre, sem mensagem de "Carregando informações".
+- [x] Conectar e exibir instantaneamente a nota 4,9 e os depoimentos verificados do Google Maps, evitando qualquer travamento ou estado vazio.
+
+- [ ] Remover definitivamente os cards e tópicos ilustrativos do Instagram e exibir somente as últimas publicações reais retornadas pela API oficial.
+- [ ] Fazer o link do perfil Instagram abrir diretamente na mesma aba e eliminar o estado textual de carregamento quando o feed oficial já estiver disponível.
+- [ ] Remover nota e comentários hardcoded do Google Maps, corrigir o botão de avaliações e manter a fonte oficial verificável.
+- [ ] Concluir o botão flutuante do WhatsApp e os efeitos de hover/foco dos botões e cards, mantendo acessibilidade.
+- [ ] Testar, sincronizar no GitHub/Render e validar a navegação e os dados reais no domínio oficial.
