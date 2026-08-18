@@ -1045,8 +1045,8 @@ export function Home() {
             <div className="hero-bg-overlay"></div>
           </div>
 
+          <div className="hero-tag"><span className="dot"></span>{getText("heroBadge", "Segunda a Sexta · 06:30 às 15:00")}</div>
           <h1>Mais que um corte, <span>um conceito.</span></h1>
-          <p className="sub" style={{ maxWidth: '520px', margin: '0 auto 28px', padding: '0 16px', lineHeight: '1.5', fontSize: 'clamp(14px, 1.5vw, 16px)' }}>Precisão técnica, sofisticação e atitude no Centro do Rio.</p>
 
           <div className="hero-ctas" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
             <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ padding: '16px 42px', fontSize: '14px', fontWeight: 800 }}>{getText("heroBookingCta", "Agendar Exclusividade")}</a>
