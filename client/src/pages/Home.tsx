@@ -1049,7 +1049,7 @@ export function Home() {
             <div className="hero-bg-overlay"></div>
           </div>
 
-          <h1 style={{ fontSize: 'clamp(28px, 4.5vw, 48px)', marginBottom: '14px' }}>Alta barbearia e curadoria de estilo</h1>
+          <h1>Mais que um corte, <span>um conceito.</span></h1>
           <p className="sub" style={{ maxWidth: '520px', margin: '0 auto 28px', padding: '0 16px', lineHeight: '1.5', fontSize: 'clamp(14px, 1.5vw, 16px)' }}>Precisão técnica, sofisticação e atitude no Centro do Rio.</p>
 
           <div className="hero-ctas" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
