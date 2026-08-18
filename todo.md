@@ -377,3 +377,5 @@
 - [x] Restaurar no banco e no código a descrição exata de O Conceito conforme a foto enviada pelo usuário.
 - [x] Executar typecheck, testes unitários, build e publicar a correção no GitHub e Render.
 - [x] Elaborar o guia passo a passo de acesso ao painel administrativo e edição visual.
+- [x] Corrigir o roteamento e o link de acesso ao painel admin para garantir que seja totalmente clicável e funcional.
+- [x] Validar, testar e publicar a correção no GitHub e Render.

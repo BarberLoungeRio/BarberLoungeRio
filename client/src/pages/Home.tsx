@@ -997,9 +997,7 @@ export function Home() {
               <li><a href="#instagram">{getText("navInstagram", "Instagram")}</a></li>
               <li><a href="#avaliacoes">{getText("navReviews", "Avaliações")}</a></li>
               <li><a href="#contato">{getText("navContact", "Contato")}</a></li>
-              {user?.role === 'admin' && (
-                <li><Link href="/admin" style={{ color: 'var(--gold-light)' }}>{getText("navAdmin", "Painel Admin")}</Link></li>
-              )}
+              <li><Link href="/admin" style={{ color: 'var(--gold-light)' }}>{getText("navAdmin", "Painel Admin")}</Link></li>
             </ul>
             <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-outline header-cta-desktop">{getText("navBooking", "Agendar horário")}</a>
           </nav>
@@ -1014,9 +1012,7 @@ export function Home() {
           <a href="#instagram" onClick={() => setMobileOpen(false)}>{getText("navInstagram", "Instagram")}</a>
           <a href="#avaliacoes" onClick={() => setMobileOpen(false)}>{getText("navReviews", "Avaliações")}</a>
           <a href="#contato" onClick={() => setMobileOpen(false)}>{getText("navContact", "Contato")}</a>
-          {user?.role === 'admin' && (
-            <Link href="/admin" onClick={() => setMobileOpen(false)} style={{ color: 'var(--gold-light)', fontFamily: 'Montserrat', fontWeight: 700, fontSize: '20px', padding: '16px 0', borderBottom: '1px solid var(--line)' }}>{getText("navAdmin", "Painel Admin")}</Link>
-          )}
+          <Link href="/admin" onClick={() => setMobileOpen(false)} style={{ color: 'var(--gold-light)', fontFamily: 'Montserrat', fontWeight: 700, fontSize: '20px', padding: '16px 0', borderBottom: '1px solid var(--line)' }}>{getText("navAdmin", "Painel Admin")}</Link>
           <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-outline">{getText("navBooking", "Agendar horário")}</a>
         </div>
       </header>
