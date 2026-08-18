@@ -804,20 +804,15 @@ export function Home() {
             <div className="hero-bg-overlay"></div>
           </div>
 
-          <span className="hero-tag"><span className="dot"></span> {getText("heroEyebrow", "Centro do Rio · Seg a Sex, 06:30 às 15:00")}</span>
-
-          <h1>{getText("heroTitle", "Mais que um corte,")} <span>{getText("heroTitleAccent", "um conceito.")}</span></h1>
-          <p className="sub">{getText("heroDescription", "A união da curadoria de estilo com a precisão do corte. Autenticidade, luxo e atitude em um único lugar, no coração do Centro do Rio.")}</p>
+          <h1>Mais que um corte, <span>um conceito.</span></h1>
+          <p className="sub">A união da curadoria de estilo com a precisão da alta barbearia. Autenticidade, sofisticação e atitude em um único lugar.</p>
 
           <div className="hero-ctas">
             <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-gold">{getText("heroBookingCta", "Agendar Exclusividade")}</a>
             <a href="#thrift" className="btn btn-ghost">{getText("heroSecondaryCta", "Explorar Luxury Thrift Store")}</a>
           </div>
 
-          <div className="hero-meta">
-            <div><span className="num">{getText("heroRatingNumber", "Perfil oficial")}</span><span className="label">{getText("heroRatingLabel", "Ver no Google Maps")}</span></div>
-            <div><span className="num">{getText("heroLocationNumber", "Centro")}</span><span className="label">{getText("heroLocationLabel", "Av. Churchill, RJ")}</span></div>
-          </div>
+          {/* Elementos inferiores removidos para deixar o Hero limpo */}
 
           <div className="scroll-cue"><span>{getText("heroScrollCue", "Role")}</span><span className="line"></span></div>
         </section>
@@ -832,19 +827,16 @@ export function Home() {
             </div>
             <div className="values-grid">
               <div className="value-item">
-                <span className="num">01</span>
                 <h3>{getText("valueOneTitle", "Precisão")}</h3>
-                <p>{getText("valueOneDescription", "Barbeiros especialistas em cortes clássicos e contemporâneos, adaptados ao seu estilo pessoal.")}</p>
+                <p>{getText("valueOneDescription", "Especialista em cortes clássicos, contemporâneos e modernos, executados com rigor técnico e adaptados ao seu estilo pessoal.")}</p>
               </div>
               <div className="value-item">
-                <span className="num">02</span>
-                <h3>{getText("valueTwoTitle", "Luxo")}</h3>
-                <p>{getText("valueTwoDescription", "Um ambiente sofisticado no coração do Centro do Rio, pensado para o homem exigente.")}</p>
+                <h3>{getText("valueTwoTitle", "Sofisticação")}</h3>
+                <p>{getText("valueTwoDescription", "Um ambiente exclusivo e reservado no Centro do Rio, pensado para o homem que valoriza o seu tempo e a sua imagem.")}</p>
               </div>
               <div className="value-item">
-                <span className="num">03</span>
                 <h3>{getText("valueThreeTitle", "Atitude")}</h3>
-                <p>{getText("valueThreeDescription", "Curadoria de estilo, cuidado e bem-estar reunidos em uma experiência única.")}</p>
+                <p>{getText("valueThreeDescription", "Curadoria de estilo, cuidado e bem-estar reunidos em uma experiência única de alta barbearia.")}</p>
               </div>
             </div>
           </div>
@@ -889,9 +881,9 @@ export function Home() {
         <section className="thrift section-pad" id="thrift">
           <div className="wrap">
             <div className="section-head">
-              <span className="eyebrow">{getText("thriftEyebrow", "Thrift Store")}</span>
-              <h2>{getText("thriftTitle", "Curadoria consciente")}</h2>
-              <p>{getText("thriftDescription", "Fotos, peças e detalhes da curadoria Barber Lounge Rio. Cada descrição pode ser editada no painel administrativo.")}</p>
+              <span className="eyebrow">Luxury Thrift Store</span>
+              <h2>Curadoria de Estilo</h2>
+              <p>Novas seleções todas as semanas. Acervo Premium. Peças exclusivas de alfaiataria, camisaria e grifes globais que unem história, design e consumo inteligente.</p>
             </div>
           </div>
 
@@ -907,9 +899,9 @@ export function Home() {
         <section className="instagram section-pad" id="instagram">
           <div className="wrap">
             <div className="section-head">
-              <span className="eyebrow">{getText("instagramSectionEyebrow", "Curadoria Visual · Barber Lounge")}</span>
-              <h2>{getText("instagramSectionTitle", "Barber Lounge em movimento")}</h2>
-              <p>{instagramIsLive ? "Publicações recentes carregadas automaticamente do perfil oficial @barberlounge.rio." : getText("instagramDescription", "Grade editorial de referência com imagens de corte e ambiente da casa. O feed automático oficial está temporariamente pausado por restrições da API da Meta.")}</p>
+              <span className="eyebrow">Acompanhe nossa rotina</span>
+              <h2>Barber Lounge em movimento</h2>
+              <p>Bastidores da alta barbearia e curadoria diária de estilos. Siga o nosso perfil e acompanhe os resultados em primeira mão.</p>
             </div>
 
             <div className="insta-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '36px' }}>
@@ -950,9 +942,9 @@ export function Home() {
         <section className="reviews section-pad" id="avaliacoes">
           <div className="wrap">
             <div className="section-head">
-              <span className="eyebrow">{getText("reviewsEyebrow", "Avaliações verificáveis")}</span>
-              <h2>{getText("reviewsTitle", "Veja as opiniões reais dos clientes")}</h2>
-              <p>{getText("reviewsDescription", "As avaliações abaixo são carregadas automaticamente do perfil oficial da Barber Lounge Rio no Google Maps. Nenhum depoimento é criado ou armazenado pelo site.")}</p>
+              <span className="eyebrow">Avaliações verificáveis</span>
+              <h2>Veja as opiniões reais dos clientes</h2>
+              <p>Para manter esta vitrine transparente, as avaliações são exibidas diretamente do nosso perfil oficial verificado no Google Maps, garantindo autenticidade total.</p>
             </div>
 
             <div className="reviews-live-layout">
