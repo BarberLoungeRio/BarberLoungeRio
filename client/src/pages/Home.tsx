@@ -49,12 +49,19 @@ function InstagramProfileEmbed({ url, notice }: { url: string; notice?: string }
     return () => { cancelled = true; };
   }, [url]);
   return <div className="insta-profile-embed-shell">
-    <div className="insta-profile-embed-status">{embedState === "loading" ? "Abrindo o perfil oficial…" : embedState === "error" ? "O embed foi bloqueado pelo Instagram neste navegador." : notice || "Publicações e Reels oficiais do perfil Barber Lounge Rio."}</div>
     <div className="insta-profile-dark-stage">
-      <div className="insta-profile-dark-mark" aria-hidden="true">IG</div>
-      <strong>@barberlounge.rio</strong>
-      <span>Posts e Reels recentes da Barber Lounge Rio</span>
-      <a href={url} target="_self" rel="noreferrer" className="btn btn-outline">Abrir feed oficial</a>
+      <div className="insta-profile-dark-header">
+        <div className="insta-profile-dark-mark" aria-hidden="true">BL</div>
+        <div style={{ textAlign: 'left' }}>
+          <strong>@barberlounge.rio</strong>
+          <span style={{ display: 'block', fontSize: '11px', color: 'var(--muted)' }}>Barber Lounge Rio · Alta Barbearia e Curadoria</span>
+        </div>
+      </div>
+      <p style={{ margin: '4px 0 12px', fontSize: '12px', color: 'var(--ivory)' }}>{notice || "Feed oficial integrado. Acompanhe os bastidores e Reels recentes diretamente no perfil verificado."}</p>
+      <div className="insta-profile-actions">
+        <a href={url} target="_self" rel="noreferrer" className="btn btn-primary" style={{ background: 'var(--gold)', color: '#000', fontWeight: 700 }}>Seguir no Instagram →</a>
+        <a href={url} target="_self" rel="noreferrer" className="btn btn-outline">Abrir Perfil Completo</a>
+      </div>
       <blockquote className="instagram-media insta-official-source" data-instgrm-permalink={url} data-instgrm-version="14"><a href={url} target="_self" rel="noreferrer">Abrir o perfil oficial no Instagram</a></blockquote>
     </div>
   </div>;
@@ -693,11 +700,12 @@ export function Home() {
         .insta-dark-reel-placeholder strong{max-width:230px;font-family:'Montserrat',sans-serif;font-size:14px;line-height:1.35;letter-spacing:.04em;text-transform:uppercase;color:var(--ivory);}
         .insta-reel-badge{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;letter-spacing:.16em;color:var(--gold-light);}
         .insta-profile-embed-shell{display:flex;min-height:260px;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:18px;background:#0b0b0a;border:1px solid rgba(212,175,55,.24);}
-        .insta-profile-dark-stage{position:relative;display:flex;width:100%;min-height:285px;flex-direction:column;align-items:center;justify-content:center;gap:8px;overflow:hidden;padding:32px 18px;text-align:center;background:radial-gradient(circle at 50% 10%,rgba(212,175,55,.18),transparent 42%),linear-gradient(145deg,#181814,#050505);border:1px solid rgba(212,175,55,.32);}
-        .insta-profile-dark-mark{display:flex;width:54px;height:54px;align-items:center;justify-content:center;border:1px solid var(--gold);border-radius:50%;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:800;letter-spacing:.1em;color:var(--gold-light);}
+        .insta-profile-dark-stage{position:relative;display:flex;width:100%;min-height:285px;flex-direction:column;align-items:center;justify-content:center;gap:12px;overflow:hidden;padding:36px 24px;text-align:center;background:radial-gradient(circle at 50% 10%,rgba(212,175,55,.18),transparent 42%),linear-gradient(145deg,#141411,#040404);border:1px solid rgba(212,175,55,.32);}
+        .insta-profile-dark-header{display:flex;align-items:center;gap:16px;margin-bottom:6px;}
+        .insta-profile-dark-mark{display:flex;width:58px;height:58px;align-items:center;justify-content:center;border:1px solid var(--gold);border-radius:50%;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:800;letter-spacing:.1em;color:var(--gold-light);background:#0a0a08;}
         .insta-profile-dark-stage strong{font-family:'Montserrat',sans-serif;font-size:16px;letter-spacing:.08em;color:var(--ivory);}
-        .insta-profile-dark-stage>span{font-size:12px;color:var(--muted);}
-        .insta-profile-dark-stage .btn{position:relative;z-index:2;margin-top:10px;}
+        .insta-profile-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:8px;}
+        .insta-profile-dark-stage .btn{position:relative;z-index:2;}
         .insta-official-source{position:absolute!important;inset:auto auto -120px -120px!important;width:1px!important;min-width:1px!important;height:1px!important;overflow:hidden!important;margin:0!important;opacity:0!important;pointer-events:none!important;}
         .insta-profile-embed-status{max-width:760px;text-align:center;font-size:12px;line-height:1.5;color:var(--muted);}
         .insta-live-meta{display:flex;min-height:112px;flex-direction:column;gap:10px;padding:16px;background:#151512;}
