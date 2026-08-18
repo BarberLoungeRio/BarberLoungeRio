@@ -384,3 +384,5 @@
 - [x] Restaurar o selo/badge de horário no Hero (06h30 às 15h) e remover subtítulo repetido, mantendo só "Mais que um corte, um conceito.".
 - [x] Restaurar os campos corretos de telefone e e-mail no painel e rodapé.
 - [x] Executar typecheck, testes unitários, build e publicar a correção no GitHub e Render.
+- [x] Diagnosticar e corrigir o acesso à página /admin no navegador externo do usuário para garantir login e edição imediatos.
+- [x] Validar, testar e publicar a correção no GitHub e Render.
