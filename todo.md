@@ -371,3 +371,5 @@
 - [x] Validar, testar e publicar a restauração no GitHub e Render.
 - [x] Restaurar exatamente os textos originais de O Conceito (título "Bem-vindo à experiência Barber Lounge Rio", descrição e pilares Precisão, Sofisticação e Atitude) conforme imagem do usuário.
 - [x] Validar, testar e publicar a alteração no GitHub e Render.
+- [x] Atualizar o banco de dados e garantir que o segundo pilar de O Conceito seja estritamente "Sofisticação" (removendo qualquer vestígio de "Luxo").
+- [x] Validar build, testes e publicação no GitHub e Render.
