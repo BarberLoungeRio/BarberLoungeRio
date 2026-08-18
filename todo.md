@@ -318,3 +318,7 @@
 - [x] Inspecionar autenticação e autorização do painel /admin.
 - [x] Garantir que o painel abra, carregue e permita salvar dados sem travar.
 - [x] Validar salvamento e publicar a versão corrigida no GitHub e Render.
+
+- [x] Inspecionar a interface e os inputs do Admin.tsx para verificar se há bloqueio de estado ou de eventos nos campos.
+- [x] Testar a mutation de salvamento e garantir que os campos respondam à digitação.
+- [x] Publicar a correção definitiva da edição e confirmar o funcionamento.
