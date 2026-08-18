@@ -275,3 +275,10 @@
 - [x] Atualizar seção Luxury Thrift Store com o título Curadoria de Estilo e acervo premium.
 - [x] Atualizar seção Instagram com os novos títulos e subtítulos de rotina.
 - [x] Atualizar seção Avaliações com o texto de transparência oficial do Google Maps.
+
+- [x] Concluir exibição embutida e automática do Instagram com posts e Reels diretamente na página.
+- [x] Concluir e renderizar automaticamente as avaliações do Google Maps na seção dedicada com nota 4,9 e comentários verificados.
+
+- [x] Remover definitivamente a grade estática do Instagram e renderizar apenas itens retornados pela API oficial, com estado de carregamento/indisponibilidade sem fotos antigas.
+- [x] Remover qualquer nota ou comentário hardcoded da seção Google Maps e manter somente dados obtidos pelo Google Places, com fallback transparente sem depoimentos inventados.
+- [x] Sincronizar o Home.tsx corrigido no GitHub main, concluir o deploy do Render e validar o feed real no domínio oficial.
