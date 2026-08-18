@@ -392,3 +392,5 @@
 - [x] Validar, testar e publicar a configuração no GitHub e Render.
 - [x] Diagnosticar e corrigir o acesso à rota /admin no ambiente de produção para garantir login e edição imediatos.
 - [x] Validar, testar e publicar a correção no GitHub e Render.
+- [x] Remover a numeração contínua (Peça 01, Peça 02...) dos títulos da Thrift Store em server/db.ts e Home.tsx.
+- [x] Validar, testar e publicar a alteração no GitHub e Render.
