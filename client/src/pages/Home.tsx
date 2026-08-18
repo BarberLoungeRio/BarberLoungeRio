@@ -35,6 +35,71 @@ function loadInstagramEmbedScript() {
   return instagramEmbedPromise;
 }
 
+function ReviewsCarousel({ reviews, googleMapsUrl }: { reviews: Array<{ id: string; authorName: string; authorPhoto?: string | null; authorUri?: string | null; rating: number; text: string; relativeTime?: string }>; googleMapsUrl: string }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused || reviews.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % reviews.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [paused, reviews.length]);
+
+  if (!reviews || reviews.length === 0) {
+    return <div style={{ textAlign: 'center', padding: '40px 0' }}>
+      <p style={{ color: 'var(--ivory)', fontSize: '14px', marginBottom: '20px' }}>Carregando avaliações verificadas do Google Maps…</p>
+      <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ fontSize: '13px', padding: '14px 28px' }}>Abrir avaliações no Google Maps ↗</a>
+    </div>;
+  }
+
+  const current = reviews[currentIndex] || reviews[0];
+  const initials = current.authorName.trim().slice(0, 1).toUpperCase() || "G";
+
+  return (
+    <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} style={{ width: '100%' }}>
+      <div style={{ background: '#070706', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '12px', padding: '36px', minHeight: '220px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              {current.authorPhoto ? (
+                <img src={current.authorPhoto} alt="" style={{ width: '52px', height: '52px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--gold)' }} loading="lazy" />
+              ) : (
+                <span style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'var(--gold)', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '18px' }}>{initials}</span>
+              )}
+              <div>
+                {current.authorUri ? (
+                  <a href={current.authorUri} target="_blank" rel="noreferrer" style={{ color: '#fff', fontWeight: 700, fontSize: '16px', textDecoration: 'none' }} className="hover:text-[#d5b05b]">{current.authorName}</a>
+                ) : (
+                  <span style={{ color: '#fff', fontWeight: 700, fontSize: '16px' }}>{current.authorName}</span>
+                )}
+                <span style={{ display: 'block', fontSize: '12px', color: 'var(--muted)' }}>{current.relativeTime || "Avaliação verificada"}</span>
+              </div>
+            </div>
+            <div className="stars" aria-label={`Nota ${current.rating} de 5`} style={{ fontSize: '18px' }}>{"★".repeat(Math.max(0, Math.min(5, Math.round(current.rating))))}</div>
+          </div>
+          <p style={{ color: 'var(--ivory)', fontSize: '15.5px', lineHeight: '1.8', margin: '0 0 24px', fontStyle: 'italic' }}>"{current.text || "Esta avaliação não possui comentário textual."}"</p>
+        </div>
+        
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '20px', flexWrap: 'wrap', gap: '16px' }}>
+          <span style={{ fontSize: '11px', color: 'var(--gold-light)', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Verificado no Google Maps ({currentIndex + 1} de {reviews.length})</span>
+          
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button onClick={() => setCurrentIndex((prev) => (prev - 1 + reviews.length) % reviews.length)} aria-label="Avaliação anterior" style={{ background: '#11110f', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'border-color 0.2s' }} className="hover:border-[#d5b05b]">‹</button>
+            <button onClick={() => setCurrentIndex((prev) => (prev + 1) % reviews.length)} aria-label="Próxima avaliação" style={{ background: '#11110f', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'border-color 0.2s' }} className="hover:border-[#d5b05b]">›</button>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '18px', flexWrap: 'wrap', marginTop: '28px' }}>
+        <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ fontSize: '13px', padding: '16px 32px', fontWeight: 800 }}>Avaliar no Google Maps ↗</a>
+        <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-outline" style={{ fontSize: '13px', padding: '16px 32px', fontWeight: 700 }}>Ver todas as 318 avaliações reais</a>
+      </div>
+    </div>
+  );
+}
+
 function InstagramProfileEmbed({ url, notice }: { url: string; notice?: string }) {
   useEffect(() => {
     void loadInstagramEmbedScript().then(() => {
@@ -1114,13 +1179,13 @@ export function Home() {
           </div>
         </section>
 
-        {/* AVALIAÇÕES GOOGLE MAPS */}
+        {/* AVALIAÇÕES GOOGLE MAPS - CARROSSEL AUTOMÁTICO EM BLOCO ÚNICO */}
         <section className="reviews section-pad" id="avaliacoes" style={{ background: '#070706', width: '100%', maxWidth: '100%' }}>
-          <div className="wrap" style={{ maxWidth: '1400px', width: '100%', margin: '0 auto', padding: '0 24px' }}>
+          <div className="wrap" style={{ maxWidth: '1100px', width: '100%', margin: '0 auto', padding: '0 24px' }}>
             <div className="section-head" style={{ textAlign: 'center', marginBottom: '40px' }}>
               <span className="eyebrow">Avaliações verificáveis</span>
               <h2>Veja as opiniões reais dos clientes</h2>
-              <p>Perfil oficial verificado no Google Maps, exibido em quadro amplo e sem espaços vazios.</p>
+              <p>Perfil oficial verificado no Google Maps, apresentado em carrossel dinâmico e fluido.</p>
             </div>
 
             <div style={{ background: '#11110f', border: '1px solid rgba(213, 176, 91, 0.3)', borderRadius: '16px', padding: '40px', boxShadow: '0 16px 50px rgba(0,0,0,0.8)', width: '100%' }}>
@@ -1138,32 +1203,8 @@ export function Home() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px', marginBottom: '36px', width: '100%' }}>
-                {liveReviews.reviews.map((review) => {
-                  const initials = review.authorName.trim().slice(0, 1).toUpperCase() || "G";
-                  return (
-                    <article key={review.id} style={{ background: '#070706', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '28px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease' }} className="hover:border-[#d5b05b] hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(213,176,91,0.15)]">
-                      <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '18px' }}>
-                          {review.authorPhoto ? <img src={review.authorPhoto} alt="" style={{ width: '44px', height: '44px', borderRadius: '50%', objectFit: 'cover' }} loading="lazy" /> : <span style={{ width: '44px', height: '44px', borderRadius: '50%', background: 'var(--gold)', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '15px' }}>{initials}</span>}
-                          <div>
-                            {review.authorUri ? <a href={review.authorUri} target="_blank" rel="noreferrer" style={{ color: '#fff', fontWeight: 700, fontSize: '15px', textDecoration: 'none' }}>{review.authorName}</a> : <span style={{ color: '#fff', fontWeight: 700, fontSize: '15px' }}>{review.authorName}</span>}
-                            <span style={{ display: 'block', fontSize: '11.5px', color: 'var(--muted)' }}>{review.relativeTime || "Avaliação verificada"}</span>
-                          </div>
-                        </div>
-                        <div className="stars" aria-label={`Nota ${review.rating} de 5`} style={{ marginBottom: '12px' }}>{"★".repeat(Math.max(0, Math.min(5, Math.round(review.rating))))}</div>
-                        <p style={{ color: 'var(--ivory)', fontSize: '14px', lineHeight: '1.7', margin: '0 0 18px' }}>{review.text || "Esta avaliação não possui comentário textual."}</p>
-                      </div>
-                      <span style={{ fontSize: '11px', color: 'var(--gold-light)', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Verificado no Google Maps</span>
-                    </article>
-                  );
-                })}
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '18px', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '28px' }}>
-                <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ fontSize: '13px', padding: '16px 32px', fontWeight: 800 }}>Avaliar no Google Maps ↗</a>
-                <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-outline" style={{ fontSize: '13px', padding: '16px 32px', fontWeight: 700 }}>Ver todas as 318 avaliações reais</a>
-              </div>
+              {/* Carrossel Automático de Depoimentos */}
+              <ReviewsCarousel reviews={liveReviews.reviews} googleMapsUrl={googleMapsUrl} />
             </div>
           </div>
         </section>

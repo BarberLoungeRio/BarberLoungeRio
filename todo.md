@@ -346,3 +346,7 @@
 - [x] Adicionar botão de avaliação direta e remover quadros vazios.
 - [x] Aplicar fundo black puro na seção e embed do Instagram.
 - [x] Transformar avaliações do Google Maps em quadro amplo full-width sem espaços vazios com efeito de hover.
+
+- [x] Remover o mapa lateral vazio da seção de avaliações em Home.tsx.
+- [x] Criar componente de carrossel automático suave para as avaliações reais.
+- [x] Compilar, testar e publicar no GitHub e Render.
