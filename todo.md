@@ -350,3 +350,6 @@
 - [x] Remover o mapa lateral vazio da seção de avaliações em Home.tsx.
 - [x] Criar componente de carrossel automático suave para as avaliações reais.
 - [x] Compilar, testar e publicar no GitHub e Render.
+
+- [x] Adicionar botão "Deixar Avaliação" destacado logo abaixo do carrossel em Home.tsx.
+- [x] Compilar, testar e publicar no GitHub e Render.

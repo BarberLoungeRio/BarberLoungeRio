@@ -93,6 +93,7 @@ function ReviewsCarousel({ reviews, googleMapsUrl }: { reviews: Array<{ id: stri
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '18px', flexWrap: 'wrap', marginTop: '28px' }}>
+        <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ fontSize: '13px', padding: '16px 32px', fontWeight: 800, background: 'var(--gold)', color: '#000', boxShadow: '0 4px 20px rgba(213,176,91,0.4)' }}>⭐ Deixar Nova Avaliação</a>
         <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ fontSize: '13px', padding: '16px 32px', fontWeight: 800 }}>Avaliar no Google Maps ↗</a>
         <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn btn-outline" style={{ fontSize: '13px', padding: '16px 32px', fontWeight: 700 }}>Ver todas as 318 avaliações reais</a>
       </div>
