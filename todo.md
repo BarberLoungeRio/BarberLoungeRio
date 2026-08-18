@@ -369,3 +369,5 @@
 - [x] Executar typecheck, testes unitários, build e publicar no GitHub e Render.
 - [x] Restaurar no banco e no código os textos aprovados da seção O Conceito sem mencionar "luxo".
 - [x] Validar, testar e publicar a restauração no GitHub e Render.
+- [x] Restaurar exatamente os textos originais de O Conceito (título "Bem-vindo à experiência Barber Lounge Rio", descrição e pilares Precisão, Sofisticação e Atitude) conforme imagem do usuário.
+- [x] Validar, testar e publicar a alteração no GitHub e Render.
