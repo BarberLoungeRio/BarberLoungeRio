@@ -322,3 +322,7 @@
 - [x] Inspecionar a interface e os inputs do Admin.tsx para verificar se há bloqueio de estado ou de eventos nos campos.
 - [x] Testar a mutation de salvamento e garantir que os campos respondam à digitação.
 - [x] Publicar a correção definitiva da edição e confirmar o funcionamento.
+
+- [x] Conduzir auditoria e refatoração completa do painel Admin para gerenciar todas as seções e atualizações do site.
+- [x] Testar salvamento e reflexão imediata no site público.
+- [x] Publicar checkpoint final e verificação de funcionamento do Admin.
