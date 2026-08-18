@@ -92,6 +92,25 @@ export const siteSettings = mysqlTable("site_settings", {
 export type SiteSetting = typeof siteSettings.$inferSelect;
 export type InsertSiteSetting = typeof siteSettings.$inferInsert;
 
+export const featuredReviews = mysqlTable("featured_reviews", {
+  id: int("id").autoincrement().primaryKey(),
+  authorName: varchar("authorName", { length: 160 }).notNull(),
+  authorPhoto: text("authorPhoto"),
+  authorUri: text("authorUri"),
+  rating: int("rating").default(5).notNull(),
+  text: text("text").notNull(),
+  relativeTime: varchar("relativeTime", { length: 96 }).notNull(),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  active: boolean("active").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  orderIdx: index("featured_reviews_order_idx").on(table.sortOrder),
+}));
+
+export type FeaturedReview = typeof featuredReviews.$inferSelect;
+export type InsertFeaturedReview = typeof featuredReviews.$inferInsert;
+
 export const contentBlocks = mysqlTable("content_blocks", {
   id: int("id").autoincrement().primaryKey(),
   section: varchar("section", { length: 64 }).default("custom").notNull(),

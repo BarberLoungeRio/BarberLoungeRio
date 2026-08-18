@@ -6,11 +6,13 @@ import {
   InsertYoutubeVideo,
   InsertThriftStoreItem,
   InsertContentBlock,
+  InsertFeaturedReview,
   services,
   siteContent,
   contentBlocks,
   siteSettings,
   thriftStoreItems,
+  featuredReviews,
   InsertUser,
   users,
   youtubeVideos,
@@ -278,12 +280,15 @@ export async function getPublicSiteData() {
     db.select().from(thriftStoreItems).where(eq(thriftStoreItems.active, true)).orderBy(asc(thriftStoreItems.sortOrder)),
     db.select().from(contentBlocks).where(eq(contentBlocks.active, true)).orderBy(asc(contentBlocks.sortOrder)),
   ]);
+  const featuredReviewsList = db ? await db.select().from(featuredReviews).where(eq(featuredReviews.active, true)).orderBy(asc(featuredReviews.sortOrder)) : [];
+
   return {
     content: content.length > 0 ? content : defaultContent,
     services: activeServices.length > 0 ? activeServices : defaultServices,
     videos: videos.length > 0 ? videos : fallbackVideos(),
     thriftStore: thriftStore.length > 0 ? thriftStore : defaultThriftStoreItems,
     blocks,
+    featuredReviews: featuredReviewsList,
     instagramFeed,
   };
 }
@@ -291,15 +296,34 @@ export async function getPublicSiteData() {
 export async function getAdminSiteData() {
   await ensureSeeded();
   const db = await getDb();
-  if (!db) return { content: [], services: [], videos: [], thriftStore: [], blocks: [] };
-  const [content, allServices, allVideos, allThriftStore, allBlocks] = await Promise.all([
+  if (!db) return { content: [], services: [], videos: [], thriftStore: [], blocks: [], featuredReviews: [] };
+  const [content, allServices, allVideos, allThriftStore, allBlocks, allFeaturedReviews] = await Promise.all([
     db.select().from(siteContent).orderBy(asc(siteContent.section), asc(siteContent.key)),
     db.select().from(services).orderBy(asc(services.sortOrder)),
     db.select().from(youtubeVideos).orderBy(asc(youtubeVideos.sortOrder)),
     db.select().from(thriftStoreItems).orderBy(asc(thriftStoreItems.sortOrder)),
     db.select().from(contentBlocks).orderBy(asc(contentBlocks.sortOrder)),
+    db.select().from(featuredReviews).orderBy(asc(featuredReviews.sortOrder)),
   ]);
-  return { content, services: allServices, videos: allVideos, thriftStore: allThriftStore, blocks: allBlocks };
+  return { content, services: allServices, videos: allVideos, thriftStore: allThriftStore, blocks: allBlocks, featuredReviews: allFeaturedReviews };
+}
+
+export async function createFeaturedReview(review: Omit<InsertFeaturedReview, "id" | "createdAt" | "updatedAt">) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.insert(featuredReviews).values(review);
+}
+
+export async function updateFeaturedReview(id: number, review: Partial<Omit<InsertFeaturedReview, "id" | "createdAt" | "updatedAt">>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(featuredReviews).set(review).where(eq(featuredReviews.id, id));
+}
+
+export async function deleteFeaturedReview(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.delete(featuredReviews).where(eq(featuredReviews.id, id));
 }
 
 export async function updateContent(items: Array<Pick<InsertSiteContent, "key" | "value">>, updatedBy: number) {

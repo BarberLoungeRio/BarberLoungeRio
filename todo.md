@@ -330,3 +330,10 @@
 - [x] Conduzir auditoria e refatoração completa do Instagram, Google Maps e Painel Admin.
 - [x] Validar funcionamento em testes locais e build de produção.
 - [x] Publicar no GitHub e Render e confirmar operação no ar.
+
+- [x] Adicionar suporte a avaliações destacadas no backend e schema.
+- [x] Criar aba de gerenciamento de avaliações no painel Admin.tsx.
+- [x] Integrar seleção de avaliações no Home.tsx e publicar.
+- [x] Substituir grade de posts por embed oficial do perfil Instagram no Home.tsx.
+- [x] Adicionar botão de acesso direto ao /admin e login no rodapé e menu.
+- [x] Compilar, testar e publicar no GitHub e Render.

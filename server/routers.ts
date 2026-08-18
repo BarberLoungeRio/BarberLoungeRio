@@ -23,7 +23,13 @@ import {
   updateContentBlock,
   deleteContentBlock,
   reorderContentBlocks,
+  createFeaturedReview,
+  updateFeaturedReview,
+  deleteFeaturedReview,
+  getDb,
 } from "./db";
+import { eq } from "drizzle-orm";
+import { featuredReviews } from "../drizzle/schema";
 import { fetchInstagramFeed } from "./instagram";
 
 const serviceInput = z.object({
@@ -124,6 +130,21 @@ export const appRouter = router({
       }),
       delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ input }) => deleteContentBlock(input.id)),
       reorder: adminProcedure.input(z.object({ ids: z.array(z.number().int().positive()).min(1) })).mutation(({ input }) => reorderContentBlocks(input.ids)),
+    }),
+    featuredReviews: router({
+      create: adminProcedure.input(z.object({ authorName: z.string().min(1), authorPhoto: z.string().optional(), authorUri: z.string().optional(), rating: z.number().int().min(1).max(5), text: z.string().min(1), relativeTime: z.string().min(1), sortOrder: z.number().int(), active: z.boolean() })).mutation(({ input }) => createFeaturedReview(input)),
+      update: adminProcedure.input(z.object({ id: z.number().int().positive(), authorName: z.string().min(1), authorPhoto: z.string().optional(), authorUri: z.string().optional(), rating: z.number().int().min(1).max(5), text: z.string().min(1), relativeTime: z.string().min(1), sortOrder: z.number().int(), active: z.boolean() })).mutation(({ input }) => {
+        const { id, ...payload } = input;
+        return updateFeaturedReview(id, payload);
+      }),
+      delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ input }) => deleteFeaturedReview(input.id)),
+      reorder: adminProcedure.input(z.object({ ids: z.array(z.number().int().positive()).min(1) })).mutation(async ({ input }) => {
+        const db = await getDb();
+        if (!db) throw new Error("Database unavailable");
+        for (let i = 0; i < input.ids.length; i++) {
+          await db.update(featuredReviews).set({ sortOrder: i + 1 }).where(eq(featuredReviews.id, input.ids[i]!));
+        }
+      }),
     }),
     thriftStore: router({
       create: adminProcedure.input(thriftStoreInput).mutation(({ input }) => createThriftStoreItem(input)),

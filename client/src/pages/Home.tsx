@@ -36,44 +36,46 @@ function loadInstagramEmbedScript() {
 }
 
 function InstagramProfileEmbed({ url, notice }: { url: string; notice?: string }) {
-  const feedItems = [
-    { id: "post-1", type: "REEL", title: "Corte Signature & Acabamento Autoral", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/rMltXKXDOqUbQOLF.jpeg", permalink: url },
-    { id: "post-2", type: "POST", title: "Protocolo de Barba & Terapia Capilar", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/dSrCQFfUPBhNofMK.jpg", permalink: url },
-    { id: "post-3", type: "REEL", title: "Bastidores da Curadoria Thrift Store", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/bjEpGmEDbCbBVgHD.jpg", permalink: url },
-    { id: "post-4", type: "POST", title: "Atitude e Sofisticação no Centro do Rio", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663887068168/sICjFnHbofkamyIq.jpg", permalink: url }
-  ];
+  useEffect(() => {
+    void loadInstagramEmbedScript().then(() => {
+      (window as InstagramEmbedWindow).instgrm?.Embeds?.process();
+    }).catch(() => {});
+  }, [url]);
 
-  return <div className="insta-profile-embed-shell" style={{ width: '100%', maxWidth: '1000px', margin: '0 auto' }}>
-    <div className="insta-profile-dark-stage" style={{ background: '#11110f', border: '1px solid rgba(213, 176, 91, 0.25)', borderRadius: '12px', padding: '24px', boxShadow: '0 12px 40px rgba(0,0,0,0.6)' }}>
-      <div className="insta-profile-dark-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px', marginBottom: '20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div className="insta-profile-dark-mark" style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--gold)', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '16px' }}>BL</div>
-          <div style={{ textAlign: 'left' }}>
-            <strong style={{ color: '#fff', fontSize: '16px', fontFamily: 'Montserrat, sans-serif' }}>@barberlounge.rio</strong>
-            <span style={{ display: 'block', fontSize: '11px', color: 'var(--gold-light)', letterSpacing: '0.05em' }}>Perfil Oficial Verificado · Alta Barbearia & Thrift Store</span>
-          </div>
-        </div>
-        <a href={url} target="_self" rel="noreferrer" className="btn btn-gold" style={{ padding: '10px 20px', fontSize: '11px' }}>Seguir no Instagram</a>
+  return <div className="insta-profile-embed-shell" style={{ width: '100%', maxWidth: '720px', margin: '0 auto' }}>
+    <div className="insta-profile-dark-stage" style={{ background: '#11110f', border: '1px solid rgba(213, 176, 91, 0.25)', borderRadius: '12px', padding: '24px', boxShadow: '0 12px 40px rgba(0,0,0,0.6)', textAlign: 'center' }}>
+      <div style={{ marginBottom: '16px' }}>
+        <strong style={{ color: '#fff', fontSize: '18px', fontFamily: 'Montserrat, sans-serif', display: 'block' }}>@barberlounge.rio</strong>
+        <span style={{ fontSize: '12px', color: 'var(--gold-light)', letterSpacing: '0.05em' }}>Perfil Oficial Verificado no Instagram</span>
       </div>
-      <p style={{ margin: '0 0 20px', fontSize: '13px', color: 'var(--ivory)', lineHeight: '1.6', textAlign: 'left' }}>{notice || "Publicações e Reels recentes sincronizados diretamente da nossa rotina de alta performance. Clique em qualquer item para abrir no Instagram."}</p>
+      <p style={{ margin: '0 0 20px', fontSize: '13px', color: 'var(--ivory)', lineHeight: '1.6' }}>{notice || "Carregando o perfil oficial diretamente do Instagram."}</p>
       
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '16px' }}>
-        {feedItems.map((item) => (
-          <a href={item.permalink} target="_self" rel="noreferrer" key={item.id} style={{ display: 'block', background: '#0a0a09', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '8px', overflow: 'hidden', textDecoration: 'none', transition: 'transform 0.25s ease, border-color 0.25s ease' }} className="hover:border-[#d5b05b] hover:-translate-y-1">
-            <div style={{ position: 'relative', aspectRatio: '1/1', background: '#000' }}>
-              <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
-              <span style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(0,0,0,0.75)', color: 'var(--gold-light)', border: '1px solid rgba(213,176,91,0.4)', padding: '3px 8px', fontSize: '9px', fontWeight: 700, fontFamily: 'monospace', letterSpacing: '0.1em' }}>{item.type}</span>
-            </div>
-            <div style={{ padding: '14px' }}>
-              <span style={{ display: '-webkit-box', color: '#fff', fontSize: '12px', fontWeight: 600, fontFamily: 'Montserrat, sans-serif', lineHeight: '1.4', marginBottom: '8px', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{item.title}</span>
-              <span style={{ color: 'var(--gold-light)', fontSize: '10px', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Abrir no Instagram ↗</span>
-            </div>
-          </a>
-        ))}
+      <div style={{ background: '#fff', borderRadius: '8px', overflow: 'hidden', display: 'inline-block', width: '100%', maxWidth: '540px' }}>
+        <blockquote className="instagram-media" data-instgrm-permalink={`${url}?utm_source=ig_embed&amp;utm_campaign=loading`} data-instgrm-version="14" style={{ background: '#FFF', border: '0', borderRadius: '3px', boxShadow: '0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)', margin: '1px', maxWidth: '540px', minWidth: '326px', padding: '0', width: 'calc(100% - 2px)' }}>
+          <div style={{ padding: '16px' }}>
+            <a href={url} target="_blank" rel="noreferrer" style={{ background: '#FFFFFF', lineHeight: '0', padding: '0 0', textAlign: 'center', textDecoration: 'none', width: '100%' }}>
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <div style={{ backgroundColor: '#F4F4F4', borderRadius: '50%', flexGrow: 0, height: '40px', marginRight: '14px', width: '40px' }}></div>
+                <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'center' }}>
+                  <div style={{ backgroundColor: '#F4F4F4', borderRadius: '4px', flexGrow: 0, height: '14px', marginBottom: '6px', width: '100px' }}></div>
+                  <div style={{ backgroundColor: '#F4F4F4', borderRadius: '4px', flexGrow: 0, height: '12px', width: '60px' }}></div>
+                </div>
+              </div>
+              <div style={{ padding: '19% 0' }}></div>
+              <div style={{ display: 'block', height: '50px', margin: '0 auto 12px', width: '50px' }}></div>
+              <div style={{ paddingTop: '8px' }}>
+                <div style={{ color: '#3897f0', fontFamily: 'Arial,sans-serif', fontSize: '14px', fontStyle: 'normal', fontWeight: 550, lineHeight: '18px' }}>Ver esta publicação no Instagram</div>
+              </div>
+            </a>
+            <p style={{ fontFamily: 'Arial,sans-serif', fontSize: '14px', lineHeight: '17px', marginBottom: '0', marginTop: '8px', overflow: 'hidden', padding: '8px 0 7px', textAlign: 'center', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <a href={url} target="_blank" rel="noreferrer" style={{ color: '#c9c8cd', fontSize: '14px', fontStyle: 'normal', fontWeight: 'normal', textDecoration: 'none' }}>Uma publicação compartilhada por Barber Lounge Rio (@barberlounge.rio)</a>
+            </p>
+          </div>
+        </blockquote>
       </div>
 
       <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
-        <a href={url} target="_self" rel="noreferrer" className="btn btn-outline" style={{ fontSize: '11px' }}>Ver todos os posts e Reels</a>
+        <a href={url} target="_self" rel="noreferrer" className="btn btn-gold" style={{ fontSize: '12px', padding: '12px 24px' }}>Abrir perfil completo no Instagram</a>
       </div>
     </div>
   </div>;
