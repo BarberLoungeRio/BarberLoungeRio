@@ -137,9 +137,9 @@ const defaultContent: InsertSiteContent[] = [
   { key: "shortsEyebrow", label: "Serviços · selo dos vídeos", section: "shorts", value: "Serviços", fieldType: "text" },
   { key: "shortsTitle", label: "Serviços · título dos vídeos", section: "shorts", value: "Serviços em movimento", fieldType: "text" },
   { key: "shortsDescription", label: "Serviços · descrição dos vídeos", section: "shorts", value: "Assista aos protocolos em tempo real. Cada card traz um vislumbre prático e autoexplicativo dos nossos cortes e tratamentos de alta performance.", fieldType: "textarea" },
-  { key: "instagramEyebrow", label: "Instagram · selo", section: "instagram", value: "Imagens ilustrativas da casa", fieldType: "text" },
+  { key: "instagramEyebrow", label: "Instagram · selo", section: "instagram", value: "Acompanhe nossa rotina", fieldType: "text" },
   { key: "instagramTitle", label: "Instagram · título", section: "instagram", value: "Barber Lounge em movimento", fieldType: "text" },
-  { key: "instagramDescription", label: "Instagram · descrição", section: "instagram", value: "Grade editorial de referência com imagens de corte e ambiente. O feed automático oficial está temporariamente pausado por restrições da API da Meta.", fieldType: "textarea" },
+  { key: "instagramDescription", label: "Instagram · descrição", section: "instagram", value: "Bastidores da alta barbearia e curadoria diária de estilos. Siga o nosso perfil e acompanhe os resultados em primeira mão.", fieldType: "textarea" },
   { key: "instagramUsername", label: "Instagram · usuário", section: "instagram", value: "@barberlounge.rio", fieldType: "text" },
   { key: "instagramUrl", label: "Instagram · URL do perfil", section: "instagram", value: "https://www.instagram.com/barberlounge.rio/", fieldType: "url" },
   { key: "contactEyebrow", label: "Contato · selo", section: "contact", value: "Visite a casa", fieldType: "text" },
@@ -214,6 +214,11 @@ export async function ensureSeeded() {
       const existingKeys = new Set(existing.map((item) => item.key));
       const missing = defaultContent.filter((item) => !existingKeys.has(item.key));
       if (missing.length > 0) await db.insert(siteContent).values(missing);
+      for (const item of defaultContent) {
+        if (item.key === "instagramEyebrow" || item.key === "instagramTitle" || item.key === "instagramDescription") {
+          await db.update(siteContent).set({ value: item.value }).where(eq(siteContent.key, item.key));
+        }
+      }
     }
     if (serviceCount.length === 0) await db.insert(services).values(defaultServices);
     if (videoCount.length === 0) {

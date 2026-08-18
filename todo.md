@@ -310,3 +310,7 @@
 - [x] Conduzir auditoria e correção definitiva das avaliações do Google Maps e resenhas na página.
 - [x] Executar captura de tela e validação visual de desktop e mobile antes da publicação final.
 - [x] Publicar checkpoint verificado no GitHub e Render.
+
+- [x] Inspecionar e corrigir o redirecionamento da rota /admin e garantir elementos clicáveis funcionais.
+- [x] Forçar a sincronização e verificar o Render para assegurar que Instagram escuro e Google Maps apareçam no domínio oficial.
+- [x] Validar cliques e visual na URL oficial.
