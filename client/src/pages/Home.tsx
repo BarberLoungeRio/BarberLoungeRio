@@ -997,7 +997,7 @@ export function Home() {
               <li><a href="#instagram">{getText("navInstagram", "Instagram")}</a></li>
               <li><a href="#avaliacoes">{getText("navReviews", "Avaliações")}</a></li>
               <li><a href="#contato">{getText("navContact", "Contato")}</a></li>
-              <li><Link href="/admin" style={{ color: 'var(--gold-light)' }}>{getText("navAdmin", "Painel Admin")}</Link></li>
+              <li><a href="/admin" style={{ color: 'var(--gold-light)' }}>{getText("navAdmin", "Painel Admin")}</a></li>
             </ul>
             <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-outline header-cta-desktop">{getText("navBooking", "Agendar horário")}</a>
           </nav>
@@ -1012,7 +1012,7 @@ export function Home() {
           <a href="#instagram" onClick={() => setMobileOpen(false)}>{getText("navInstagram", "Instagram")}</a>
           <a href="#avaliacoes" onClick={() => setMobileOpen(false)}>{getText("navReviews", "Avaliações")}</a>
           <a href="#contato" onClick={() => setMobileOpen(false)}>{getText("navContact", "Contato")}</a>
-          <Link href="/admin" onClick={() => setMobileOpen(false)} style={{ color: 'var(--gold-light)', fontFamily: 'Montserrat', fontWeight: 700, fontSize: '20px', padding: '16px 0', borderBottom: '1px solid var(--line)' }}>{getText("navAdmin", "Painel Admin")}</Link>
+          <a href="/admin" onClick={() => setMobileOpen(false)} style={{ color: 'var(--gold-light)', fontFamily: 'Montserrat', fontWeight: 700, fontSize: '20px', padding: '16px 0', borderBottom: '1px solid var(--line)' }}>{getText("navAdmin", "Painel Admin")}</a>
           <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-outline">{getText("navBooking", "Agendar horário")}</a>
         </div>
       </header>
@@ -1223,9 +1223,7 @@ export function Home() {
               <a href={whatsappBookingUrl} target="_blank" rel="noreferrer">{getText("contactPhone", "(21) 98008-9047")} — WhatsApp</a>
               <a href={instagramUrl} target="_blank" rel="noreferrer">{instagramUsername}</a>
               <a href="#servicos">{getText("navServices", "Serviços")}</a>
-              {user?.role === 'admin' && (
-                <Link href="/admin" style={{ color: 'var(--gold-light)', fontWeight: 700, marginTop: '8px', display: 'inline-block' }}>⚙️ {getText("navAdmin", "Painel Administrativo")}</Link>
-              )}
+              <a href="/admin" style={{ color: 'var(--gold-light)', fontWeight: 700, marginTop: '8px', display: 'inline-block' }}>⚙️ {getText("navAdmin", "Painel Administrativo")}</a>
             </div>
           </div>
         </div>

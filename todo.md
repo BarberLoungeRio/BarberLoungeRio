@@ -386,3 +386,5 @@
 - [x] Executar typecheck, testes unitários, build e publicar a correção no GitHub e Render.
 - [x] Diagnosticar e corrigir o acesso à página /admin no navegador externo do usuário para garantir login e edição imediatos.
 - [x] Validar, testar e publicar a correção no GitHub e Render.
+- [x] Inspecionar e corrigir o link do Painel Admin no navegador conectado para garantir interatividade total ao clique.
+- [x] Validar, testar e publicar a correção no GitHub e Render.
