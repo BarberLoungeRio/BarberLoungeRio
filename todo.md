@@ -367,3 +367,5 @@
 - [x] Executar typecheck, testes unitários, build e publicar a atualização no GitHub e Render.
 - [x] Restaurar o título original do Hero em Home.tsx: "Mais que um corte, um conceito."
 - [x] Executar typecheck, testes unitários, build e publicar no GitHub e Render.
+- [x] Restaurar no banco e no código os textos aprovados da seção O Conceito sem mencionar "luxo".
+- [x] Validar, testar e publicar a restauração no GitHub e Render.
