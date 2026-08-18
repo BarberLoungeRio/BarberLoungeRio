@@ -302,6 +302,6 @@
 - [x] Aplicar tema black ao embed oficial do Instagram, removendo o bloco visual branco sem retirar a interatividade de posts e Reels.
 - [x] Testar visualmente o Instagram em desktop/mobile, validar build e publicar o ajuste no GitHub e Render.
 
-- [ ] Implementar a experiência de perfil Instagram aberto com tema dark imersivo e feed dinâmico real.
-- [ ] Exibir seleções de depoimentos reais obtidos do Google Maps sem inventar dados.
-- [ ] Testar, validar e publicar a nova versão oficial no GitHub e Render.
+- [x] Implementar a experiência de perfil Instagram aberto com tema dark imersivo e feed dinâmico real.
+- [x] Exibir seleções de depoimentos reais obtidos do Google Maps sem inventar dados.
+- [x] Testar, validar e publicar a nova versão oficial no GitHub e Render.
