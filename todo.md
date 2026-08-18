@@ -388,3 +388,5 @@
 - [x] Validar, testar e publicar a correção no GitHub e Render.
 - [x] Inspecionar e corrigir o link do Painel Admin no navegador conectado para garantir interatividade total ao clique.
 - [x] Validar, testar e publicar a correção no GitHub e Render.
+- [x] Garantir que horário de funcionamento e telefone apareçam imediatamente na versão publicada do site.
+- [x] Validar, testar e publicar a configuração no GitHub e Render.
