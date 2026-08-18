@@ -337,3 +337,6 @@
 - [x] Substituir grade de posts por embed oficial do perfil Instagram no Home.tsx.
 - [x] Adicionar botão de acesso direto ao /admin e login no rodapé e menu.
 - [x] Compilar, testar e publicar no GitHub e Render.
+
+- [x] Ocultar mensagem técnica de token na seção Instagram do Home.tsx.
+- [x] Validar build e sincronizar com o Render e GitHub.

@@ -1109,15 +1109,9 @@ export function Home() {
               <p>{getText("instagramProfileDescription", "Bastidores da alta barbearia e curadoria diária de estilos. Siga o nosso perfil e acompanhe os resultados em primeira mão.")}</p>
             </div>
 
-            {instagramIsLive ? (
-              <div className="insta-grid live-instagram-grid" style={{ marginBottom: '36px' }}>
-                {liveInstagramItems.map((item) => <InstagramMediaCard item={item} key={item.id} />)}
-              </div>
-            ) : (
-              <div className="insta-empty-state" style={{ marginBottom: '36px' }}>
-                <InstagramProfileEmbed url={instagramUrl} notice={instagramFeed?.message || "Feed oficial conectado ao perfil Barber Lounge Rio."} />
-              </div>
-            )}
+            <div className="insta-empty-state" style={{ marginBottom: '36px' }}>
+              <InstagramProfileEmbed url={instagramUrl} notice="Perfil oficial sincronizado com a vitrine da Barber Lounge Rio." />
+            </div>
             {instagramIsLive && <p style={{ marginTop: '-18px', marginBottom: '28px', fontSize: '11px', color: 'var(--muted-2)' }}>Atualizado automaticamente pela API oficial do Instagram. Cada publicação abre a fonte original.</p>}
 
             <div className="section-cta">
