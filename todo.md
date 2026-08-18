@@ -390,3 +390,5 @@
 - [x] Validar, testar e publicar a correção no GitHub e Render.
 - [x] Garantir que horário de funcionamento e telefone apareçam imediatamente na versão publicada do site.
 - [x] Validar, testar e publicar a configuração no GitHub e Render.
+- [x] Diagnosticar e corrigir o acesso à rota /admin no ambiente de produção para garantir login e edição imediatos.
+- [x] Validar, testar e publicar a correção no GitHub e Render.
