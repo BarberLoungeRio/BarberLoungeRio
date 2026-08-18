@@ -617,7 +617,7 @@ export function Home() {
         .hero-bg-overlay{
           position:absolute;inset:0;
           z-index:2;
-          background:linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.65) 85%, rgba(0,0,0,0.88) 100%);
+          background:linear-gradient(180deg, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.55) 85%, rgba(0,0,0,0.78) 100%);
         }
         .hero::before{
           content:"";position:absolute;inset:0;
@@ -1049,8 +1049,8 @@ export function Home() {
             <div className="hero-bg-overlay"></div>
           </div>
 
-          <h1>Mais que um corte, <span>um conceito.</span></h1>
-          <p className="sub" style={{ maxWidth: '600px', margin: '0 auto 32px', padding: '0 16px', lineHeight: '1.6' }}>A união da curadoria de estilo com a precisão da alta barbearia. Autenticidade, sofisticação e atitude.</p>
+          <h1 style={{ fontSize: 'clamp(28px, 4.5vw, 48px)', marginBottom: '14px' }}>Alta barbearia e curadoria de estilo</h1>
+          <p className="sub" style={{ maxWidth: '520px', margin: '0 auto 28px', padding: '0 16px', lineHeight: '1.5', fontSize: 'clamp(14px, 1.5vw, 16px)' }}>Precisão técnica, sofisticação e atitude no Centro do Rio.</p>
 
           <div className="hero-ctas" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
             <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ padding: '16px 42px', fontSize: '14px', fontWeight: 800 }}>{getText("heroBookingCta", "Agendar Exclusividade")}</a>

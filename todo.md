@@ -362,3 +362,6 @@
 - [x] Compilar, testar e publicar a alteração no GitHub e Render.
 - [x] Ajustar largura máxima, font-size responsivo e padding do subtítulo do Hero em Home.tsx para evitar transbordamento.
 - [x] Executar typecheck, testes e build de produção, publicando a correção no GitHub e Render.
+- [x] Refinar o texto do Hero para máxima concisão ("Alta barbearia e curadoria de estilo no Centro do Rio").
+- [x] Ajustar o espaçamento vertical e a opacidade do overlay para dar total destaque ao vídeo da logo ao fundo.
+- [x] Executar typecheck, testes unitários, build e publicar a atualização no GitHub e Render.
