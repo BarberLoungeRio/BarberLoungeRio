@@ -353,3 +353,5 @@
 
 - [x] Adicionar botão "Deixar Avaliação" destacado logo abaixo do carrossel em Home.tsx.
 - [x] Compilar, testar e publicar no GitHub e Render.
+- [x] Eliminar completamente as classes CSS residuais .reviews-live-layout e blocos vazios na seção de avaliações em Home.tsx.
+- [x] Validar build, testes unitários e sincronização com GitHub e Render.
