@@ -15,3 +15,9 @@ Quando a API fornecer `media_url`, o card usa vídeo HTML5 inline com `muted`, `
 - Meta, “Embed an Instagram Post”: https://developers.facebook.com/documentation/instagram-platform/oembed
 - Meta, “IG Media”: https://developers.facebook.com/documentation/instagram-platform/reference/instagram-media
 - Instagram Help Center, “Embed an Instagram post or profile”: https://help.instagram.com/620154495870484/
+
+## Nota sobre o modo escuro
+
+A documentação oficial consultada do oEmbed descreve `GET /instagram_oembed`, `embed.js`, `maxwidth` e as limitações de contas privadas/embeds desativados, mas não documenta um parâmetro oficial de tema escuro. Como o HTML final é renderizado pelo Instagram, CSS do site não pode editar o conteúdo interno de um iframe de origem externa. O tratamento dark deve, portanto, manter o container black e usar uma composição própria para cards/players quando possível; o embed oficial pode continuar como fallback interativo, sem prometer que seu conteúdo interno será estilizado pelo site.
+
+Fonte oficial: https://developers.facebook.com/documentation/instagram-platform/oembed

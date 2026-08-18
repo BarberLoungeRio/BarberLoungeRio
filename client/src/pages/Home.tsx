@@ -50,8 +50,13 @@ function InstagramProfileEmbed({ url, notice }: { url: string; notice?: string }
   }, [url]);
   return <div className="insta-profile-embed-shell">
     <div className="insta-profile-embed-status">{embedState === "loading" ? "Abrindo o perfil oficial…" : embedState === "error" ? "O embed foi bloqueado pelo Instagram neste navegador." : notice || "Publicações e Reels oficiais do perfil Barber Lounge Rio."}</div>
-    <blockquote className="instagram-media" data-instgrm-permalink={url} data-instgrm-version="14"><a href={url} target="_self" rel="noreferrer">Abrir o perfil oficial no Instagram</a></blockquote>
-    {embedState === "error" && <a href={url} target="_self" rel="noreferrer" className="btn btn-outline">Abrir Instagram</a>}
+    <div className="insta-profile-dark-stage">
+      <div className="insta-profile-dark-mark" aria-hidden="true">IG</div>
+      <strong>@barberlounge.rio</strong>
+      <span>Posts e Reels recentes da Barber Lounge Rio</span>
+      <a href={url} target="_self" rel="noreferrer" className="btn btn-outline">Abrir feed oficial</a>
+      <blockquote className="instagram-media insta-official-source" data-instgrm-permalink={url} data-instgrm-version="14"><a href={url} target="_self" rel="noreferrer">Abrir o perfil oficial no Instagram</a></blockquote>
+    </div>
   </div>;
 }
 
@@ -75,7 +80,7 @@ function InstagramMediaCard({ item }: { item: { id: string; caption: string; med
 
   return <article className={`insta-live-card${needsOfficialEmbed ? " is-official-embed" : ""}`}>
     <div className="insta-media-frame">
-      {needsOfficialEmbed ? <div className="insta-official-embed"><blockquote className="instagram-media" data-instgrm-permalink={item.permalink} data-instgrm-version="14"><a href={item.permalink} target="_self" rel="noreferrer">Abrir este Reel no Instagram</a></blockquote></div> : item.mediaType === "VIDEO" && item.mediaUrl ? <video src={item.mediaUrl} poster={item.thumbnailUrl || undefined} muted loop autoPlay playsInline controls preload="metadata" aria-label={title} /> : <img src={item.mediaUrl || item.thumbnailUrl || ""} alt={title} loading="lazy" />}
+      {needsOfficialEmbed ? <div className="insta-official-embed"><div className="insta-dark-reel-placeholder"><span className="insta-reel-badge">REEL</span><strong>{title}</strong><a href={item.permalink} target="_self" rel="noreferrer" className="btn btn-outline">Abrir Reel oficial</a><blockquote className="instagram-media insta-official-source" data-instgrm-permalink={item.permalink} data-instgrm-version="14"><a href={item.permalink} target="_self" rel="noreferrer">Abrir este Reel no Instagram</a></blockquote></div></div> : item.mediaType === "VIDEO" && item.mediaUrl ? <video src={item.mediaUrl} poster={item.thumbnailUrl || undefined} muted loop autoPlay playsInline controls preload="metadata" aria-label={title} /> : <img src={item.mediaUrl || item.thumbnailUrl || ""} alt={title} loading="lazy" />}
     </div>
     <div className="insta-live-meta"><span className="insta-live-title">{title}</span><a href={item.permalink} target="_self" rel="noreferrer" className="insta-open-link">Abrir no Instagram ↗</a>{needsOfficialEmbed && embedState === "error" && <span className="insta-embed-note">O Instagram não carregou o embed agora. Use o botão acima para abrir o Reel original.</span>}</div>
   </article>;
@@ -682,10 +687,18 @@ export function Home() {
         .insta-media-frame{position:relative;display:flex;min-height:220px;aspect-ratio:1/1;align-items:center;justify-content:center;overflow:hidden;background:#000;}
         .insta-media-frame img,.insta-media-frame video{width:100%;height:100%;object-fit:cover;}
         .insta-media-frame video{display:block;cursor:pointer;}
-        .insta-official-embed{width:100%;min-height:100%;background:#fff;}
+        .insta-official-embed{width:100%;min-height:100%;background:#0b0b0a;}
         .insta-official-embed .instagram-media{width:calc(100% - 2px)!important;min-width:0!important;margin:0 auto!important;}
-        .insta-profile-embed-shell{display:flex;min-height:260px;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:18px;background:#10100e;border:1px solid rgba(212,175,55,.24);}
-        .insta-profile-embed-shell .instagram-media{width:calc(100% - 2px)!important;min-width:0!important;margin:0 auto!important;background:#fff;}
+        .insta-dark-reel-placeholder{display:flex;width:100%;height:100%;min-height:220px;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;background:radial-gradient(circle at 50% 25%,rgba(212,175,55,.16),transparent 38%),linear-gradient(145deg,#171713,#080808);}
+        .insta-dark-reel-placeholder strong{max-width:230px;font-family:'Montserrat',sans-serif;font-size:14px;line-height:1.35;letter-spacing:.04em;text-transform:uppercase;color:var(--ivory);}
+        .insta-reel-badge{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;letter-spacing:.16em;color:var(--gold-light);}
+        .insta-profile-embed-shell{display:flex;min-height:260px;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:18px;background:#0b0b0a;border:1px solid rgba(212,175,55,.24);}
+        .insta-profile-dark-stage{position:relative;display:flex;width:100%;min-height:285px;flex-direction:column;align-items:center;justify-content:center;gap:8px;overflow:hidden;padding:32px 18px;text-align:center;background:radial-gradient(circle at 50% 10%,rgba(212,175,55,.18),transparent 42%),linear-gradient(145deg,#181814,#050505);border:1px solid rgba(212,175,55,.32);}
+        .insta-profile-dark-mark{display:flex;width:54px;height:54px;align-items:center;justify-content:center;border:1px solid var(--gold);border-radius:50%;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:800;letter-spacing:.1em;color:var(--gold-light);}
+        .insta-profile-dark-stage strong{font-family:'Montserrat',sans-serif;font-size:16px;letter-spacing:.08em;color:var(--ivory);}
+        .insta-profile-dark-stage>span{font-size:12px;color:var(--muted);}
+        .insta-profile-dark-stage .btn{position:relative;z-index:2;margin-top:10px;}
+        .insta-official-source{position:absolute!important;inset:auto auto -120px -120px!important;width:1px!important;min-width:1px!important;height:1px!important;overflow:hidden!important;margin:0!important;opacity:0!important;pointer-events:none!important;}
         .insta-profile-embed-status{max-width:760px;text-align:center;font-size:12px;line-height:1.5;color:var(--muted);}
         .insta-live-meta{display:flex;min-height:112px;flex-direction:column;gap:10px;padding:16px;background:#151512;}
         .insta-live-title{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;line-height:1.45;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-light);}

@@ -298,3 +298,6 @@
 - [x] Adicionar reprodução inline controlável para Reels cujo media_url seja fornecido pela API, respeitando autoplay e controles do navegador.
 - [x] Tornar transparente a indisponibilidade da API Meta e orientar a correção do token sem inventar publicações.
 - [x] Testar build, rotas, embed e sincronizar as restaurações no GitHub e Render.
+
+- [x] Aplicar tema black ao embed oficial do Instagram, removendo o bloco visual branco sem retirar a interatividade de posts e Reels.
+- [x] Testar visualmente o Instagram em desktop/mobile, validar build e publicar o ajuste no GitHub e Render.
