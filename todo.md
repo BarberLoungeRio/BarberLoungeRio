@@ -401,3 +401,5 @@
 - [x] Validar, testar e publicar a correção definitiva no GitHub e Render.
 - [x] Remover qualquer sequência numérica nos títulos da Thrift Store e garantir contato atualizado (06h30 às 15h e telefone correto).
 - [x] Validar, testar e publicar a correção definitiva no GitHub e Render.
+- [x] Auditar e corrigir os logs e erros de deploy/renderização da Thrift Store e contato no site publicado.
+- [x] Validar, testar e publicar a correção definitiva no GitHub e Render.
