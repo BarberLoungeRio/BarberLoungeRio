@@ -396,3 +396,6 @@
 - [x] Validar, testar e publicar a alteração no GitHub e Render.
 - [x] Localizar e remover a numeração automática no componente frontend e nas rotas tRPC da Thrift Store.
 - [x] Validar, testar e publicar a correção definitive no GitHub e Render.
+- [x] Investigar o comportamento de exibição temporária do Render e preparar a explicação técnica detalhada para o usuário.
+- [x] Remover a numeração na renderização tRPC/banco da Thrift Store e forçar horário e telefone corretos no rodapé.
+- [x] Validar, testar e publicar a correção definitiva no GitHub e Render.
