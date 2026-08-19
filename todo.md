@@ -403,3 +403,5 @@
 - [x] Validar, testar e publicar a correção definitiva no GitHub e Render.
 - [x] Auditar e corrigir os logs e erros de deploy/renderização da Thrift Store e contato no site publicado.
 - [x] Validar, testar e publicar a correção definitiva no GitHub e Render.
+- [x] Realizar auditoria geral de deploy, banco e frontend para corrigir a causa raiz dos erros no Render e garantir atualizações instantâneas.
+- [x] Validar, testar e publicar a correção definitiva no GitHub e Render.
