@@ -405,3 +405,4 @@
 - [x] Validar, testar e publicar a correção definitiva no GitHub e Render.
 - [x] Realizar auditoria geral de deploy, banco e frontend para corrigir a causa raiz dos erros no Render e garantir atualizações instantâneas.
 - [x] Validar, testar e publicar a correção definitiva no GitHub e Render.
+- [x] Implementar fallback robusto para OAUTH_SERVER_URL no servidor para eliminar erro de produção no Render.
