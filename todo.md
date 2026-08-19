@@ -399,3 +399,5 @@
 - [x] Investigar o comportamento de exibição temporária do Render e preparar a explicação técnica detalhada para o usuário.
 - [x] Remover a numeração na renderização tRPC/banco da Thrift Store e forçar horário e telefone corretos no rodapé.
 - [x] Validar, testar e publicar a correção definitiva no GitHub e Render.
+- [x] Remover qualquer sequência numérica nos títulos da Thrift Store e garantir contato atualizado (06h30 às 15h e telefone correto).
+- [x] Validar, testar e publicar a correção definitiva no GitHub e Render.
