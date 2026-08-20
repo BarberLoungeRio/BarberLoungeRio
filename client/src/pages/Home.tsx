@@ -431,7 +431,10 @@ export function Home() {
     { id: "service-3", title: "Experiência Completa", description: "Corte, barba e styling em uma sessão criada para você.", price: "A partir de R$ 150", imageUrl: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=900&q=85", tag: "Signature" },
   ];
 
-  const thriftStore = publicData?.thriftStore?.length ? publicData.thriftStore : fallbackThriftStoreItems;
+  const thriftStore = (publicData?.thriftStore?.length ? publicData.thriftStore : fallbackThriftStoreItems).map((item: any) => ({
+    ...item,
+    title: "Acervo Exclusivo"
+  }));
   const blocks = publicData?.blocks ?? [];
 
   return (

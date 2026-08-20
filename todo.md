@@ -406,3 +406,4 @@
 - [x] Realizar auditoria geral de deploy, banco e frontend para corrigir a causa raiz dos erros no Render e garantir atualizações instantâneas.
 - [x] Validar, testar e publicar a correção definitiva no GitHub e Render.
 - [x] Implementar fallback robusto para OAUTH_SERVER_URL no servidor para eliminar erro de produção no Render.
+- [x] Remover validação estrita e log de erro do OAUTH_SERVER_URL no SDK para garantir inicialização 100% limpa no Render.
