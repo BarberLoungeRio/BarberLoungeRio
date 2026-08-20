@@ -411,3 +411,5 @@
 - [x] Auditar integralmente o repositório GitHub e validar consistência de rodapé e Thrift Store.
 - [x] Concluir auditoria ao vivo e sanitização estrita da Thrift Store e rodapé em todas as camadas do projeto.
 - [x] Corrigir rigorosamente o horário de atendimento (06h30 às 15h) e o telefone ((21) 98008-9047) na área de contato e rodapé.
+- [x] Alinhar definitivamente o horário (06h30 às 15h), telefone ((21) 98008-9047) e títulos da Thrift Store (Acervo Exclusivo) em todas as camadas e validar no site ao vivo.
+- [x] Sincronizar o repositório oficial do GitHub (BarberLoungeRio/barberloungerio) com todas as correções de horário, dias e Thrift Store para forçar o build correto no Render.

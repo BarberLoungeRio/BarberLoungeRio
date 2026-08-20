@@ -1000,7 +1000,7 @@ export function Home() {
               <li><a href="#instagram">{getText("navInstagram", "Instagram")}</a></li>
               <li><a href="#avaliacoes">{getText("navReviews", "Avaliações")}</a></li>
               <li><a href="#contato">{getText("navContact", "Contato")}</a></li>
-              <li><a href="/admin" style={{ color: 'var(--gold-light)' }}>{getText("navAdmin", "Painel Admin")}</a></li>
+              
             </ul>
             <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-outline header-cta-desktop">{getText("navBooking", "Agendar horário")}</a>
           </nav>
@@ -1015,7 +1015,7 @@ export function Home() {
           <a href="#instagram" onClick={() => setMobileOpen(false)}>{getText("navInstagram", "Instagram")}</a>
           <a href="#avaliacoes" onClick={() => setMobileOpen(false)}>{getText("navReviews", "Avaliações")}</a>
           <a href="#contato" onClick={() => setMobileOpen(false)}>{getText("navContact", "Contato")}</a>
-          <a href="/admin" onClick={() => setMobileOpen(false)} style={{ color: 'var(--gold-light)', fontFamily: 'Montserrat', fontWeight: 700, fontSize: '20px', padding: '16px 0', borderBottom: '1px solid var(--line)' }}>{getText("navAdmin", "Painel Admin")}</a>
+          
           <a href={whatsappBookingUrl} target="_blank" rel="noreferrer" className="btn btn-outline">{getText("navBooking", "Agendar horário")}</a>
         </div>
       </header>
@@ -1226,14 +1226,14 @@ export function Home() {
               <a href={whatsappBookingUrl} target="_blank" rel="noreferrer">{getText("contactPhone", "(21) 98008-9047")} — WhatsApp</a>
               <a href={instagramUrl} target="_blank" rel="noreferrer">{instagramUsername}</a>
               <a href="#servicos">{getText("navServices", "Serviços")}</a>
-              <a href="/admin" style={{ color: 'var(--gold-light)', fontWeight: 700, marginTop: '8px', display: 'inline-block' }}>⚙️ {getText("navAdmin", "Painel Administrativo")}</a>
+              
             </div>
           </div>
         </div>
 
         <div className="map-block">
           <iframe
-            src="https://www.google.com/maps?q=Avenida%20Churchill%2C%20Centro%2C%20Rio%20de%20Janeiro%2C%20RJ%2C%2020020-050&output=embed"
+            src="https://www.google.com/maps?q=Avenida%20Churchill%2C%2010C%2C%20Centro%2C%20Rio%20de%20Janeiro%2C%20RJ%2C%2020020-050&output=embed"
             loading="lazy" title={getText("footerMapTitle", "Localização Barber Lounge Rio")}></iframe>
         </div>
 
