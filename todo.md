@@ -410,3 +410,4 @@
 - [x] Remover definitivamente qualquer sequência numérica dos títulos da Thrift Store no banco e no frontend, exibindo exclusivamente 'Acervo Exclusivo'.
 - [x] Auditar integralmente o repositório GitHub e validar consistência de rodapé e Thrift Store.
 - [x] Concluir auditoria ao vivo e sanitização estrita da Thrift Store e rodapé em todas as camadas do projeto.
+- [x] Corrigir rigorosamente o horário de atendimento (06h30 às 15h) e o telefone ((21) 98008-9047) na área de contato e rodapé.
