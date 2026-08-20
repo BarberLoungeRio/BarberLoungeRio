@@ -409,3 +409,4 @@
 - [x] Remover validação estrita e log de erro do OAUTH_SERVER_URL no SDK para garantir inicialização 100% limpa no Render.
 - [x] Remover definitivamente qualquer sequência numérica dos títulos da Thrift Store no banco e no frontend, exibindo exclusivamente 'Acervo Exclusivo'.
 - [x] Auditar integralmente o repositório GitHub e validar consistência de rodapé e Thrift Store.
+- [x] Concluir auditoria ao vivo e sanitização estrita da Thrift Store e rodapé em todas as camadas do projeto.

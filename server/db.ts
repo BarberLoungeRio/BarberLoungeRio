@@ -151,7 +151,7 @@ const defaultContent: InsertSiteContent[] = [
   { key: "instagramUrl", label: "Instagram · URL do perfil", section: "instagram", value: "https://www.instagram.com/barberlounge.rio/", fieldType: "url" },
   { key: "contactEyebrow", label: "Contato · selo", section: "contact", value: "Visite a casa", fieldType: "text" },
   { key: "contactTitle", label: "Contato · título", section: "contact", value: "Seu próximo corte começa aqui.", fieldType: "text" },
-  { key: "contactPhone", label: "Contato · telefone", section: "contact", value: "+55 21 98008-9047", fieldType: "text" },
+  { key: "contactPhone", label: "Contato · telefone", section: "contact", value: "(21) 98008-9047", fieldType: "text" },
   { key: "contactWhatsapp", label: "Contato · WhatsApp", section: "contact", value: "5521980089047", fieldType: "text" },
   { key: "contactAddress", label: "Contato · endereço", section: "contact", value: "Centro · Rio de Janeiro, RJ", fieldType: "text" },
   { key: "contactHours", label: "Contato · horário", section: "contact", value: "Segunda a Sexta · 06:30 às 15:00", fieldType: "text" },
