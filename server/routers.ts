@@ -147,10 +147,10 @@ export const appRouter = router({
       }),
     }),
     thriftStore: router({
-      create: adminProcedure.input(thriftStoreInput).mutation(({ input }) => createThriftStoreItem(input)),
+      create: adminProcedure.input(thriftStoreInput).mutation(({ input }) => createThriftStoreItem({ ...input, title: "Acervo Exclusivo" })),
       update: adminProcedure.input(thriftStoreInput.extend({ id: z.number().int().positive() })).mutation(({ input }) => {
         const { id, ...payload } = input;
-        return updateThriftStoreItem(id, payload);
+        return updateThriftStoreItem(id, { ...payload, title: "Acervo Exclusivo" });
       }),
       delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ input }) => deleteThriftStoreItem(input.id)),
       reorder: adminProcedure.input(z.object({ ids: z.array(z.number().int().positive()).min(1) })).mutation(({ input }) => reorderThriftStoreItems(input.ids)),

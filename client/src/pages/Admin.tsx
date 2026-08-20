@@ -257,7 +257,7 @@ function ThriftStoreEditor({ data }: { data: AdminData }) {
   };
   const save = () => {
     if (!form) return;
-    const payload = { imageUrl: form.imageUrl, title: form.title, description: form.description, sortOrder: Number(form.sortOrder), active: form.active };
+    const payload = { imageUrl: form.imageUrl, title: "Acervo Exclusivo", description: form.description, sortOrder: Number(form.sortOrder), active: form.active };
     if (form.id) update.mutate({ id: form.id, ...payload });
     else create.mutate(payload);
   };

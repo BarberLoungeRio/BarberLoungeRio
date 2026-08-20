@@ -408,3 +408,4 @@
 - [x] Implementar fallback robusto para OAUTH_SERVER_URL no servidor para eliminar erro de produção no Render.
 - [x] Remover validação estrita e log de erro do OAUTH_SERVER_URL no SDK para garantir inicialização 100% limpa no Render.
 - [x] Remover definitivamente qualquer sequência numérica dos títulos da Thrift Store no banco e no frontend, exibindo exclusivamente 'Acervo Exclusivo'.
+- [x] Auditar integralmente o repositório GitHub e validar consistência de rodapé e Thrift Store.
